@@ -3,6 +3,8 @@ using KiteFlightsDAL.POCOs;
 using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,9 +37,9 @@ namespace KiteFlightsDAL.DAOs.CountryDao
 
 			try
 			{
-				using (var cmd = new NpgsqlCommand("SELECT * FROM sp_countries_get_by_id(@_id);", _connection))
+				using (var cmd = new NpgsqlCommand("SELECT * FROM sp_countries_get_by_id(@id);", _connection))
 				{
-					cmd.Parameters.AddWithValue("@_id", id);
+					cmd.Parameters.AddWithValue("id", id);
 
 					using (var reader = cmd.ExecuteReader())
 					{
@@ -65,6 +67,108 @@ namespace KiteFlightsDAL.DAOs.CountryDao
 			}
 
 			return country;
+		}
+
+		private NpgsqlParameter[] GetParametersFromDataHolder(object parameters)
+		{
+			List<NpgsqlParameter> result = new List<NpgsqlParameter>();
+
+			foreach (var prop in parameters.GetType().GetProperties())
+			{
+				result.Add(new NpgsqlParameter(prop.Name, prop.GetValue(parameters)));
+				//result.Add(new NpgsqlParameter(null, prop.GetValue(parameters)));
+			}
+
+			return result.ToArray();
+		}
+
+		public List<TEntity> SpExecuteReader<TEntity>(string sp_name, object parameters = null) where TEntity : new()
+		{
+			List<TEntity> result = new List<TEntity>();
+
+			_connection.Open();
+
+			try
+			{
+				using (var cmd = new NpgsqlCommand(sp_name, _connection))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
+
+					if (parameters != null)
+					{
+						cmd.Parameters.AddRange(GetParametersFromDataHolder(parameters));
+					}
+
+					using (var reader = cmd.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							TEntity entity = new TEntity();
+							//Type type = typeof(TEntity);
+
+							foreach (var prop in entity.GetType().GetProperties())
+							{
+								string columnName = prop.Name;
+
+								var attributes = (ColumnAttribute[])prop.GetCustomAttributes(typeof(ColumnAttribute), true);
+
+								if (attributes.Length > 0)
+								{
+									columnName = attributes[0].Name;
+								}
+
+								var value = reader[columnName];
+
+								prop.SetValue(entity, value);
+							}
+
+							result.Add(entity);
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				// todo: add logging
+			}
+			finally
+			{
+				_connection.Close();
+			}
+
+			return result;
+		}
+
+		public object SpExecuteScalar(string sp_name, object parameters = null)
+		{
+			object result = null;
+
+			_connection.Open();
+
+			try
+			{
+				using (var cmd = new NpgsqlCommand(sp_name, _connection))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
+
+					if (parameters != null)
+					{
+						cmd.Parameters.AddRange(GetParametersFromDataHolder(parameters));
+					}
+
+					result = cmd.ExecuteScalar();
+				}
+			}
+			catch (Exception ex)
+			{
+				// todo: add logging
+			}
+			finally
+			{
+				_connection.Close();
+			}
+
+			return result;
 		}
 
 		public IList<Country> GetAll()
@@ -112,9 +216,9 @@ namespace KiteFlightsDAL.DAOs.CountryDao
 
 			try
 			{
-				using (var cmd = new NpgsqlCommand("SELECT * FROM sp_countries_add(@_name);", _connection))
+				using (var cmd = new NpgsqlCommand("SELECT * FROM sp_countries_add(@name);", _connection))
 				{
-					cmd.Parameters.AddWithValue("@_name", entity.Name);
+					cmd.Parameters.AddWithValue("name", entity.Name);
 
 					newId = (int)cmd.ExecuteScalar();
 				}
@@ -140,10 +244,10 @@ namespace KiteFlightsDAL.DAOs.CountryDao
 
 			try
 			{
-				using (var cmd = new NpgsqlCommand("SELECT * FROM sp_countries_update(@_id, @_name);", _connection))
+				using (var cmd = new NpgsqlCommand("SELECT * FROM sp_countries_update(@id, @name);", _connection))
 				{
-					cmd.Parameters.AddWithValue("@_id", entity.Id);
-					cmd.Parameters.AddWithValue("@_name", entity.Name);
+					cmd.Parameters.AddWithValue("id", entity.Id);
+					cmd.Parameters.AddWithValue("name", entity.Name);
 
 					updated = (bool)cmd.ExecuteScalar();
 
@@ -174,9 +278,9 @@ namespace KiteFlightsDAL.DAOs.CountryDao
 
 			try
 			{
-				using (var cmd = new NpgsqlCommand("SELECT * FROM sp_countries_remove(@_id);", _connection))
+				using (var cmd = new NpgsqlCommand("SELECT * FROM sp_countries_remove(@id);", _connection))
 				{
-					cmd.Parameters.AddWithValue("@_id", entity.Id);
+					cmd.Parameters.AddWithValue("id", entity.Id);
 
 					removed = (bool)cmd.ExecuteScalar();
 
