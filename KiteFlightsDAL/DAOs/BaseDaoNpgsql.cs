@@ -12,7 +12,10 @@ namespace KiteFlightsDAL.DAOs
 {
 	public class BaseDaoNpgsql<TEntity> : IDisposable where TEntity : new()
 	{
-		protected NpgsqlConnection _connection;
+		// all inheriting DAOs must be of the same connection (the same db).
+		// if you want a DAO that connects to a different db but still inherit from this class,
+		// just drop the static from: _connection, Sp(), SpExecuteReader(), and SpExecuteScalar()
+		protected static NpgsqlConnection _connection;
 
 		public BaseDaoNpgsql(string connectionString)
 		{
@@ -25,6 +28,40 @@ namespace KiteFlightsDAL.DAOs
 			{
 				throw new Exception("Connection to DB failed.");
 			}
+		}
+
+		#region logic
+		// general logic
+		private static object Sp(Func<NpgsqlCommand, object> ExecuteCommand, string spName, object parameters = null)
+		{
+			object result = null;
+
+			_connection.Open();
+
+			try
+			{
+				using (var cmd = new NpgsqlCommand(spName, _connection))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
+
+					if (parameters != null)
+					{
+						cmd.Parameters.AddRange(GetNpgsqlParameters(parameters));
+					}
+
+					result = ExecuteCommand(cmd);
+				}
+			}
+			catch (Exception ex)
+			{
+				// todo: add logging
+			}
+			finally
+			{
+				_connection.Close();
+			}
+
+			return result;
 		}
 
 		private static NpgsqlParameter[] GetNpgsqlParameters(object parameters)
@@ -62,48 +99,9 @@ namespace KiteFlightsDAL.DAOs
 
 			return entity;
 		}
-
-		protected List<TEntity> SpExecuteReader(string spName, object parameters = null)
-		{
-			List<TEntity> result = new List<TEntity>();
-
-			_connection.Open();
-
-			try
-			{
-				using (var cmd = new NpgsqlCommand(spName, _connection))
-				{
-					cmd.CommandType = CommandType.StoredProcedure;
-
-					if (parameters != null)
-					{
-						cmd.Parameters.AddRange(GetNpgsqlParameters(parameters));
-					}
-
-					using (var reader = cmd.ExecuteReader())
-					{
-						while (reader.Read())
-						{
-							TEntity entity = GenerateEntity(reader);
-
-							result.Add(entity);
-						}
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				// todo: add logging
-			}
-			finally
-			{
-				_connection.Close();
-			}
-
-			return result;
-		}
-
-		protected static object ExecuteReader(NpgsqlCommand cmd)
+		
+		// delegates for Sp()
+		private static object ExecuteReader(NpgsqlCommand cmd)
 		{
 			List<TEntity> result = new List<TEntity>();
 
@@ -120,74 +118,23 @@ namespace KiteFlightsDAL.DAOs
 			return result;
 		}
 
-		protected static object ExecuteScalar(NpgsqlCommand cmd)
+		private static object ExecuteScalar(NpgsqlCommand cmd)
 		{
 			return cmd.ExecuteScalar();
 		}
+		#endregion
 
-		protected object ExecuteSp(Func<NpgsqlCommand, object> ExecuteCommand, string spName, object parameters = null)
+		#region encapsulations
+		protected static List<TEntity> SpExecuteReader(string spName, object parameters = null)
 		{
-			object result = null;
-
-			_connection.Open();
-
-			try
-			{
-				using (var cmd = new NpgsqlCommand(spName, _connection))
-				{
-					cmd.CommandType = CommandType.StoredProcedure;
-
-					if (parameters != null)
-					{
-						cmd.Parameters.AddRange(GetNpgsqlParameters(parameters));
-					}
-
-					result = ExecuteCommand(cmd);
-				}
-			}
-			catch (Exception ex)
-			{
-				// todo: add logging
-			}
-			finally
-			{
-				_connection.Close();
-			}
-
-			return result;
+			return Sp(ExecuteReader, spName, parameters) as List<TEntity>;
 		}
 
-		protected object SpExecuteScalar(string spName, object parameters = null)
+		protected static object SpExecuteScalar(string spName, object parameters = null)
 		{
-			object result = null;
-
-			_connection.Open();
-
-			try
-			{
-				using (var cmd = new NpgsqlCommand(spName, _connection))
-				{
-					cmd.CommandType = CommandType.StoredProcedure;
-
-					if (parameters != null)
-					{
-						cmd.Parameters.AddRange(GetNpgsqlParameters(parameters));
-					}
-
-					result = cmd.ExecuteScalar();
-				}
-			}
-			catch (Exception ex)
-			{
-				// todo: add logging
-			}
-			finally
-			{
-				_connection.Close();
-			}
-
-			return result;
+			return Sp(ExecuteScalar, spName, parameters);
 		}
+		#endregion
 
 		// dispose
 		public void Dispose()
