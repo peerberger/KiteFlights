@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace KiteFlightsDAL.DAOs
 {
-	public class BaseDaoNpgsql : IDisposable
+	public class BaseDaoNpgsql<TEntity> : IDisposable where TEntity : new()
 	{
 		protected NpgsqlConnection _connection;
 
@@ -27,7 +27,7 @@ namespace KiteFlightsDAL.DAOs
 			}
 		}
 
-		private NpgsqlParameter[] GetParametersFromDataHolder(object parameters)
+		private static NpgsqlParameter[] GetNpgsqlParameters(object parameters)
 		{
 			List<NpgsqlParameter> result = new List<NpgsqlParameter>();
 
@@ -40,7 +40,30 @@ namespace KiteFlightsDAL.DAOs
 			return result.ToArray();
 		}
 
-		protected List<TEntity> SpExecuteReader<TEntity>(string sp_name, object parameters = null) where TEntity : new()
+		private static TEntity GenerateEntity(NpgsqlDataReader reader)
+		{
+			TEntity entity = new TEntity();
+
+			foreach (var prop in entity.GetType().GetProperties())
+			{
+				string columnName = prop.Name;
+
+				var attributes = (ColumnAttribute[])prop.GetCustomAttributes(typeof(ColumnAttribute), true);
+
+				if (attributes.Length > 0)
+				{
+					columnName = attributes[0].Name;
+				}
+
+				var value = reader[columnName];
+
+				prop.SetValue(entity, value);
+			}
+
+			return entity;
+		}
+
+		protected List<TEntity> SpExecuteReader(string sp_name, object parameters = null)
 		{
 			List<TEntity> result = new List<TEntity>();
 
@@ -54,31 +77,14 @@ namespace KiteFlightsDAL.DAOs
 
 					if (parameters != null)
 					{
-						cmd.Parameters.AddRange(GetParametersFromDataHolder(parameters));
+						cmd.Parameters.AddRange(GetNpgsqlParameters(parameters));
 					}
 
 					using (var reader = cmd.ExecuteReader())
 					{
 						while (reader.Read())
 						{
-							TEntity entity = new TEntity();
-							//Type type = typeof(TEntity);
-
-							foreach (var prop in entity.GetType().GetProperties())
-							{
-								string columnName = prop.Name;
-
-								var attributes = (ColumnAttribute[])prop.GetCustomAttributes(typeof(ColumnAttribute), true);
-
-								if (attributes.Length > 0)
-								{
-									columnName = attributes[0].Name;
-								}
-
-								var value = reader[columnName];
-
-								prop.SetValue(entity, value);
-							}
+							TEntity entity = GenerateEntity(reader);
 
 							result.Add(entity);
 						}
@@ -111,7 +117,7 @@ namespace KiteFlightsDAL.DAOs
 
 					if (parameters != null)
 					{
-						cmd.Parameters.AddRange(GetParametersFromDataHolder(parameters));
+						cmd.Parameters.AddRange(GetNpgsqlParameters(parameters));
 					}
 
 					result = cmd.ExecuteScalar();

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace KiteFlightsDAL.DAOs.CountryDao
 {
-	public class CountryDaoPgsql : BaseDaoNpgsql, ICountryDao
+	public class CountryDaoPgsql : BaseDaoNpgsql<Country>, ICountryDao
 	{
 		public CountryDaoPgsql(string connectionString) : base(connectionString)
 		{
@@ -25,7 +25,7 @@ namespace KiteFlightsDAL.DAOs.CountryDao
 
 			try
 			{
-				var spResult = SpExecuteReader<Country>("sp_countries_get_by_id", new { _id = id });
+				var spResult = SpExecuteReader("sp_countries_get_by_id", new { _id = id });
 
 				// check if any records were found
 				if (spResult.Count > 0)
@@ -47,7 +47,7 @@ namespace KiteFlightsDAL.DAOs.CountryDao
 
 		public IList<Country> GetAll()
 		{
-			return SpExecuteReader<Country>("sp_countries_get_all");
+			return SpExecuteReader("sp_countries_get_all");
 		}
 
 		// adding
