@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KiteFlightsDAL.DAOs
 {
-	public interface IBasicDao<TEntity> where TEntity : IPoco
+	public interface ICrudDao<TEntity> where TEntity : IPoco
 	{
 		// getting
 		TEntity GetById(int id);

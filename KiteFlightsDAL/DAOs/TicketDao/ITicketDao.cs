@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KiteFlightsDAL.DAOs.TicketDao
 {
-	public interface ITicketDao : IBasicDao<Ticket>
+	public interface ITicketDao : ICrudDao<Ticket>
 	{
 	}
 }

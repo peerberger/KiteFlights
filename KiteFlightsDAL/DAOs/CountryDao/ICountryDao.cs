@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KiteFlightsDAL.DAOs.CountryDao
 {
-	public interface ICountryDao : IBasicDao<Country>
+	public interface ICountryDao : ICrudDao<Country>
 	{
 	}
 }
