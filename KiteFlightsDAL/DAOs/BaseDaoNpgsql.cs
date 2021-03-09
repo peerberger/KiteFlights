@@ -63,7 +63,7 @@ namespace KiteFlightsDAL.DAOs
 			return entity;
 		}
 
-		protected List<TEntity> SpExecuteReader(string sp_name, object parameters = null)
+		protected List<TEntity> SpExecuteReader(string spName, object parameters = null)
 		{
 			List<TEntity> result = new List<TEntity>();
 
@@ -71,7 +71,7 @@ namespace KiteFlightsDAL.DAOs
 
 			try
 			{
-				using (var cmd = new NpgsqlCommand(sp_name, _connection))
+				using (var cmd = new NpgsqlCommand(spName, _connection))
 				{
 					cmd.CommandType = CommandType.StoredProcedure;
 
@@ -103,7 +103,29 @@ namespace KiteFlightsDAL.DAOs
 			return result;
 		}
 
-		protected object SpExecuteScalar(string sp_name, object parameters = null)
+		protected static object ExecuteReader(NpgsqlCommand cmd)
+		{
+			List<TEntity> result = new List<TEntity>();
+
+			using (var reader = cmd.ExecuteReader())
+			{
+				while (reader.Read())
+				{
+					TEntity entity = GenerateEntity(reader);
+
+					result.Add(entity);
+				}
+			}
+
+			return result;
+		}
+
+		protected static object ExecuteScalar(NpgsqlCommand cmd)
+		{
+			return cmd.ExecuteScalar();
+		}
+
+		protected object ExecuteSp(Func<NpgsqlCommand, object> ExecuteCommand, string spName, object parameters = null)
 		{
 			object result = null;
 
@@ -111,7 +133,39 @@ namespace KiteFlightsDAL.DAOs
 
 			try
 			{
-				using (var cmd = new NpgsqlCommand(sp_name, _connection))
+				using (var cmd = new NpgsqlCommand(spName, _connection))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
+
+					if (parameters != null)
+					{
+						cmd.Parameters.AddRange(GetNpgsqlParameters(parameters));
+					}
+
+					result = ExecuteCommand(cmd);
+				}
+			}
+			catch (Exception ex)
+			{
+				// todo: add logging
+			}
+			finally
+			{
+				_connection.Close();
+			}
+
+			return result;
+		}
+
+		protected object SpExecuteScalar(string spName, object parameters = null)
+		{
+			object result = null;
+
+			_connection.Open();
+
+			try
+			{
+				using (var cmd = new NpgsqlCommand(spName, _connection))
 				{
 					cmd.CommandType = CommandType.StoredProcedure;
 
