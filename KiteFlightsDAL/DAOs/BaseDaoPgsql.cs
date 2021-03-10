@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace KiteFlightsDAL.DAOs
 {
-	public class BaseDaoNpgsql<TEntity> : IDisposable where TEntity : new()
+	public class BaseDaoPgsql<TEntity> : IDisposable where TEntity : new()
 	{
 		// all inheriting DAOs must be of the same connection (the same db).
 		// if you want a DAO that connects to a different db but still inherit from this class,
 		// just drop the static from: _connection, Sp(), SpExecuteReader(), and SpExecuteScalar()
 		protected static NpgsqlConnection _connection;
 
-		public BaseDaoNpgsql(string connectionString)
+		public BaseDaoPgsql(string connectionString)
 		{
 			//todo: maybe reorganize the testing better? with exception? idk if there is actaully something to improve
 			if (TestConnection(connectionString))

@@ -1,30 +1,27 @@
 ﻿using KiteFlightsDAL.POCOs;
-using Npgsql;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KiteFlightsDAL.DAOs.CountryDao
+namespace KiteFlightsDAL.DAOs.UserDao
 {
-	public class CountryDaoPgsql : BaseDaoPgsql<Country>, ICountryDao
+	public class UserDaoPgsql : BaseDaoPgsql<User>, IUserDao
 	{
-		public CountryDaoPgsql(string connectionString) : base(connectionString)
+		public UserDaoPgsql(string connectionString) : base(connectionString)
 		{
 
 		}
 
 		// getting
-		public Country GetById(int id)
+		public User GetById(int id)
 		{
-			Country country = null;
+			User user = null;
 
 			try
 			{
-				var spResult = SpExecuteReader("sp_countries_get_by_id", new
+				var spResult = SpExecuteReader("sp_users_get_by_id", new
 				{
 					_id = id
 				});
@@ -32,7 +29,7 @@ namespace KiteFlightsDAL.DAOs.CountryDao
 				// check if any records were found
 				if (spResult.Count > 0)
 				{
-					country = spResult.First();
+					user = spResult.First();
 				}
 				else
 				{
@@ -44,40 +41,47 @@ namespace KiteFlightsDAL.DAOs.CountryDao
 				// todo: add logging
 			}
 
-			return country;
+			return user;
 		}
 
-		public IList<Country> GetAll()
+		public IList<User> GetAll()
 		{
-			return SpExecuteReader("sp_countries_get_all");
+			return SpExecuteReader("sp_users_get_all");
 		}
 
 		// adding
-		public int Add(Country entity)
+		public int Add(User entity)
 		{
 			var newId = -1;
 
-			var spResult = SpExecuteScalar("sp_countries_add", new
+			var spResult = SpExecuteScalar("sp_users_add", new
 			{
-				_name = entity.Name
+				_username = entity.Username,
+				_password = entity.Password,
+				_email = entity.Email,
+				_user_role = entity.UserRole
 			});
 
-			newId = spResult != null ? (int)spResult : newId;
+			//newId = spResult != null ? (int)(long)spResult : newId;
+			newId = spResult != null ? Convert.ToInt32(spResult) : newId;
 
 			return newId;
 		}
 
 		// updating
-		public bool Update(Country entity)
+		public bool Update(User entity)
 		{
 			bool updated = false;
 
 			try
 			{
-				var spResult = SpExecuteScalar("sp_countries_update", new
+				var spResult = SpExecuteScalar("sp_users_update", new
 				{
 					_id = entity.Id,
-					_name = entity.Name
+					_username = entity.Username,
+					_password = entity.Password,
+					_email = entity.Email,
+					_user_role = entity.UserRole
 				});
 
 				updated = spResult != null ? (bool)spResult : updated;
@@ -96,16 +100,13 @@ namespace KiteFlightsDAL.DAOs.CountryDao
 		}
 
 		// removing
-		public bool Remove(Country entity)
+		public bool Remove(User entity)
 		{
 			bool removed = false;
 
 			try
 			{
-				var spResult = SpExecuteScalar("sp_countries_remove", new
-				{
-					_id = entity.Id
-				});
+				var spResult = SpExecuteScalar("sp_users_remove", new { _id = entity.Id });
 
 				removed = spResult != null ? (bool)spResult : removed;
 

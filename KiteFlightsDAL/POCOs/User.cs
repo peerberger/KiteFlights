@@ -1,6 +1,7 @@
 ﻿using KiteFlightsDAL.POCOs.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace KiteFlightsDAL.POCOs
@@ -8,10 +9,15 @@ namespace KiteFlightsDAL.POCOs
 	public class User : IPoco, IEquatable<User>
 	{
 		#region Properties
+		[Column("id")]
 		public long Id { get; set; }
+		[Column("username")]
 		public string Username { get; set; }
+		[Column("password")]
 		public string Password { get; set; }
+		[Column("email")]
 		public string Email { get; set; }
+		[Column("user_role")]
 		public int UserRole { get; set; }
 		#endregion
 

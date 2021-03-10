@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KiteFlightsDAL.DAOs.TicketDao
 {
-	public class TicketDao : ITicketDao
+	public class TicketDaoPgsql : ITicketDao
 	{
 		// getting
 		public Ticket GetById(int id)
