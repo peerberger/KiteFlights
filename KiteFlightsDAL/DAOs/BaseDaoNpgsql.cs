@@ -1,5 +1,4 @@
-﻿using KiteFlightsDAL.HelperClasses;
-using Npgsql;
+﻿using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -20,7 +19,7 @@ namespace KiteFlightsDAL.DAOs
 		public BaseDaoNpgsql(string connectionString)
 		{
 			//todo: maybe reorganize the testing better? with exception? idk if there is actaully something to improve
-			if (NpgsqlConnectionTester.Test(connectionString))
+			if (TestConnection(connectionString))
 			{
 				_connection = new NpgsqlConnection(connectionString);
 			}
@@ -30,7 +29,7 @@ namespace KiteFlightsDAL.DAOs
 			}
 		}
 
-		#region logic
+		#region main logic
 		// general logic
 		private static object Sp(Func<NpgsqlCommand, object> ExecuteCommand, string spName, object parameters = null)
 		{
@@ -124,7 +123,8 @@ namespace KiteFlightsDAL.DAOs
 		}
 		#endregion
 
-		#region encapsulations
+		#region helper methods
+		// encapsulations for sp()
 		protected static List<TEntity> SpExecuteReader(string spName, object parameters = null)
 		{
 			return Sp(ExecuteReader, spName, parameters) as List<TEntity>;
@@ -133,6 +133,24 @@ namespace KiteFlightsDAL.DAOs
 		protected static object SpExecuteScalar(string spName, object parameters = null)
 		{
 			return Sp(ExecuteScalar, spName, parameters);
+		}
+
+		// test methods
+		private static bool TestConnection(string connectionString)
+		{
+			try
+			{
+				using (var connection = new NpgsqlConnection(connectionString))
+				{
+					connection.Open();
+					return true;
+				}
+			}
+			catch (Exception ex)
+			{
+				// todo: add logging
+				return false;
+			}
 		}
 		#endregion
 

@@ -8,4 +8,8 @@
     <PackageReference Include="Npgsql" Version="5.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="HelperClasses\" />
+  </ItemGroup>
+
 </Project>
