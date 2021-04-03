@@ -1,16 +1,27 @@
 ﻿using KiteFlightsDAL.DAOs.CountryDao;
 using KiteFlightsDAL.DAOs.UserDao;
 using KiteFlightsDAL.POCOs;
+using log4net;
+using log4net.Config;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 
 namespace ConsoleApp
 {
 	class Program
 	{
+		private static readonly ILog logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		static void Main(string[] args)
 		{
+			var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+			XmlConfigurator.Configure(logRepository, new FileInfo("Log4Net.config"));
+
 			string connectionString = @"Host=localhost;Username=postgres;Password=admin;Database=kite_flights_db;";
+
+			logger.Info("lalala");
 
 			using (var dao = new CountryDaoPgsql(connectionString))
 			{

@@ -18,7 +18,7 @@ namespace KiteFlightsDAL.DAOs
 
 		public BaseDaoPgsql(string connectionString)
 		{
-			//todo: maybe reorganize the testing better? with exception? idk if there is actaully something to improve
+			//todo: maybe reorganize the testing better? with exception? idk if there is actually something to improve
 			if (TestConnection(connectionString))
 			{
 				_connection = new NpgsqlConnection(connectionString);
@@ -35,10 +35,10 @@ namespace KiteFlightsDAL.DAOs
 		{
 			object result = null;
 
-			_connection.Open();
-
 			try
 			{
+				_connection.Open();
+
 				using (var cmd = new NpgsqlCommand(spName, _connection))
 				{
 					cmd.CommandType = CommandType.StoredProcedure;
@@ -98,7 +98,7 @@ namespace KiteFlightsDAL.DAOs
 
 			return entity;
 		}
-		
+
 		// delegates for Sp()
 		private static object ExecuteReader(NpgsqlCommand cmd)
 		{

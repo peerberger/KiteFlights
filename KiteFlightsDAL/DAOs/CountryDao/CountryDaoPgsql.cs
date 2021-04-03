@@ -1,4 +1,5 @@
 ﻿using KiteFlightsDAL.POCOs;
+using log4net;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ namespace KiteFlightsDAL.DAOs.CountryDao
 {
 	public class CountryDaoPgsql : BaseDaoPgsql<Country>, ICountryDao
 	{
+		private static readonly ILog logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		public CountryDaoPgsql(string connectionString) : base(connectionString)
 		{
 
@@ -20,6 +23,8 @@ namespace KiteFlightsDAL.DAOs.CountryDao
 		// getting
 		public Country GetById(int id)
 		{
+			logger.Info("hahaha");
+
 			Country country = null;
 
 			try
