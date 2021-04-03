@@ -1,4 +1,5 @@
-﻿using Npgsql;
+﻿using KiteFlightsDAL.HelperClasses.ExtensionMethods;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace KiteFlightsDAL.DAOs
 {
+	// when writing the xml doc comments, copy and paste in oneNote
 	public class BaseDaoPgsql<TEntity> : IDisposable where TEntity : new()
 	{
 		// all inheriting DAOs must be of the same connection (the same db).
@@ -67,10 +69,15 @@ namespace KiteFlightsDAL.DAOs
 		{
 			List<NpgsqlParameter> result = new List<NpgsqlParameter>();
 
-			foreach (var prop in parameters.GetType().GetProperties())
+			//foreach (var prop in parameters.GetType().GetProperties())
+			//{
+			//	result.Add(new NpgsqlParameter(prop.Name, prop.GetValue(parameters)));
+			//	//result.Add(new NpgsqlParameter(null, prop.GetValue(parameters)));
+			//}
+
+			foreach (var prop in (IDictionary<String, Object>)parameters)
 			{
-				result.Add(new NpgsqlParameter(prop.Name, prop.GetValue(parameters)));
-				//result.Add(new NpgsqlParameter(null, prop.GetValue(parameters)));
+				result.Add(new NpgsqlParameter(prop.Key, prop.Value));
 			}
 
 			return result.ToArray();
@@ -84,12 +91,19 @@ namespace KiteFlightsDAL.DAOs
 			{
 				string columnName = prop.Name;
 
-				var attributes = (ColumnAttribute[])prop.GetCustomAttributes(typeof(ColumnAttribute), true);
+				//var attributes = (ColumnAttribute[])prop.GetCustomAttributes(typeof(ColumnAttribute), true);
 
-				if (attributes.Length > 0)
+				//if (attributes.Length > 0)
+				//{
+				//	columnName = attributes[0].Name;
+				//}
+
+				if (prop.TryGetAttributeValue((ColumnAttribute columnAttribute) => columnAttribute.Name, out string columnAttributeName))
 				{
-					columnName = attributes[0].Name;
+					columnName = columnAttributeName;
 				}
+
+
 
 				var value = reader[columnName];
 

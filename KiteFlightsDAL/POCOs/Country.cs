@@ -1,4 +1,5 @@
-﻿using KiteFlightsDAL.POCOs.Interfaces;
+﻿using KiteFlightsDAL.HelperClasses.CustomAttributes;
+using KiteFlightsDAL.POCOs.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,12 +9,15 @@ using System.Threading.Tasks;
 
 namespace KiteFlightsDAL.POCOs
 {
+	[Table("countries")]
 	public class Country : IPoco, IEquatable<Country>
 	{
 		#region Properties
 		[Column("id")]
+		[SpParameter("_id")]
 		public int Id { get; set; }
 		[Column("name")]
+		[SpParameter("_name")]
 		public string Name { get; set; }
 		#endregion
 
