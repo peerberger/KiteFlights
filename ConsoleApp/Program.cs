@@ -24,24 +24,6 @@ namespace ConsoleApp
 
 			logger.Info("lalala");
 
-			using (var dao = new GenericDaoPgsql<Country>(connectionString))
-			{
-				Country country = dao.GetById(4);
-
-				IList<Country> countries = dao.GetAll();
-			
-				var id = dao.Add(new Country { Name = "lala" });
-			}
-
-			using (var dao = new GenericDaoPgsql<User>(connectionString))
-			{
-				User user = dao.GetById(3);
-
-				IList<User> users = dao.GetAll();
-
-			}
-
-
 			using (var dao = new CountryDaoPgsql(connectionString))
 			{
 				Country country = dao.GetById(4);
@@ -52,7 +34,7 @@ namespace ConsoleApp
 
 				var updated = dao.Update(new Country { Id = 13, Name = "UK" });
 
-				var removed = dao.Remove(new Country { Id = 58 });
+				var removed = dao.Remove(new Country { Id = 60 });
 			}
 
 			using (var dao = new UserDaoPgsql(connectionString))
@@ -65,7 +47,7 @@ namespace ConsoleApp
 
 				var updated = dao.Update(new User { Id = 6, Username = "lala", Password = "lala", Email = "lala", UserRole = 1 });
 
-				var removed = dao.Remove(new User { Id = 9 });
+				var removed = dao.Remove(new User { Id = 11 });
 			}
 		}
 	}

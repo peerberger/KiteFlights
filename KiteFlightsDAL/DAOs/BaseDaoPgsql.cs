@@ -79,19 +79,10 @@ namespace KiteFlightsDAL.DAOs
 			{
 				string columnName = prop.Name;
 
-				//var attributes = (ColumnAttribute[])prop.GetCustomAttributes(typeof(ColumnAttribute), true);
-
-				//if (attributes.Length > 0)
-				//{
-				//	columnName = attributes[0].Name;
-				//}
-
 				if (prop.TryGetAttributeValue((ColumnAttribute columnAttribute) => columnAttribute.Name, out string columnAttributeName))
 				{
 					columnName = columnAttributeName;
 				}
-
-
 
 				var value = reader[columnName];
 
@@ -132,9 +123,9 @@ namespace KiteFlightsDAL.DAOs
 			return Sp(ExecuteReader, spName, parameters) as List<TEntity>;
 		}
 
-		protected static object SpExecuteScalar(string spName, object parameters = null)
+		protected static object SpExecuteScalar(string spName, Dictionary<string, object> parameters = null)
 		{
-			return Sp(ExecuteScalar, spName, (Dictionary<string,object>)parameters);
+			return Sp(ExecuteScalar, spName, parameters);
 		}
 
 		// test methods
