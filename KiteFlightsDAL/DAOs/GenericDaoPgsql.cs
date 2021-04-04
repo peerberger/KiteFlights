@@ -1,5 +1,5 @@
-﻿using KiteFlightsDAL.HelperClasses.ExtensionMethods;
-using KiteFlightsDAL.POCOs;
+﻿using KiteFlightsDAL.HelperClasses.CustomAttributes;
+using KiteFlightsDAL.HelperClasses.ExtensionMethods;
 using KiteFlightsDAL.POCOs.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,14 @@ namespace KiteFlightsDAL.DAOs
 		// todo: make all possible members static??
 		public GenericDaoPgsql(string connectionString) : base(connectionString)
 		{
-			TableName = GetTableName();
+			try
+			{
+				TableName = GetTableName();
+			}
+			catch (Exception ex)
+			{
+				// todo: add logging
+			}
 		}
 
 		private static string GetTableName()
@@ -29,8 +36,27 @@ namespace KiteFlightsDAL.DAOs
 			}
 			else
 			{
-				throw new Exception("No table name was found.");
+				throw new Exception("No TableAttribute was found.");
 			}
+		}
+
+		private static Dictionary<string, object> GetSpParameters(TEntity entity)
+		{
+			var parameters = new Dictionary<string, object>();
+
+			foreach (var prop in entity.GetType().GetProperties())
+			{
+				if (prop.TryGetAttributeValue((SpParameterAttribute spParameterAttribute) => spParameterAttribute.Name, out string spParameterAttributeName))
+				{
+					parameters.Add(spParameterAttributeName, prop.GetValue(entity));
+				}
+				else
+				{
+					throw new Exception("No SpParameterAttribute was found.");
+				}
+			}
+
+			return parameters;
 		}
 
 		// getting
@@ -44,11 +70,7 @@ namespace KiteFlightsDAL.DAOs
 
 				parameters.Add("_id", id);
 
-
-
 				var spResult = SpExecuteReader($"sp_{TableName}_get_by_id", parameters);
-
-
 
 				// check if any records were found
 				if (spResult.Count > 0)
@@ -78,38 +100,70 @@ namespace KiteFlightsDAL.DAOs
 		{
 			var newId = -1;
 
+			var parameters = GetSpParameters(entity);
 
-
-
-			dynamic parameters = new ExpandoObject();
-			var paramsDict = (IDictionary<string, object>)parameters;
-
-			
-			//paramsDict.Add("_id", id);
-			//paramsDict.Add("_id", id);
-
-
-
+			// removes Id because sp_{TableName}_add() doesn't have an _id parameter
+			parameters.Remove("_id");
 
 			var spResult = SpExecuteScalar($"sp_{TableName}_add", parameters);
 
 			newId = spResult != null ? (int)spResult : newId;
 
 			return newId;
-
-			throw new NotImplementedException();
 		}
 
 		// updating
 		public bool Update(TEntity entity)
 		{
-			throw new NotImplementedException();
+			bool updated = false;
+
+			try
+			{
+				var parameters = GetSpParameters(entity);
+
+				var spResult = SpExecuteScalar($"sp_{TableName}_update", parameters);
+
+				updated = spResult != null ? (bool)spResult : updated;
+
+				if (!updated)
+				{
+					throw new ArgumentException("No record that matched the entity's Id was found.");
+				}
+			}
+			catch (Exception ex)
+			{
+				// todo: add logging
+			}
+
+			return updated;
 		}
 
 		// removing
 		public bool Remove(TEntity entity)
 		{
-			throw new NotImplementedException();
+			bool removed = false;
+
+			try
+			{
+				var parameters = new Dictionary<string, object>();
+
+				parameters.Add("_id", entity.GetType().GetProperty("Id").GetValue(entity));
+
+				var spResult = SpExecuteScalar($"sp_{TableName}_remove", parameters);
+
+				removed = spResult != null ? (bool)spResult : removed;
+
+				if (!removed)
+				{
+					throw new ArgumentException("No record that matched the entity's Id was found.");
+				}
+			}
+			catch (Exception ex)
+			{
+				// todo: add logging
+			}
+
+			return removed;
 		}
 
 	}
