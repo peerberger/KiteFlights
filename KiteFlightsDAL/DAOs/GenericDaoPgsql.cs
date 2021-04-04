@@ -1,4 +1,6 @@
 ﻿using KiteFlightsDAL.HelperClasses.ExtensionMethods;
+using KiteFlightsDAL.POCOs;
+using KiteFlightsDAL.POCOs.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,11 +11,26 @@ using System.Threading.Tasks;
 
 namespace KiteFlightsDAL.DAOs
 {
-	public class GenericDaoPgsql<TEntity> : BaseDaoPgsql<TEntity> where TEntity : new()
+	public class GenericDaoPgsql<TEntity> : BaseDaoPgsql<TEntity>, ICrudDao<TEntity> where TEntity : IPoco, new()
 	{
+		protected string TableName { get; set; }
+
+		// todo: make all possible members static??
 		public GenericDaoPgsql(string connectionString) : base(connectionString)
 		{
+			TableName = GetTableName();
+		}
 
+		private static string GetTableName()
+		{
+			if (typeof(TEntity).TryGetAttributeValue((TableAttribute tableAttribute) => tableAttribute.Name, out string tableAttributeName))
+			{
+				return tableAttributeName;
+			}
+			else
+			{
+				throw new Exception("No table name was found.");
+			}
 		}
 
 		// getting
@@ -23,29 +40,15 @@ namespace KiteFlightsDAL.DAOs
 
 			try
 			{
-				string tableName;
-
-				if (typeof(TEntity).TryGetAttributeValue((TableAttribute tableAttribute) => tableAttribute.Name, out string tableAttributeName))
-				{
-					tableName = tableAttributeName;
-				}
-				else
-				{
-					throw new Exception("No table name was found.");
-				}
-
-
-
-
 				dynamic parameters = new ExpandoObject();
 				var paramsDict =  (IDictionary<string, object>)parameters;
 
 				paramsDict.Add("_id", id);
 
-				var spResult = SpExecuteReader($"sp_{tableName}_get_by_id", parameters) as List<TEntity>;
-
 				
 
+
+				var spResult = SpExecuteReader($"sp_{TableName}_get_by_id", parameters) as List<TEntity>;
 
 
 
@@ -69,12 +72,33 @@ namespace KiteFlightsDAL.DAOs
 
 		public IList<TEntity> GetAll()
 		{
-			throw new NotImplementedException();
+			return SpExecuteReader($"sp_{TableName}_get_all");
 		}
 
 		// adding
 		public int Add(TEntity entity)
 		{
+			var newId = -1;
+
+
+
+
+			dynamic parameters = new ExpandoObject();
+			var paramsDict = (IDictionary<string, object>)parameters;
+
+			
+			//paramsDict.Add("_id", id);
+			//paramsDict.Add("_id", id);
+
+
+
+
+			var spResult = SpExecuteScalar($"sp_{TableName}_add", parameters);
+
+			newId = spResult != null ? (int)spResult : newId;
+
+			return newId;
+
 			throw new NotImplementedException();
 		}
 

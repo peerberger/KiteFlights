@@ -1,4 +1,5 @@
-﻿using KiteFlightsDAL.DAOs.CountryDao;
+﻿using KiteFlightsDAL.DAOs;
+using KiteFlightsDAL.DAOs.CountryDao;
 using KiteFlightsDAL.DAOs.UserDao;
 using KiteFlightsDAL.POCOs;
 using log4net;
@@ -22,6 +23,24 @@ namespace ConsoleApp
 			string connectionString = @"Host=localhost;Username=postgres;Password=admin;Database=kite_flights_db;";
 
 			logger.Info("lalala");
+
+			using (var dao = new GenericDaoPgsql<Country>(connectionString))
+			{
+				Country country = dao.GetById(4);
+
+				IList<Country> countries = dao.GetAll();
+			
+				var id = dao.Add(new Country { Name = "lala" });
+			}
+
+			using (var dao = new GenericDaoPgsql<User>(connectionString))
+			{
+				User user = dao.GetById(3);
+
+				IList<User> users = dao.GetAll();
+
+			}
+
 
 			using (var dao = new CountryDaoPgsql(connectionString))
 			{

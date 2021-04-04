@@ -18,6 +18,7 @@ namespace KiteFlightsDAL.DAOs
 		// just drop the static from: _connection, Sp(), SpExecuteReader(), and SpExecuteScalar()
 		protected static NpgsqlConnection _connection;
 
+		// todo: maybe make the ctor static somehow?? only static ctors must be parameterless
 		public BaseDaoPgsql(string connectionString)
 		{
 			//todo: maybe reorganize the testing better? with exception? idk if there is actually something to improve
