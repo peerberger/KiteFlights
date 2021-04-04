@@ -34,7 +34,7 @@ namespace KiteFlightsDAL.DAOs
 
 		#region main logic
 		// general logic
-		private static object Sp(Func<NpgsqlCommand, object> ExecuteCommand, string spName, object parameters = null)
+		private static object Sp(Func<NpgsqlCommand, object> ExecuteCommand, string spName, Dictionary<string, object> parameters = null)
 		{
 			object result = null;
 
@@ -66,22 +66,9 @@ namespace KiteFlightsDAL.DAOs
 			return result;
 		}
 
-		private static NpgsqlParameter[] GetNpgsqlParameters(object parameters)
+		private static NpgsqlParameter[] GetNpgsqlParameters(Dictionary<string, object> parameters)
 		{
-			List<NpgsqlParameter> result = new List<NpgsqlParameter>();
-
-			//foreach (var prop in parameters.GetType().GetProperties())
-			//{
-			//	result.Add(new NpgsqlParameter(prop.Name, prop.GetValue(parameters)));
-			//	//result.Add(new NpgsqlParameter(null, prop.GetValue(parameters)));
-			//}
-
-			foreach (var prop in (IDictionary<String, Object>)parameters)
-			{
-				result.Add(new NpgsqlParameter(prop.Key, prop.Value));
-			}
-
-			return result.ToArray();
+			return parameters.Select(kvp => new NpgsqlParameter(kvp.Key, kvp.Value)).ToArray();
 		}
 
 		private static TEntity GenerateEntity(NpgsqlDataReader reader)
@@ -140,14 +127,14 @@ namespace KiteFlightsDAL.DAOs
 
 		#region helper methods
 		// encapsulations for sp()
-		protected static List<TEntity> SpExecuteReader(string spName, object parameters = null)
+		protected static List<TEntity> SpExecuteReader(string spName, Dictionary<string, object> parameters = null)
 		{
 			return Sp(ExecuteReader, spName, parameters) as List<TEntity>;
 		}
 
 		protected static object SpExecuteScalar(string spName, object parameters = null)
 		{
-			return Sp(ExecuteScalar, spName, parameters);
+			return Sp(ExecuteScalar, spName, (Dictionary<string,object>)parameters);
 		}
 
 		// test methods

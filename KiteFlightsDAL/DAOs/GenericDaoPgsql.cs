@@ -40,15 +40,13 @@ namespace KiteFlightsDAL.DAOs
 
 			try
 			{
-				dynamic parameters = new ExpandoObject();
-				var paramsDict =  (IDictionary<string, object>)parameters;
+				var parameters = new Dictionary<string, object>();
 
-				paramsDict.Add("_id", id);
-
-				
+				parameters.Add("_id", id);
 
 
-				var spResult = SpExecuteReader($"sp_{TableName}_get_by_id", parameters) as List<TEntity>;
+
+				var spResult = SpExecuteReader($"sp_{TableName}_get_by_id", parameters);
 
 
 

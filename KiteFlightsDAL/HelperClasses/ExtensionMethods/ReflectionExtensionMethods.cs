@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KiteFlightsDAL.HelperClasses.ExtensionMethods
 {
-	// when writing the xml doc comment, copy and paste in oneNote
+	// todo: when writing the xml doc comment, copy and paste in oneNote
 	public static class ReflectionExtensionMethods
 	{
 		public static bool TryGetAttributeValue<TAttribute, TValue>(
