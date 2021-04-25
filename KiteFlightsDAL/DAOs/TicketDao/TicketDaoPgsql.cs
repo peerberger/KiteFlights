@@ -7,35 +7,10 @@ using System.Threading.Tasks;
 
 namespace KiteFlightsDAL.DAOs.TicketDao
 {
-	public class TicketDaoPgsql : ITicketDao
+	public class TicketDaoPgsql : GenericDaoPgsql<Ticket>, ITicketDao
 	{
-		// getting
-		public Ticket GetById(int id)
+		public TicketDaoPgsql(string connectionString) : base(connectionString)
 		{
-			throw new NotImplementedException();
-		}
-
-		public IList<Ticket> GetAll()
-		{
-			throw new NotImplementedException();
-		}
-
-		// adding
-		public int Add(Ticket entity)
-		{
-			throw new NotImplementedException();
-		}
-
-		// updating
-		public bool Update(Ticket entity)
-		{
-			throw new NotImplementedException();
-		}
-
-		// removing
-		public bool Remove(Ticket entity)
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

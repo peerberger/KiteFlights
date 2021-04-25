@@ -13,8 +13,6 @@ namespace KiteFlightsDAL.DAOs.CountryDao
 {
 	public class CountryDaoPgsql : GenericDaoPgsql<Country>, ICountryDao
 	{
-		private static readonly ILog logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
 		public CountryDaoPgsql(string connectionString) : base(connectionString)
 		{
 		}

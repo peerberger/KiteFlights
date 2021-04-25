@@ -15,7 +15,6 @@ namespace KiteFlightsDAL.DAOs
 	{
 		protected string TableName { get; set; }
 
-		// todo: make all possible members static??
 		public GenericDaoPgsql(string connectionString) : base(connectionString)
 		{
 			try
