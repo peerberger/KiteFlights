@@ -1,15 +1,26 @@
-﻿using KiteFlightsDAL.POCOs.Interfaces;
+﻿using KiteFlightsDAL.HelperClasses.CustomAttributes;
+using KiteFlightsDAL.POCOs.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KiteFlightsDAL.POCOs
 {
+	[Table("airlines")]
 	public class Airline : IPoco, IUser, IEquatable<Airline>
 	{
 		#region Properties
+		[Column("id")]
+		[SpParameter("_id")]
 		public long Id { get; set; }
+		[Column("name")]
+		[SpParameter("_name")]
 		public string Name { get; set; }
+		[Column("country")]
+		[SpParameter("_country")]
 		public Country Country { get; set; }
+		[Column("user")]
+		[SpParameter("_user")]
 		public User User { get; set; }
 		#endregion
 

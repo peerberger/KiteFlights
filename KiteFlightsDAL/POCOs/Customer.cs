@@ -1,18 +1,35 @@
-﻿using KiteFlightsDAL.POCOs.Interfaces;
+﻿using KiteFlightsDAL.HelperClasses.CustomAttributes;
+using KiteFlightsDAL.POCOs.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KiteFlightsDAL.POCOs
 {
+	[Table("customers")]
 	public class Customer : IPoco, IUser, IEquatable<Customer>
 	{
 		#region Properties
-		public long Id { get; set; }
+		[Column("id")]
+		[SpParameter("_id")]
+		public int Id { get; set; }
+		[Column("first_name")]
+		[SpParameter("_first_name")]
 		public string FirstName { get; set; }
+		[Column("last_name")]
+		[SpParameter("_last_name")]
 		public string LastName { get; set; }
+		[Column("address")]
+		[SpParameter("_address")]
 		public string Address { get; set; }
+		[Column("phone_no")]
+		[SpParameter("_phone_no")]
 		public string PhoneNo { get; set; }
+		[Column("credit_card_no")]
+		[SpParameter("_credit_card_no")]
 		public string CreditCardNo { get; set; }
+		[Column("user")]
+		[SpParameter("_user")]
 		public User User { get; set; }
 		#endregion
 

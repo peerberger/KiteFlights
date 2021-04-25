@@ -1,19 +1,32 @@
-﻿using KiteFlightsDAL.POCOs.Interfaces;
+﻿using KiteFlightsDAL.HelperClasses.CustomAttributes;
+using KiteFlightsDAL.POCOs.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace KiteFlightsDAL.POCOs
 {
+	[Table("admins")]
 	public class Admin : IPoco, IUser, IEquatable<Admin>
 	{
 		#region Properties
+		[Column("id")]
+		[SpParameter("_id")]
 		public int Id { get; set; }
+		[Column("first_name")]
+		[SpParameter("_first_name")]
 		public string FirstName { get; set; }
+		[Column("last_name")]
+		[SpParameter("_last_name")]
 		public string LastName { get; set; }
+		[Column("level")]
+		[SpParameter("_level")]
 		public int Level { get; set; }
+		[Column("user")]
+		[SpParameter("_user")]
 		public User User { get; set; }
 		#endregion
 
