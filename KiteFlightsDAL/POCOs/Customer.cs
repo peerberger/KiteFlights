@@ -1,9 +1,11 @@
 ﻿using KiteFlightsDAL.POCOs.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KiteFlightsDAL.POCOs
 {
+	[Table("customers")]
 	public class Customer : IPoco, IUser, IEquatable<Customer>
 	{
 		#region Properties
@@ -41,7 +43,7 @@ namespace KiteFlightsDAL.POCOs
 
 		public bool Equals(Customer other)
 		{
-			return other != null &&
+			var result = other != null &&
 				   Id == other.Id &&
 				   FirstName == other.FirstName &&
 				   LastName == other.LastName &&
@@ -49,6 +51,8 @@ namespace KiteFlightsDAL.POCOs
 				   PhoneNo == other.PhoneNo &&
 				   CreditCardNo == other.CreditCardNo &&
 				   EqualityComparer<User>.Default.Equals(User, other.User);
+
+			return result;
 		}
 
 		public override int GetHashCode()

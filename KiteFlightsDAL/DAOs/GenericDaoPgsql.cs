@@ -69,7 +69,7 @@ namespace KiteFlightsDAL.DAOs
 
 				parameters.Add("_id", id);
 
-				var spResult = SpExecuteReader($"sp_{TableName}_get_by_id", parameters);
+				var spResult = SpExecuteReader($"sp_{TableName}_get_by_id2", parameters);
 
 				// check if any records were found
 				if (spResult.Count > 0)
@@ -91,7 +91,7 @@ namespace KiteFlightsDAL.DAOs
 
 		public IList<TEntity> GetAll()
 		{
-			return SpExecuteReader($"sp_{TableName}_get_all");
+			return SpExecuteReader($"sp_{TableName}_get_all2");
 		}
 
 		// adding

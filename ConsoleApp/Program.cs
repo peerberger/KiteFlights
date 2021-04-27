@@ -1,34 +1,82 @@
 ﻿using KiteFlightsDAL.DAOs;
+using KiteFlightsDAL.DAOs.AdminDao;
+using KiteFlightsDAL.DAOs.AirlineDao;
 using KiteFlightsDAL.DAOs.CountryDao;
+using KiteFlightsDAL.DAOs.CustomerDao;
+using KiteFlightsDAL.DAOs.FlightDao;
+using KiteFlightsDAL.DAOs.TicketDao;
 using KiteFlightsDAL.DAOs.UserDao;
+using KiteFlightsDAL.HelperClasses;
 using KiteFlightsDAL.POCOs;
 using log4net;
 using log4net.Config;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ConsoleApp
 {
 	class Program
 	{
 		private static readonly ILog logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		private static ManualResetEvent gate = new ManualResetEvent(false);
+
+		//public static void Foo(NpgsqlConnectionPool pool)
+		//{
+		//	gate.WaitOne();
+
+
+		//	var connection = pool.GetConnection();
+		//	Thread.Sleep(5000);
+		//	pool.ReturnConnection(connection);
+
+		//	var name = Thread.CurrentThread.Name;
+
+		//	if (name=="Thread_150")
+		//	{
+		//		//Thread.Sleep(5000);
+		//		//pool.RestartPool();
+
+		//		//pool.ReturnConnection(new NpgsqlConnection(@"Host=localhost;Username=postgres;Password=admin;Database=kite_flights_db;"));
+		//	}
+
+		//	Console.WriteLine($"{name} ended");
+		//}
 
 		static void Main(string[] args)
 		{
-			var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
-			XmlConfigurator.Configure(logRepository, new FileInfo("Log4Net.config"));
+			#region connection pool
+			//var pool = NpgsqlConnectionPool.Instance;
+
+			//for (int i = 0; i < 200; i++)
+			//{
+			//	Thread thread = new Thread(() => Foo(pool));
+			//	thread.Name = "Thread_" + i;
+			//	thread.Start();
+			//}
+
+			//gate.Set();
+			////Thread.Sleep(5000);
+			////Console.WriteLine("***********************");
+			#endregion
+
+			//var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+			//XmlConfigurator.Configure(logRepository, new FileInfo("Log4Net.config"));
 
 			string connectionString = @"Host=localhost;Username=postgres;Password=admin;Database=kite_flights_db;";
 
-			logger.Info("lalala");
+			//logger.Info("lalala");
 
 			using (var dao = new CountryDaoPgsql(connectionString))
 			{
-				Country country = dao.GetById(4);
+				var country = dao.GetById(4);
 
-				IList<Country> countries = dao.GetAll();
+				var countries = dao.GetAll();
 
 				//var id = dao.Add(new Country { Name = "lala" });
 
@@ -39,15 +87,50 @@ namespace ConsoleApp
 
 			using (var dao = new UserDaoPgsql(connectionString))
 			{
-				User user = dao.GetById(3);
+				var user = dao.GetById(3);
 
-				IList<User> users = dao.GetAll();
+				var users = dao.GetAll();
 
 				//var id = dao.Add(new User { Username = "gaga", Password = "gaga", Email = "gaga", UserRole = 1 });
 
 				var updated = dao.Update(new User { Id = 6, Username = "lala", Password = "lala", Email = "lala", UserRole = 1 });
 
 				var removed = dao.Remove(new User { Id = 11 });
+			}
+
+			using (var dao = new AdminDaoPgsql(connectionString))
+			{
+				var admins = dao.GetAll();
+
+				var admin = dao.GetById(3);
+			}
+
+			using (var dao = new CustomerDaoPgsql(connectionString))
+			{
+				var customers = dao.GetAll();
+
+				var customer = dao.GetById(2);
+			}
+
+			using (var dao = new AirlineDaoPgsql(connectionString))
+			{
+				var airlines = dao.GetAll();
+
+				var airline = dao.GetById(2);
+			}
+
+			using (var dao = new FlightDaoPgsql(connectionString))
+			{
+				var flights = dao.GetAll();
+
+				var flight = dao.GetById(2);
+			}
+
+			using (var dao = new TicketDaoPgsql(connectionString))
+			{
+				var tickets = dao.GetAll();
+
+				var ticket = dao.GetById(2);
 			}
 		}
 	}

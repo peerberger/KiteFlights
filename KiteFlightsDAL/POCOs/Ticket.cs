@@ -1,12 +1,14 @@
 ﻿using KiteFlightsDAL.POCOs.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace KiteFlightsDAL.POCOs
 {
+	[Table("tickets")]
 	public class Ticket : IPoco, IEquatable<Ticket>
 	{
 		#region Properties
@@ -36,10 +38,12 @@ namespace KiteFlightsDAL.POCOs
 
 		public bool Equals(Ticket other)
 		{
-			return other != null &&
+			var result = other != null &&
 				   Id == other.Id &&
 				   EqualityComparer<Flight>.Default.Equals(Flight, other.Flight) &&
 				   EqualityComparer<Customer>.Default.Equals(Customer, other.Customer);
+
+			return result;
 		}
 
 		public override int GetHashCode()

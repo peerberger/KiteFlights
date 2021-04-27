@@ -13,10 +13,10 @@ namespace KiteFlightsDAL.POCOs
 	public class Country : IPoco, IEquatable<Country>
 	{
 		#region Properties
-		[Column("id")]
+		//[Column("id")]
 		[SpParameter("_id")]
 		public int Id { get; set; }
-		[Column("name")]
+		//[Column("name")]
 		[SpParameter("_name")]
 		public string Name { get; set; }
 		#endregion
@@ -41,9 +41,11 @@ namespace KiteFlightsDAL.POCOs
 
 		public bool Equals(Country other)
 		{
-			return other != null &&
+			var result =  other != null &&
 				   Id == other.Id &&
 				   Name == other.Name;
+
+			return result;
 		}
 
 		public override int GetHashCode()

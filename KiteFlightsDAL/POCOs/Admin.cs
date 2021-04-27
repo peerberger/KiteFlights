@@ -1,12 +1,14 @@
 ﻿using KiteFlightsDAL.POCOs.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace KiteFlightsDAL.POCOs
 {
+	[Table("admins")]
 	public class Admin : IPoco, IUser, IEquatable<Admin>
 	{
 		#region Properties
@@ -40,12 +42,14 @@ namespace KiteFlightsDAL.POCOs
 
 		public bool Equals(Admin other)
 		{
-			return other != null &&
+			var result = other != null &&
 				   Id == other.Id &&
 				   FirstName == other.FirstName &&
 				   LastName == other.LastName &&
 				   Level == other.Level &&
 				   EqualityComparer<User>.Default.Equals(User, other.User);
+
+			return result;
 		}
 
 		public override int GetHashCode()

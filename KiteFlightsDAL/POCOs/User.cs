@@ -11,19 +11,19 @@ namespace KiteFlightsDAL.POCOs
 	public class User : IPoco, IEquatable<User>
 	{
 		#region Properties
-		[Column("id")]
+		//[Column("id")]
 		[SpParameter("_id")]
 		public long Id { get; set; }
-		[Column("username")]
+		//[Column("username")]
 		[SpParameter("_username")]
 		public string Username { get; set; }
-		[Column("password")]
+		//[Column("password")]
 		[SpParameter("_password")]
 		public string Password { get; set; }
-		[Column("email")]
+		//[Column("email")]
 		[SpParameter("_email")]
 		public string Email { get; set; }
-		[Column("user_role")]
+		//[Column("user_role")]
 		[SpParameter("_user_role")]
 		public int UserRole { get; set; }
 		#endregion
@@ -51,12 +51,14 @@ namespace KiteFlightsDAL.POCOs
 
 		public bool Equals(User other)
 		{
-			return other != null &&
+			var result = other != null &&
 				   Id == other.Id &&
 				   Username == other.Username &&
 				   Password == other.Password &&
 				   Email == other.Email &&
 				   UserRole == other.UserRole;
+
+			return result;
 		}
 
 		public override int GetHashCode()

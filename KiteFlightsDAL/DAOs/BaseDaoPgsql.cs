@@ -19,8 +19,10 @@ namespace KiteFlightsDAL.DAOs
 		// if you want a DAO that connects to a different db but still inherit from this class,
 		// just drop the static from: _connection, Sp(), SpExecuteReader(), and SpExecuteScalar()
 		protected static NpgsqlConnection _connection;
+		private static readonly object key = new object();
+		private static int i = 0;
 
-		// todo: maybe make the ctor static somehow?? only static ctors must be parameterless
+		// todo: maybe make the ctor static somehow?? its just that static ctors must be parameterless
 		public BaseDaoPgsql(string connectionString)
 		{
 			//todo: maybe reorganize the testing better? with exception? idk if there is actually something to improve
@@ -73,85 +75,43 @@ namespace KiteFlightsDAL.DAOs
 			return parameters.Select(kvp => new NpgsqlParameter(kvp.Key, kvp.Value)).ToArray();
 		}
 
-		// todo: maybe you can improve the 'i' thing - make it simpler to go through the columns by ordinal number
-		//private static Entity GenerateEntity<Entity>(NpgsqlDataReader reader, ref int i) where Entity : IPoco, new()
-		//{
-		//	Entity entity = new Entity();
-
-		//	foreach (var prop in entity.GetType().GetProperties())
-		//	{
-		//		Type type = prop.PropertyType;
-		//		object value = null;
-
-		//		// If property is a contained POCO,
-		//		// call recursively for GenerateEntity() on it.
-		//		if (typeof(IPoco).IsAssignableFrom(type))
-		//		{
-		//			// call to GenerateEntity<type>(reader, i);
-		//			value = typeof(BaseDaoPgsql<TEntity>)
-		//						.GetMethod(nameof(GenerateEntity), BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance)
-		//						.MakeGenericMethod(type)
-		//						.Invoke(null, new object[] { reader, i });
-		//		}
-		//		else
-		//		{
-		//			value = reader.GetValue(i);
-		//		}
-
-		//		i++;
-
-		//		prop.SetValue(entity, value);
-		//	}
-
-		//	return entity;
-		//}
-
-		// todo: maybe you can improve the 'i' thing - make it simpler to go through the columns by ordinal number
-		private static Entity GenerateEntity<Entity>(NpgsqlDataReader reader, int ordinal = 0) where Entity : IPoco, new()
+		private static Entity GenerateEntity<Entity>(NpgsqlDataReader reader) where Entity : IPoco, new()
 		{
 			Entity entity = new Entity();
-			var props = entity.GetType().GetProperties();
-			var columnOffset = 0;
 
-			for (int i = ordinal; i < props.Length + ordinal; i++)
+			foreach (var prop in entity.GetType().GetProperties())
 			{
-				Type type = props[i - ordinal].PropertyType;
-				object value = null;
+				Type type = prop.PropertyType;
+				object value;
 
 				// If property is a contained POCO,
-				// call recursively for GenerateEntity() on it.
+				// recursively invoke GenerateEntity() upon it.
 				if (typeof(IPoco).IsAssignableFrom(type))
 				{
-					// call to GenerateEntity<type>(reader, i);
-					value = typeof(BaseDaoPgsql<TEntity>)
-								.GetMethod(nameof(GenerateEntity), BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance)
-								.MakeGenericMethod(type)
-								//.Invoke(null, new object[] { reader, i });
-								.Invoke(null, new object[] { reader, i + columnOffset});
-					props[i - ordinal].SetValue(entity, value);
-					columnOffset += value.GetType().GetProperties().Length - 1;
+					value = InvokeGenerateEntity(reader, type);
 				}
 				else
 				{
 					value = reader.GetValue(i);
-					props[i - ordinal].SetValue(entity, value);
+					i++;
 				}
 
-				//props[i - ordinal].SetValue(entity, value);
+				prop.SetValue(entity, value);
 			}
 
 			return entity;
 		}
 
-		//private static Entity GenerateEntity<Entity>(NpgsqlDataReader reader) where Entity : IPoco, new()
-		//{
-		//	Entity entity = new Entity();
+		private static object InvokeGenerateEntity(NpgsqlDataReader reader, Type type)
+		{
+			// all of this is to invoke a generic method with a dynamic type
+			var entity = typeof(BaseDaoPgsql<TEntity>)
+								.GetMethod(nameof(GenerateEntity), BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance)
+								.MakeGenericMethod(type)
+								.Invoke(null, new object[] { reader });
 
-		//	foreach (var prop in entity.GetType().GetProperties())
-		//	{
-
-		//	}
-		//}
+			return entity;
+		}
 
 		// delegates for Sp()
 		private static object ExecuteReader(NpgsqlCommand cmd)
@@ -162,9 +122,13 @@ namespace KiteFlightsDAL.DAOs
 			{
 				while (reader.Read())
 				{
-					//int i = 0;
-					//TEntity entity = GenerateEntity<TEntity>(reader, ref i);
-					TEntity entity = GenerateEntity<TEntity>(reader);
+					TEntity entity;
+					
+					lock (key)
+					{
+						entity = GenerateEntity<TEntity>(reader);
+						i = 0;
+					}
 
 					result.Add(entity);
 				}
