@@ -75,9 +75,9 @@ namespace KiteFlightsDAL.DAOs
 			return parameters.Select(kvp => new NpgsqlParameter(kvp.Key, kvp.Value)).ToArray();
 		}
 
-		private static Entity GenerateEntity<Entity>(NpgsqlDataReader reader) where Entity : IPoco, new()
+		private static PocoEntity GenerateEntity<PocoEntity>(NpgsqlDataReader reader) where PocoEntity : IPoco, new()
 		{
-			Entity entity = new Entity();
+			PocoEntity entity = new PocoEntity();
 
 			foreach (var prop in entity.GetType().GetProperties())
 			{
@@ -102,17 +102,6 @@ namespace KiteFlightsDAL.DAOs
 			return entity;
 		}
 
-		private static object InvokeGenerateEntity(NpgsqlDataReader reader, Type type)
-		{
-			// all of this is to invoke a generic method with a dynamic type
-			var entity = typeof(BaseDaoPgsql<TEntity>)
-								.GetMethod(nameof(GenerateEntity), BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance)
-								.MakeGenericMethod(type)
-								.Invoke(null, new object[] { reader });
-
-			return entity;
-		}
-
 		// delegates for Sp()
 		private static object ExecuteReader(NpgsqlCommand cmd)
 		{
@@ -123,12 +112,8 @@ namespace KiteFlightsDAL.DAOs
 				while (reader.Read())
 				{
 					TEntity entity;
-					
-					lock (key)
-					{
-						entity = GenerateEntity<TEntity>(reader);
-						i = 0;
-					}
+
+					entity = GenerateEntitySafely(reader);
 
 					result.Add(entity);
 				}
@@ -153,6 +138,31 @@ namespace KiteFlightsDAL.DAOs
 		protected static object SpExecuteScalar(string spName, Dictionary<string, object> parameters = null)
 		{
 			return Sp(ExecuteScalar, spName, parameters);
+		}
+
+		// encapsulations for GenerateEntity<PocoEntity>()
+		private static TEntity GenerateEntitySafely(NpgsqlDataReader reader)
+		{
+			TEntity entity;
+
+			lock (key)
+			{
+				entity = GenerateEntity<TEntity>(reader);
+				i = 0;
+			}
+
+			return entity;
+		}
+
+		private static object InvokeGenerateEntity(NpgsqlDataReader reader, Type type)
+		{
+			// all of this is to invoke a generic method with a dynamic type
+			var entity = typeof(BaseDaoPgsql<TEntity>)
+								.GetMethod(nameof(GenerateEntity), BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance)
+								.MakeGenericMethod(type)
+								.Invoke(null, new object[] { reader });
+
+			return entity;
 		}
 
 		// test methods
