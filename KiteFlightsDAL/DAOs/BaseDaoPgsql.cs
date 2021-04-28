@@ -75,6 +75,7 @@ namespace KiteFlightsDAL.DAOs
 			return parameters.Select(kvp => new NpgsqlParameter(kvp.Key, kvp.Value)).ToArray();
 		}
 
+		// this relies on the order of columns in the result from the sp
 		private static PocoEntity GenerateEntity<PocoEntity>(NpgsqlDataReader reader) where PocoEntity : IPoco, new()
 		{
 			PocoEntity entity = new PocoEntity();
@@ -111,9 +112,7 @@ namespace KiteFlightsDAL.DAOs
 			{
 				while (reader.Read())
 				{
-					TEntity entity;
-
-					entity = GenerateEntitySafely(reader);
+					TEntity entity = GenerateEntitySafely(reader);
 
 					result.Add(entity);
 				}
