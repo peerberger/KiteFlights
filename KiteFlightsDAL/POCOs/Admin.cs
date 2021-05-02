@@ -13,10 +13,10 @@ namespace KiteFlightsDAL.POCOs
 	{
 		#region Properties
 		public int Id { get; set; }
-		public string FirstName { get; set; }
-		public string LastName { get; set; }
+		public string FirstName { get; set; } = "";
+		public string LastName { get; set; } = "";
 		public int Level { get; set; }
-		public User User { get; set; }
+		public User User { get; set; } = new User();
 		#endregion
 
 		#region Ctors

@@ -10,9 +10,9 @@ namespace KiteFlightsDAL.POCOs
 	{
 		#region Properties
 		public long Id { get; set; }
-		public Airline Airline { get; set; }
-		public Country OriginCountry { get; set; }
-		public Country DestinationCountry { get; set; }
+		public Airline Airline { get; set; } = new Airline();
+		public Country OriginCountry { get; set; } = new Country();
+		public Country DestinationCountry { get; set; } = new Country();
 		public DateTime DepartureTime { get; set; }
 		public DateTime LandingTime { get; set; }
 		public int RemainingTicketsNo { get; set; }

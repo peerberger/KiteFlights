@@ -10,9 +10,9 @@ namespace KiteFlightsDAL.POCOs
 	{
 		#region Properties
 		public long Id { get; set; }
-		public string Name { get; set; }
-		public Country Country { get; set; }
-		public User User { get; set; }
+		public string Name { get; set; } = "";
+		public Country Country { get; set; } = new Country();
+		public User User { get; set; } = new User();
 		#endregion
 
 		#region Ctors

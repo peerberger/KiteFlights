@@ -13,12 +13,8 @@ namespace KiteFlightsDAL.POCOs
 	public class Country : IPoco, IEquatable<Country>
 	{
 		#region Properties
-		//[Column("id")]
-		[SpParameter("_id")]
 		public int Id { get; set; }
-		//[Column("name")]
-		[SpParameter("_name")]
-		public string Name { get; set; }
+		public string Name { get; set; } = "";
 		#endregion
 
 		#region Ctors

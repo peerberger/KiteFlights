@@ -11,20 +11,10 @@ namespace KiteFlightsDAL.POCOs
 	public class User : IPoco, IEquatable<User>
 	{
 		#region Properties
-		//[Column("id")]
-		[SpParameter("_id")]
 		public long Id { get; set; }
-		//[Column("username")]
-		[SpParameter("_username")]
-		public string Username { get; set; }
-		//[Column("password")]
-		[SpParameter("_password")]
-		public string Password { get; set; }
-		//[Column("email")]
-		[SpParameter("_email")]
-		public string Email { get; set; }
-		//[Column("user_role")]
-		[SpParameter("_user_role")]
+		public string Username { get; set; } = "";
+		public string Password { get; set; } = "";
+		public string Email { get; set; } = "";
 		public int UserRole { get; set; }
 		#endregion
 

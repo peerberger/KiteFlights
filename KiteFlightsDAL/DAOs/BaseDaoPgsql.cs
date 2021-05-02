@@ -38,7 +38,7 @@ namespace KiteFlightsDAL.DAOs
 
 		#region main logic
 		// general logic
-		private static object Sp(Func<NpgsqlCommand, object> ExecuteCommand, string spName, Dictionary<string, object> parameters = null)
+		private static object Sp(Func<NpgsqlCommand, object> ExecuteCommand, string spName, List<object> parameters = null)
 		{
 			object result = null;
 
@@ -70,9 +70,9 @@ namespace KiteFlightsDAL.DAOs
 			return result;
 		}
 
-		private static NpgsqlParameter[] GetNpgsqlParameters(Dictionary<string, object> parameters)
+		private static NpgsqlParameter[] GetNpgsqlParameters(List<object> parameters)
 		{
-			return parameters.Select(kvp => new NpgsqlParameter(kvp.Key, kvp.Value)).ToArray();
+			return parameters.Select(param => new NpgsqlParameter(null, param)).ToArray();
 		}
 
 		// this relies on the order of columns in the result from the sp
@@ -129,12 +129,12 @@ namespace KiteFlightsDAL.DAOs
 
 		#region helper methods
 		// encapsulations for sp()
-		protected static List<TEntity> SpExecuteReader(string spName, Dictionary<string, object> parameters = null)
+		protected static List<TEntity> SpExecuteReader(string spName, List<object> parameters = null)
 		{
 			return Sp(ExecuteReader, spName, parameters) as List<TEntity>;
 		}
 
-		protected static object SpExecuteScalar(string spName, Dictionary<string, object> parameters = null)
+		protected static object SpExecuteScalar(string spName, List<object> parameters = null)
 		{
 			return Sp(ExecuteScalar, spName, parameters);
 		}

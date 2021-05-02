@@ -13,8 +13,8 @@ namespace KiteFlightsDAL.POCOs
 	{
 		#region Properties
 		public long Id { get; set; }
-		public Flight Flight { get; set; }
-		public Customer Customer { get; set; }
+		public Flight Flight { get; set; } = new Flight();
+		public Customer Customer { get; set; } = new Customer();
 		#endregion
 
 		#region Ctors
