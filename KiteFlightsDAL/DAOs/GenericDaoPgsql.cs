@@ -1,5 +1,4 @@
-﻿using KiteFlightsDAL.HelperClasses.CustomAttributes;
-using KiteFlightsDAL.HelperClasses.ExtensionMethods;
+﻿using KiteFlightsDAL.HelperClasses.ExtensionMethods;
 using KiteFlightsDAL.POCOs.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -182,7 +181,7 @@ namespace KiteFlightsDAL.DAOs
 
 				parameters.Add(id);
 
-				var spResult = SpExecuteReader($"sp_{TableName}_get_by_id2", parameters);
+				var spResult = SpExecuteReader($"sp_{TableName}_get_by_id", parameters);
 
 				// check if any records were found
 				if (spResult.Count > 0)
@@ -204,7 +203,7 @@ namespace KiteFlightsDAL.DAOs
 
 		public IList<TEntity> GetAll()
 		{
-			return SpExecuteReader($"sp_{TableName}_get_all2");
+			return SpExecuteReader($"sp_{TableName}_get_all");
 		}
 
 		// adding
@@ -214,7 +213,7 @@ namespace KiteFlightsDAL.DAOs
 
 			var parameters = GetSpParameters(entity);
 
-			var spResult = SpExecuteScalar($"sp_{TableName}_add2", parameters);
+			var spResult = SpExecuteScalar($"sp_{TableName}_add", parameters);
 
 			if (spResult is long)
 			{

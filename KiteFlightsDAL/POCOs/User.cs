@@ -1,5 +1,4 @@
-﻿using KiteFlightsDAL.HelperClasses.CustomAttributes;
-using KiteFlightsDAL.POCOs.Interfaces;
+﻿using KiteFlightsDAL.POCOs.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;

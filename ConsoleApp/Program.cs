@@ -78,11 +78,11 @@ namespace ConsoleApp
 
 			//	var countries = dao.GetAll();
 
-			//	var id = dao.Add(new Country { Name = "lala" } );
+			//	//var id = dao.Add(new Country { Name = "lala" });
 
-			//	//var updated = dao.Update(new Country { Id = 13, Name = "UK" });
+			//	var updated = dao.Update(new Country { Id = 13, Name = "UK" });
 
-			//	//var removed = dao.Remove(new Country { Id = 60 });
+			//	var removed = dao.Remove(new Country { Id = 68 });
 			//}
 
 			//using (var dao = new UserDaoPgsql(connectionString))
@@ -91,11 +91,11 @@ namespace ConsoleApp
 
 			//	var users = dao.GetAll();
 
-			//	var id = dao.Add(new User { Username = "gaga", Password = "gaga1", Email = "ga@ga", UserRole = 1 });
+			//	//var id = dao.Add(new User { Username = "gaga", Password = "gaga1", Email = "ga@ga", UserRole = 1 });
 
-			//	//var updated = dao.Update(new User { Id = 6, Username = "lala", Password = "lala", Email = "lala", UserRole = 1 });
+			//	var updated = dao.Update(new User { Id = 31, Username = "gaga", Password = "gaga1", Email = "ga@ga", UserRole = 1 });
 
-			//	//var removed = dao.Remove(new User { Id = 11 });
+			//	var removed = dao.Remove(new User { Id = 6 });
 			//}
 
 			//using (var dao = new AdminDaoPgsql(connectionString))
@@ -104,7 +104,11 @@ namespace ConsoleApp
 
 			//	var admin = dao.GetById(3);
 
-			//	var id = dao.Add(new Admin { FirstName = "bill", LastName = "gaits", Level = 1, User = new User { Username = "billy", Password = "gaits1", Email = "bill@ms", UserRole = 3 } });
+			//	//var id = dao.Add(new Admin { FirstName = "bill", LastName = "gaits", Level = 1, User = new User { Username = "billy", Password = "gaits1", Email = "bill@ms", UserRole = 3 } });
+
+			//	var updated = dao.Update(new Admin { Id = 9, FirstName = "fill", LastName = "gaits", Level = 1, User = new User { Id = 32, Username = "billy", Password = "gaits1", Email = "bill@ms", UserRole = 3 } });
+
+			//	var removed = dao.Remove(new Admin { Id = 13 });
 			//}
 
 			//using (var dao = new CustomerDaoPgsql(connectionString))
@@ -113,7 +117,11 @@ namespace ConsoleApp
 
 			//	var customer = dao.GetById(2);
 
-			//	var id = dao.Add(new Customer { FirstName = "pepper", LastName = "berger", Address = "pepe st.", PhoneNo = "13", CreditCardNo = "1313", User = new User { Username = "pepe", Password = "pepe1", Email = "pe@pe", UserRole = 1 } });
+			//	//var id = dao.Add(new Customer { FirstName = "pepper", LastName = "berger", Address = "pepe st.", PhoneNo = "13", CreditCardNo = "1313", User = new User { Username = "pepe", Password = "pepe1", Email = "pe@pe", UserRole = 1 } });
+
+			//	var updated = dao.Update(new Customer { Id = 5, FirstName = "pwepper", LastName = "berger", Address = "pepe st.", PhoneNo = "13", CreditCardNo = "1313", User = new User { Id = 34, Username = "pepe", Password = "pepe1", Email = "pe@pe", UserRole = 1 } });
+
+			//	var removed = dao.Remove(new Customer { Id = 7 });
 			//}
 
 			//using (var dao = new AirlineDaoPgsql(connectionString))
@@ -122,7 +130,11 @@ namespace ConsoleApp
 
 			//	var airline = dao.GetById(2);
 
-			//	var id = dao.Add(new Airline { Name = "delta", Country = new Country { Id = 4 }, User = new User { Username = "delta", Password = "delta1", Email = "del@ta", UserRole = 2 } });
+			//	//var id = dao.Add(new Airline { Name = "delta", Country = new Country { Id = 4 }, User = new User { Username = "delta", Password = "delta1", Email = "del@ta", UserRole = 2 } });
+
+			//	var updated = dao.Update(new Airline { Id = 8, Name = "del ta", Country = new Country { Id = 4 }, User = new User { Id = 36, Username = "delta", Password = "delta1", Email = "del@ta", UserRole = 2 } });
+
+			//	var removed = dao.Remove(new Airline { Id = 10 });
 			//}
 
 			//using (var dao = new FlightDaoPgsql(connectionString))
@@ -131,15 +143,28 @@ namespace ConsoleApp
 
 			//	var flight = dao.GetById(2);
 
-			//	var id = dao.Add(new Flight
+			//	//var id = dao.Add(new Flight
+			//	//{
+			//	//	Airline = new Airline { Id = 2 },
+			//	//	OriginCountry = new Country { Id = 1, },
+			//	//	DestinationCountry = new Country { Id = 4, },
+			//	//	DepartureTime = new DateTime(2021, 3, 10, 16, 34, 39, 941),
+			//	//	LandingTime = new DateTime(2021, 3, 10, 16, 34, 39, 941),
+			//	//	RemainingTicketsNo = 30
+			//	//});
+
+			//	var updated = dao.Update(new Flight
 			//	{
+			//		Id = 5,
 			//		Airline = new Airline { Id = 2 },
 			//		OriginCountry = new Country { Id = 1, },
-			//		DestinationCountry = new Country { Id = 4, },
+			//		DestinationCountry = new Country { Id = 13, },
 			//		DepartureTime = new DateTime(2021, 3, 10, 16, 34, 39, 941),
 			//		LandingTime = new DateTime(2021, 3, 10, 16, 34, 39, 941),
 			//		RemainingTicketsNo = 30
 			//	});
+
+			//	var removed = dao.Remove(new Flight { Id = 7 });
 			//}
 
 			using (var dao = new TicketDaoPgsql(connectionString))
@@ -148,7 +173,11 @@ namespace ConsoleApp
 
 				var ticket = dao.GetById(2);
 
-				var id = dao.Add(new Ticket { Flight = new Flight { Id = 4 }, Customer = new Customer { Id = 5 } });
+				//var id = dao.Add(new Ticket { Flight = new Flight { Id = 4 }, Customer = new Customer { Id = 5 } });
+
+				var updated = dao.Update(new Ticket { Id = 3, Flight = new Flight { Id = 6 }, Customer = new Customer { Id = 5 } });
+
+				var removed = dao.Remove(new Ticket { Id = 4 });
 			}
 		}
 	}
