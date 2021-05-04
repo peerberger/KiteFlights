@@ -133,6 +133,31 @@ namespace KiteFlightsDAL.DAOs
 		{
 			return Sp(ExecuteReader, spName, parameters) as List<TEntity>;
 		}
+		protected static TEntity SpExecuteReaderReturningSingleRecord(string spName, List<object> parameters = null)
+		{
+			TEntity entity = default;
+
+			try
+			{
+				var spResult = SpExecuteReader(spName, parameters);
+
+				// check if any records were found
+				if (spResult.Count > 0)
+				{
+					entity = spResult.First();
+				}
+				else
+				{
+					throw new Exception("No record was returned.");
+				}
+			}
+			catch (Exception ex)
+			{
+				// todo: add logging
+			}
+
+			return entity;
+		}
 
 		protected static object SpExecuteScalar(string spName, List<object> parameters = null)
 		{

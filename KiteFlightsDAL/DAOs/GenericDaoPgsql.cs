@@ -173,32 +173,9 @@ namespace KiteFlightsDAL.DAOs
 		// getting
 		public TEntity GetById(int id)
 		{
-			TEntity entity = default;
+			var parameters = new List<object> { id };
 
-			try
-			{
-				var parameters = new List<object>();
-
-				parameters.Add(id);
-
-				var spResult = SpExecuteReader($"sp_{TableName}_get_by_id", parameters);
-
-				// check if any records were found
-				if (spResult.Count > 0)
-				{
-					entity = spResult.First();
-				}
-				else
-				{
-					throw new ArgumentException("No record that matched the Id was found.");
-				}
-			}
-			catch (Exception ex)
-			{
-				// todo: add logging
-			}
-
-			return entity;
+			return SpExecuteReaderReturningSingleRecord($"sp_{TableName}_get_by_id", parameters);
 		}
 
 		public IList<TEntity> GetAll()
