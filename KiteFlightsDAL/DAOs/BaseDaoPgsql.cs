@@ -131,24 +131,16 @@ namespace KiteFlightsDAL.DAOs
 		// encapsulations for sp()
 		protected static List<TEntity> SpExecuteReader(string spName, List<object> parameters = null)
 		{
-			return Sp(ExecuteReader, spName, parameters) as List<TEntity>;
-		}
-		protected static TEntity SpExecuteReaderReturningSingleRecord(string spName, List<object> parameters = null)
-		{
-			TEntity entity = default;
+			List<TEntity> spResult = null;
 
 			try
 			{
-				var spResult = SpExecuteReader(spName, parameters);
+				spResult = Sp(ExecuteReader, spName, parameters) as List<TEntity>;
 
 				// check if any records were found
-				if (spResult.Count > 0)
+				if (spResult.Count < 1)
 				{
-					entity = spResult.First();
-				}
-				else
-				{
-					throw new Exception("No record was returned.");
+					throw new Exception("No records were returned.");
 				}
 			}
 			catch (Exception ex)
@@ -156,7 +148,11 @@ namespace KiteFlightsDAL.DAOs
 				// todo: add logging
 			}
 
-			return entity;
+			return spResult;
+		}
+		protected static TEntity SpExecuteReaderReturningSingleRecord(string spName, List<object> parameters = null)
+		{
+			return SpExecuteReader(spName, parameters).First();
 		}
 
 		protected static object SpExecuteScalar(string spName, List<object> parameters = null)
