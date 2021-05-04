@@ -111,18 +111,20 @@ namespace ConsoleApp
 			//	var removed = dao.Remove(new Admin { Id = 13 });
 			//}
 
-			//using (var dao = new CustomerDaoPgsql(connectionString))
-			//{
-			//	var customers = dao.GetAll();
+			using (var dao = new CustomerDaoPgsql(connectionString))
+			{
+				var customers = dao.GetAll();
 
-			//	var customer = dao.GetById(2);
+				var customer = dao.GetById(2);
 
-			//	//var id = dao.Add(new Customer { FirstName = "pepper", LastName = "berger", Address = "pepe st.", PhoneNo = "13", CreditCardNo = "1313", User = new User { Username = "pepe", Password = "pepe1", Email = "pe@pe", UserRole = 1 } });
+				//var id = dao.Add(new Customer { FirstName = "pepper", LastName = "berger", Address = "pepe st.", PhoneNo = "13", CreditCardNo = "1313", User = new User { Username = "pepe", Password = "pepe1", Email = "pe@pe", UserRole = 1 } });
 
-			//	var updated = dao.Update(new Customer { Id = 5, FirstName = "pwepper", LastName = "berger", Address = "pepe st.", PhoneNo = "13", CreditCardNo = "1313", User = new User { Id = 34, Username = "pepe", Password = "pepe1", Email = "pe@pe", UserRole = 1 } });
+				var updated = dao.Update(new Customer { Id = 5, FirstName = "pwepper", LastName = "berger", Address = "pepe st.", PhoneNo = "13", CreditCardNo = "1313", User = new User { Id = 34, Username = "pepe", Password = "pepe1", Email = "pe@pe", UserRole = 1 } });
 
-			//	var removed = dao.Remove(new Customer { Id = 7 });
-			//}
+				var removed = dao.Remove(new Customer { Id = 7 });
+
+				var customer2 = dao.GetByUsername("customer1");
+			}
 
 			using (var dao = new AirlineDaoPgsql(connectionString))
 			{

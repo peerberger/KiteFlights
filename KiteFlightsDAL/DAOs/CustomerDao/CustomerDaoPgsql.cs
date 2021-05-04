@@ -12,5 +12,12 @@ namespace KiteFlightsDAL.DAOs.CustomerDao
 		public CustomerDaoPgsql(string connectionString) : base(connectionString)
 		{
 		}
+
+		public Customer GetByUsername(string username)
+		{
+			var parameters = new List<object> { username };
+
+			return SpExecuteReaderReturningSingleRecord($"sp_{TableName}_get_by_username", parameters);
+		}
 	}
 }

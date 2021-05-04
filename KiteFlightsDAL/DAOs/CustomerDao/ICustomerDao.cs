@@ -9,5 +9,6 @@ namespace KiteFlightsDAL.DAOs.CustomerDao
 {
 	public interface ICustomerDao : ICrudDao<Customer>
 	{
+		Customer GetByUsername(string username);
 	}
 }
