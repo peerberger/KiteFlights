@@ -10,5 +10,6 @@ namespace KiteFlightsDAL.DAOs.AirlineDao
 	public interface IAirlineDao : ICrudDao<Airline>
 	{
 		Airline GetByUsername(string username);
+		IList<Airline> GetByCountry(int countryId);
 	}
 }

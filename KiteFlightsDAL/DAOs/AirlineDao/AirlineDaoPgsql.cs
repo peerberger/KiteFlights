@@ -19,5 +19,12 @@ namespace KiteFlightsDAL.DAOs.AirlineDao
 
 			return SpExecuteReaderReturningSingleRecord($"sp_{TableName}_get_by_username", parameters);
 		}
+
+		public IList<Airline> GetByCountry(int countryId)
+		{
+			var parameters = new List<object> { countryId };
+
+			return SpExecuteReader($"sp_{TableName}_get_by_country", parameters);
+		}
 	}
 }

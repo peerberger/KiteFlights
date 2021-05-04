@@ -137,6 +137,8 @@ namespace ConsoleApp
 				var removed = dao.Remove(new Airline { Id = 10 });
 
 				var airline2 = dao.GetByUsername("united");
+
+				var airlines2 = dao.GetByCountry(4);
 			}
 
 			using (var dao = new FlightDaoPgsql(connectionString))
