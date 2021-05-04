@@ -12,5 +12,12 @@ namespace KiteFlightsDAL.DAOs.AirlineDao
 		public AirlineDaoPgsql(string connectionString) : base(connectionString)
 		{
 		}
+
+		public Airline GetByUsername(string username)
+		{
+			var parameters = new List<object> { username };
+
+			return SpExecuteReaderReturningSingleRecord($"sp_{TableName}_get_by_username", parameters);
+		}
 	}
 }
