@@ -229,16 +229,13 @@ namespace KiteFlightsDAL.DAOs
 		}
 
 		// removing
-		// todo: maybe change it so the parameter is the id to avoid the below reflection (to get the id value)
-		public bool Remove(TEntity entity)
+		public bool Remove(int id)
 		{
 			bool removed = false;
 
 			try
 			{
-				var parameters = new List<object>();
-
-				parameters.Add(entity.GetType().GetProperty("Id").GetValue(entity));
+				var parameters = new List<object> { id };
 
 				var spResult = SpExecuteScalar($"sp_{TableName}_remove", parameters);
 

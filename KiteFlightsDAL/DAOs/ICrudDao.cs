@@ -20,6 +20,6 @@ namespace KiteFlightsDAL.DAOs
 		bool Update(TEntity entity);
 
 		// removing
-		bool Remove(TEntity entity);
+		bool Remove(int id);
 	}
 }

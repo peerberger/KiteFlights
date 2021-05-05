@@ -72,44 +72,44 @@ namespace ConsoleApp
 
 			//logger.Info("lalala");
 
-			//using (var dao = new CountryDaoPgsql(connectionString))
-			//{
-			//	var countries = dao.GetAll();
+			using (var dao = new CountryDaoPgsql(connectionString))
+			{
+				var countries = dao.GetAll();
 
-			//	var country = dao.GetById(4);
+				var country = dao.GetById(4);
 
-			//	//var id = dao.Add(new Country { Name = "lala" });
+				//var id = dao.Add(new Country { Name = "lala" });
 
-			//	var updated = dao.Update(new Country { Id = 13, Name = "UK" });
+				var updated = dao.Update(new Country { Id = 13, Name = "UK" });
 
-			//	var removed = dao.Remove(new Country { Id = 68 });
-			//}
+				var removed = dao.Remove(68);
+			}
 
-			//using (var dao = new UserDaoPgsql(connectionString))
-			//{
-			//	var users = dao.GetAll();
+			using (var dao = new UserDaoPgsql(connectionString))
+			{
+				var users = dao.GetAll();
 
-			//	var user = dao.GetById(3);
+				var user = dao.GetById(3);
 
-			//	//var id = dao.Add(new User { Username = "gaga", Password = "gaga1", Email = "ga@ga", UserRole = 1 });
+				//var id = dao.Add(new User { Username = "gaga", Password = "gaga1", Email = "ga@ga", UserRole = 1 });
 
-			//	var updated = dao.Update(new User { Id = 31, Username = "gaga", Password = "gaga1", Email = "ga@ga", UserRole = 1 });
+				var updated = dao.Update(new User { Id = 31, Username = "gaga", Password = "gaga1", Email = "ga@ga", UserRole = 1 });
 
-			//	var removed = dao.Remove(new User { Id = 6 });
-			//}
+				var removed = dao.Remove(6);
+			}
 
-			//using (var dao = new AdminDaoPgsql(connectionString))
-			//{
-			//	var admins = dao.GetAll();
+			using (var dao = new AdminDaoPgsql(connectionString))
+			{
+				var admins = dao.GetAll();
 
-			//	var admin = dao.GetById(3);
+				var admin = dao.GetById(3);
 
-			//	//var id = dao.Add(new Admin { FirstName = "bill", LastName = "gaits", Level = 1, User = new User { Username = "billy", Password = "gaits1", Email = "bill@ms", UserRole = 3 } });
+				//var id = dao.Add(new Admin { FirstName = "bill", LastName = "gaits", Level = 1, User = new User { Username = "billy", Password = "gaits1", Email = "bill@ms", UserRole = 3 } });
 
-			//	var updated = dao.Update(new Admin { Id = 9, FirstName = "fill", LastName = "gaits", Level = 1, User = new User { Id = 32, Username = "billy", Password = "gaits1", Email = "bill@ms", UserRole = 3 } });
+				var updated = dao.Update(new Admin { Id = 9, FirstName = "fill", LastName = "gaits", Level = 1, User = new User { Id = 32, Username = "billy", Password = "gaits1", Email = "bill@ms", UserRole = 3 } });
 
-			//	var removed = dao.Remove(new Admin { Id = 13 });
-			//}
+				var removed = dao.Remove(13);
+			}
 
 			using (var dao = new CustomerDaoPgsql(connectionString))
 			{
@@ -121,7 +121,7 @@ namespace ConsoleApp
 
 				var updated = dao.Update(new Customer { Id = 5, FirstName = "pwepper", LastName = "berger", Address = "pepe st.", PhoneNo = "13", CreditCardNo = "1313", User = new User { Id = 34, Username = "pepe", Password = "pepe1", Email = "pe@pe", UserRole = 1 } });
 
-				var removed = dao.Remove(new Customer { Id = 7 });
+				var removed = dao.Remove(7);
 
 				var customer2 = dao.GetByUsername("customer1");
 			}
@@ -136,7 +136,7 @@ namespace ConsoleApp
 
 				var updated = dao.Update(new Airline { Id = 8, Name = "del ta", Country = new Country { Id = 4 }, User = new User { Id = 36, Username = "delta", Password = "delta1", Email = "del@ta", UserRole = 2 } });
 
-				var removed = dao.Remove(new Airline { Id = 10 });
+				var removed = dao.Remove(10);
 
 				var airline2 = dao.GetByUsername("united");
 
@@ -170,7 +170,19 @@ namespace ConsoleApp
 					RemainingTicketsNo = 30
 				});
 
-				var removed = dao.Remove(new Flight { Id = 7 });
+				var removed = dao.Remove(7);
+
+				var flight2 = dao.GetAllFlightsWithVacancies();
+
+				var flights3 = dao.GetFlightsByOriginCountry(4);
+
+				var flights4 = dao.GetFlightsByDestinationCountry(13);
+
+				var flights5 = dao.GetFlightsByDepatrureTime(new DateTime(2021, 05, 03, 17, 32, 42));
+
+				var flights6 = dao.GetFlightsByLandingTime(new DateTime(2021, 05, 03, 18, 32, 42));
+
+				var flights7 = dao.GetFlightsByCustomer(5);
 			}
 
 			using (var dao = new TicketDaoPgsql(connectionString))
@@ -183,7 +195,7 @@ namespace ConsoleApp
 
 				var updated = dao.Update(new Ticket { Id = 3, Flight = new Flight { Id = 6 }, Customer = new Customer { Id = 5 } });
 
-				var removed = dao.Remove(new Ticket { Id = 4 });
+				var removed = dao.Remove(4);
 			}
 		}
 	}
