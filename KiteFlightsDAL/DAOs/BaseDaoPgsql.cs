@@ -131,7 +131,7 @@ namespace KiteFlightsDAL.DAOs
 		// encapsulations for sp()
 		protected static List<TEntity> SpExecuteReader(string spName, List<object> parameters = null)
 		{
-			List<TEntity> spResult = null;
+			List<TEntity> spResult = default;
 
 			try
 			{
@@ -152,7 +152,9 @@ namespace KiteFlightsDAL.DAOs
 		}
 		protected static TEntity SpExecuteReaderReturningSingleRecord(string spName, List<object> parameters = null)
 		{
-			return SpExecuteReader(spName, parameters).First();
+			var spResult = SpExecuteReader(spName, parameters);
+
+			return spResult != null ? spResult.First() : default(TEntity);
 		}
 
 		protected static object SpExecuteScalar(string spName, List<object> parameters = null)
