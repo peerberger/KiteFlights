@@ -25,7 +25,89 @@ namespace KiteFlightsDAL.DAOs
 				// todo: add logging
 			}
 		}
+	
+		#region crud methods
+		// getting
+		public TEntity GetById(int id)
+		{
+			var parameters = new List<object> { id };
 
+			return SpExecuteReaderReturningSingleRecord($"sp_{TableName}_get_by_id", parameters);
+		}
+
+		public IList<TEntity> GetAll()
+		{
+			return SpExecuteReader($"sp_{TableName}_get_all");
+		}
+
+		// adding
+		public int Add(TEntity entity)
+		{
+			var newId = -1;
+
+			var parameters = GetSpParameters(entity);
+
+			var spResult = SpExecuteScalar($"sp_{TableName}_add", parameters);
+
+			newId = CheckIfSpResultNullAndReturnValue(spResult, -1);
+
+			return newId;
+		}
+
+		// updating
+		public bool Update(TEntity entity)
+		{
+			bool updated = false;
+
+			try
+			{
+				var parameters = GetSpParameters(entity);
+
+				var spResult = SpExecuteScalar($"sp_{TableName}_update", parameters);
+
+				updated = CheckIfSpResultNullAndReturnValue(spResult, false);
+
+				if (!updated)
+				{
+					throw new ArgumentException("No record that matched the entity's Id was found.");
+				}
+			}
+			catch (Exception ex)
+			{
+				// todo: add logging
+			}
+
+			return updated;
+		}
+
+		// removing
+		public bool Remove(int id)
+		{
+			bool removed = false;
+
+			try
+			{
+				var parameters = new List<object> { id };
+
+				var spResult = SpExecuteScalar($"sp_{TableName}_remove", parameters);
+
+				removed = CheckIfSpResultNullAndReturnValue(spResult, false);
+
+				if (!removed)
+				{
+					throw new ArgumentException("No record that matched the entity's Id was found.");
+				}
+			}
+			catch (Exception ex)
+			{
+				// todo: add logging
+			}
+
+			return removed;
+		}
+		#endregion
+
+		#region helper methods
 		private static string GetTableName()
 		{
 			if (typeof(TEntity).TryGetAttributeValue((TableAttribute tableAttribute) => tableAttribute.Name, out string tableAttributeName))
@@ -170,88 +252,17 @@ namespace KiteFlightsDAL.DAOs
 			return parameters;
 		}
 
-		// getting
-		public TEntity GetById(int id)
+		private static T CheckIfSpResultNullAndReturnValue<T>(object spResult, T alternativeValue)
 		{
-			var parameters = new List<object> { id };
-
-			return SpExecuteReaderReturningSingleRecord($"sp_{TableName}_get_by_id", parameters);
-		}
-
-		public IList<TEntity> GetAll()
-		{
-			return SpExecuteReader($"sp_{TableName}_get_all");
-		}
-
-		// adding
-		public int Add(TEntity entity)
-		{
-			var newId = -1;
-
-			var parameters = GetSpParameters(entity);
-
-			var spResult = SpExecuteScalar($"sp_{TableName}_add", parameters);
-
 			if (spResult is long)
 			{
 				spResult = (int)(long)spResult;
 			}
 
-			newId = spResult != null ? (int)spResult : newId;
+			var result = spResult != null ? (T)spResult : alternativeValue;
 
-			return newId;
+			return result;
 		}
-
-		// updating
-		public bool Update(TEntity entity)
-		{
-			bool updated = false;
-
-			try
-			{
-				var parameters = GetSpParameters(entity);
-
-				var spResult = SpExecuteScalar($"sp_{TableName}_update", parameters);
-
-				updated = spResult != null ? (bool)spResult : updated;
-
-				if (!updated)
-				{
-					throw new ArgumentException("No record that matched the entity's Id was found.");
-				}
-			}
-			catch (Exception ex)
-			{
-				// todo: add logging
-			}
-
-			return updated;
-		}
-
-		// removing
-		public bool Remove(int id)
-		{
-			bool removed = false;
-
-			try
-			{
-				var parameters = new List<object> { id };
-
-				var spResult = SpExecuteScalar($"sp_{TableName}_remove", parameters);
-
-				removed = spResult != null ? (bool)spResult : removed;
-
-				if (!removed)
-				{
-					throw new ArgumentException("No record that matched the entity's Id was found.");
-				}
-			}
-			catch (Exception ex)
-			{
-				// todo: add logging
-			}
-
-			return removed;
-		}
+		#endregion
 	}
 }
