@@ -22,37 +22,37 @@ namespace KiteFlightsBLL.Facades
 
 		public Flight GetFlightById(int id)
 		{
-			throw new NotImplementedException();
+			return _flightDao.GetById(id);
 		}
 
 		public IList<Flight> GetAllFlights()
 		{
-			throw new NotImplementedException();
+			return _flightDao.GetAll();
 		}
 
 		public Dictionary<Flight, int> GetAllFlightsWithVacancies()
 		{
-			throw new NotImplementedException();
+			return _flightDao.GetAllFlightsWithVacancies();
 		}
 
-		public IList<Flight> GetFlightsByOriginCountry(int countryCode)
+		public IList<Flight> GetFlightsByOriginCountry(int countryId)
 		{
-			throw new NotImplementedException();
+			return _flightDao.GetFlightsByOriginCountry(countryId);
 		}
 
-		public IList<Flight> GetFlightsByDestinationCountry(int countryCode)
+		public IList<Flight> GetFlightsByDestinationCountry(int countryId)
 		{
-			throw new NotImplementedException();
+			return _flightDao.GetFlightsByDestinationCountry(countryId);
 		}
 
 		public IList<Flight> GetFlightsByDepatrureTime(DateTime departureTime)
 		{
-			throw new NotImplementedException();
+			return _flightDao.GetFlightsByDepatrureTime(departureTime);
 		}
 
 		public IList<Flight> GetFlightsByLandingTime(DateTime landingTime)
 		{
-			throw new NotImplementedException();
+			return _flightDao.GetFlightsByLandingTime(landingTime);
 		}
 	}
 }

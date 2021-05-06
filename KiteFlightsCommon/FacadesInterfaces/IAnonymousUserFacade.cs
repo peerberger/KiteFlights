@@ -13,8 +13,8 @@ namespace KiteFlightsCommon.FacadesInterfaces
 		Flight GetFlightById(int id);
 		IList<Flight> GetAllFlights();
 		Dictionary<Flight, int> GetAllFlightsWithVacancies();
-		IList<Flight> GetFlightsByOriginCountry(int countryCode);
-		IList<Flight> GetFlightsByDestinationCountry(int countryCode);
+		IList<Flight> GetFlightsByOriginCountry(int countryId);
+		IList<Flight> GetFlightsByDestinationCountry(int countryId);
 		IList<Flight> GetFlightsByDepatrureTime(DateTime departureTime);
 		IList<Flight> GetFlightsByLandingTime(DateTime landingTime);
 	}

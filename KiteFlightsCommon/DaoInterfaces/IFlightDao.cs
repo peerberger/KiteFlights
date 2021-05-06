@@ -10,8 +10,8 @@ namespace KiteFlightsCommon.DaoInterfaces
 	public interface IFlightDao : ICrudDao<Flight>
 	{
 		Dictionary<Flight, int> GetAllFlightsWithVacancies();
-		IList<Flight> GetFlightsByOriginCountry(int countryCode);
-		IList<Flight> GetFlightsByDestinationCountry(int countryCode);
+		IList<Flight> GetFlightsByOriginCountry(int countryId);
+		IList<Flight> GetFlightsByDestinationCountry(int countryId);
 		IList<Flight> GetFlightsByDepatrureTime(DateTime departureTime);
 		IList<Flight> GetFlightsByLandingTime(DateTime landingTime);
 		IList<Flight> GetFlightsByCustomer(long customerId);

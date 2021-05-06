@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using KiteFlightsDAL.DAOs.PocoDaos;
 using KiteFlightsCommon.DaoInterfaces;
 using KiteFlightsBLL.Facades;
-using KiteFlightsBLL.Facades.AnonymousUser;
 
 namespace ConsoleApp
 {
@@ -139,47 +138,47 @@ namespace ConsoleApp
 			//	var airlines2 = dao.GetByCountry(4);
 			//}
 
-			//using (IFlightDao dao = new FlightDaoPgsql(connectionString))
-			//{
-			//	var flights = dao.GetAll();
+			using (IFlightDao dao = new FlightDaoPgsql(new NpgsqlConnection(connectionString)))
+			{
+				var flights = dao.GetAll();
 
-			//	var flight = dao.GetById(2);
+				var flight = dao.GetById(2);
 
-			//	//var id = dao.Add(new Flight
-			//	//{
-			//	//	Airline = new Airline { Id = 2 },
-			//	//	OriginCountry = new Country { Id = 1, },
-			//	//	DestinationCountry = new Country { Id = 4, },
-			//	//	DepartureTime = new DateTime(2021, 3, 10, 16, 34, 39, 941),
-			//	//	LandingTime = new DateTime(2021, 3, 10, 16, 34, 39, 941),
-			//	//	RemainingTicketsNo = 30
-			//	//});
+				//var id = dao.Add(new Flight
+				//{
+				//	Airline = new Airline { Id = 2 },
+				//	OriginCountry = new Country { Id = 1, },
+				//	DestinationCountry = new Country { Id = 4, },
+				//	DepartureTime = new DateTime(2021, 3, 10, 16, 34, 39, 941),
+				//	LandingTime = new DateTime(2021, 3, 10, 16, 34, 39, 941),
+				//	RemainingTicketsNo = 30
+				//});
 
-			//	var updated = dao.Update(new Flight
-			//	{
-			//		Id = 5,
-			//		Airline = new Airline { Id = 2 },
-			//		OriginCountry = new Country { Id = 1, },
-			//		DestinationCountry = new Country { Id = 13, },
-			//		DepartureTime = new DateTime(2021, 3, 10, 16, 34, 39, 941),
-			//		LandingTime = new DateTime(2021, 3, 10, 16, 34, 39, 941),
-			//		RemainingTicketsNo = 30
-			//	});
+				var updated = dao.Update(new Flight
+				{
+					Id = 5,
+					Airline = new Airline { Id = 2 },
+					OriginCountry = new Country { Id = 1, },
+					DestinationCountry = new Country { Id = 13, },
+					DepartureTime = new DateTime(2021, 3, 10, 16, 34, 39, 941),
+					LandingTime = new DateTime(2021, 3, 10, 16, 34, 39, 941),
+					RemainingTicketsNo = 30
+				});
 
-			//	var removed = dao.Remove(7);
+				var removed = dao.Remove(7);
 
-			//	var flight2 = dao.GetAllFlightsWithVacancies();
+				var flight2 = dao.GetAllFlightsWithVacancies();
 
-			//	var flights3 = dao.GetFlightsByOriginCountry(4);
+				var flights3 = dao.GetFlightsByOriginCountry(4);
 
-			//	var flights4 = dao.GetFlightsByDestinationCountry(13);
+				var flights4 = dao.GetFlightsByDestinationCountry(13);
 
-			//	var flights5 = dao.GetFlightsByDepatrureTime(new DateTime(2021, 05, 03, 17, 32, 42));
+				var flights5 = dao.GetFlightsByDepatrureTime(new DateTime(2021, 05, 03, 17, 32, 42));
 
-			//	var flights6 = dao.GetFlightsByLandingTime(new DateTime(2021, 05, 03, 18, 32, 42));
+				var flights6 = dao.GetFlightsByLandingTime(new DateTime(2021, 05, 03, 18, 32, 42));
 
-			//	var flights7 = dao.GetFlightsByCustomer(5);
-			//}
+				var flights7 = dao.GetFlightsByCustomer(5);
+			}
 
 			//using (ITicketDao dao = new TicketDaoPgsql(connectionString))
 			//{
@@ -198,6 +197,18 @@ namespace ConsoleApp
 			using (AnonymousUserFacade facade = new AnonymousUserFacade(new NpgsqlConnection(connectionString)))
 			{
 				var airlines = facade.GetAllAirlines();
+
+				var flight = facade.GetFlightById(2);
+
+				var flight2 = facade.GetAllFlightsWithVacancies();
+
+				var flights3 = facade.GetFlightsByOriginCountry(4);
+
+				var flights4 = facade.GetFlightsByDestinationCountry(13);
+
+				var flights5 = facade.GetFlightsByDepatrureTime(new DateTime(2021, 05, 03, 17, 32, 42));
+
+				var flights6 = facade.GetFlightsByLandingTime(new DateTime(2021, 05, 03, 18, 32, 42));
 			}
 		}
 	}
