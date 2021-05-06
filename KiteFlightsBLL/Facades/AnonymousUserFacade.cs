@@ -1,17 +1,23 @@
-﻿using KiteFlightsCommon.POCOs;
+﻿using KiteFlightsCommon.FacadesInterfaces;
+using KiteFlightsCommon.POCOs;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KiteFlightsBLL.Facades.AnonymousUser
+namespace KiteFlightsBLL.Facades
 {
 	public class AnonymousUserFacade : FacadeBase, IAnonymousUserFacade
 	{
+		public AnonymousUserFacade(NpgsqlConnection connection) : base(connection)
+		{
+		}
+
 		public IList<Airline> GetAllAirlines()
 		{
-			throw new NotImplementedException();
+			return _airlineDao.GetAll();
 		}
 
 		public Flight GetFlightById(int id)

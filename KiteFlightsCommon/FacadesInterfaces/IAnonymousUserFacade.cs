@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KiteFlightsBLL.Facades.AnonymousUser
+namespace KiteFlightsCommon.FacadesInterfaces
 {
 	public interface IAnonymousUserFacade
 	{
