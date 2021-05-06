@@ -1,5 +1,6 @@
 ﻿using KiteFlightsCommon.DaoInterfaces;
 using KiteFlightsCommon.POCOs;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace KiteFlightsDAL.DAOs.PocoDaos
 {
 	public class TicketDaoPgsql : GenericDaoPgsql<Ticket>, ITicketDao
 	{
-		public TicketDaoPgsql(string connectionString) : base(connectionString)
+		public TicketDaoPgsql(NpgsqlConnection connection) : base(connection)
 		{
 		}
 	}

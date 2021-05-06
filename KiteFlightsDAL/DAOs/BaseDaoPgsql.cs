@@ -22,17 +22,19 @@ namespace KiteFlightsDAL.DAOs
 		private static int i = 0;
 
 		// todo: maybe make the ctor static somehow?? its just that static ctors must be parameterless
-		public BaseDaoPgsql(string connectionString)
+		public BaseDaoPgsql(NpgsqlConnection connection)
 		{
-			//todo: maybe reorganize the testing better? with exception? idk if there is actually something to improve
-			if (TestConnection(connectionString))
-			{
-				_connection = new NpgsqlConnection(connectionString);
-			}
-			else
-			{
-				throw new Exception("Connection to DB failed.");
-			}
+			////todo: maybe reorganize the testing better? with exception? idk if there is actually something to improve
+			//if (TestConnection(connectionString))
+			//{
+			//	_connection = new NpgsqlConnection(connectionString);
+			//}
+			//else
+			//{
+			//	throw new Exception("Connection to DB failed.");
+			//}
+
+			_connection = connection;
 		}
 
 		#region main logic
@@ -206,6 +208,7 @@ namespace KiteFlightsDAL.DAOs
 		#endregion
 
 		// dispose
+		// todo: if you instantiate the connection outside this dao, consider deleting IDisposable and Dispose()
 		public void Dispose()
 		{
 			_connection.Dispose();

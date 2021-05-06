@@ -14,7 +14,7 @@ namespace KiteFlightsDAL.DAOs.PocoDaos
 {
 	public class CountryDaoPgsql : GenericDaoPgsql<Country>, ICountryDao
 	{
-		public CountryDaoPgsql(string connectionString) : base(connectionString)
+		public CountryDaoPgsql(NpgsqlConnection connection) : base(connection)
 		{
 		}
 	}

@@ -1,6 +1,7 @@
 ﻿using KiteFlightsCommon.DaoInterfaces;
 using KiteFlightsCommon.POCOs.Interfaces;
 using KiteFlightsDAL.HelperClasses.ExtensionMethods;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,7 +16,7 @@ namespace KiteFlightsDAL.DAOs
 	{
 		protected string TableName { get; set; }
 
-		public GenericDaoPgsql(string connectionString) : base(connectionString)
+		public GenericDaoPgsql(NpgsqlConnection connection) : base(connection)
 		{
 			try
 			{
