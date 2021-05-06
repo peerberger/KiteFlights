@@ -12,8 +12,8 @@ namespace KiteFlightsCommon.DaoInterfaces
 		Dictionary<Flight, int> GetAllFlightsWithVacancies();
 		IList<Flight> GetFlightsByOriginCountry(int countryCode);
 		IList<Flight> GetFlightsByDestinationCountry(int countryCode);
-		IList<Flight> GetFlightsByDepatrureTime(DateTime departureDate);
-		IList<Flight> GetFlightsByLandingTime(DateTime landingDate);
+		IList<Flight> GetFlightsByDepatrureTime(DateTime departureTime);
+		IList<Flight> GetFlightsByLandingTime(DateTime landingTime);
 		IList<Flight> GetFlightsByCustomer(long customerId);
 	}
 }

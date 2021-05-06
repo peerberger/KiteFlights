@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KiteFlightsCommon.DaoInterfaces
 {
-	public interface ICrudDao<TEntity> where TEntity : IPoco
+	public interface ICrudDao<TEntity> : IDisposable where TEntity : IPoco
 	{
 		// getting
 		TEntity GetById(int id);

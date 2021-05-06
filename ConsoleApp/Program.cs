@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using KiteFlightsDAL.DAOs.PocoDaos;
+using KiteFlightsCommon.DaoInterfaces;
 
 namespace ConsoleApp
 {
@@ -64,7 +65,8 @@ namespace ConsoleApp
 
 			//logger.Info("lalala");
 
-			using (var dao = new CountryDaoPgsql(connectionString))
+			#region DAOs tests
+			using (ICountryDao dao = new CountryDaoPgsql(connectionString))
 			{
 				var countries = dao.GetAll();
 
@@ -77,7 +79,7 @@ namespace ConsoleApp
 				var removed = dao.Remove(68);
 			}
 
-			using (var dao = new UserDaoPgsql(connectionString))
+			using (IUserDao dao = new UserDaoPgsql(connectionString))
 			{
 				var users = dao.GetAll();
 
@@ -90,7 +92,7 @@ namespace ConsoleApp
 				var removed = dao.Remove(6);
 			}
 
-			using (var dao = new AdminDaoPgsql(connectionString))
+			using (IAdminDao dao = new AdminDaoPgsql(connectionString))
 			{
 				var admins = dao.GetAll();
 
@@ -103,7 +105,7 @@ namespace ConsoleApp
 				var removed = dao.Remove(13);
 			}
 
-			using (var dao = new CustomerDaoPgsql(connectionString))
+			using (ICustomerDao dao = new CustomerDaoPgsql(connectionString))
 			{
 				var customers = dao.GetAll();
 
@@ -118,7 +120,7 @@ namespace ConsoleApp
 				var customer2 = dao.GetByUsername("customer1");
 			}
 
-			using (var dao = new AirlineDaoPgsql(connectionString))
+			using (IAirlineDao dao = new AirlineDaoPgsql(connectionString))
 			{
 				var airlines = dao.GetAll();
 
@@ -135,7 +137,7 @@ namespace ConsoleApp
 				var airlines2 = dao.GetByCountry(4);
 			}
 
-			using (var dao = new FlightDaoPgsql(connectionString))
+			using (IFlightDao dao = new FlightDaoPgsql(connectionString))
 			{
 				var flights = dao.GetAll();
 
@@ -177,7 +179,7 @@ namespace ConsoleApp
 				var flights7 = dao.GetFlightsByCustomer(5);
 			}
 
-			using (var dao = new TicketDaoPgsql(connectionString))
+			using (ITicketDao dao = new TicketDaoPgsql(connectionString))
 			{
 				var tickets = dao.GetAll();
 
@@ -189,6 +191,7 @@ namespace ConsoleApp
 
 				var removed = dao.Remove(4);
 			}
+			#endregion
 		}
 	}
 }
