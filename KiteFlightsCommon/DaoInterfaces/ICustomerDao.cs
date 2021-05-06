@@ -1,11 +1,11 @@
-﻿using KiteFlightsDAL.POCOs;
+﻿using KiteFlightsCommon.POCOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KiteFlightsDAL.DAOs.CustomerDao
+namespace KiteFlightsCommon.DaoInterfaces
 {
 	public interface ICustomerDao : ICrudDao<Customer>
 	{

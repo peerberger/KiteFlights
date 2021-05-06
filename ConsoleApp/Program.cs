@@ -1,13 +1,4 @@
-﻿using KiteFlightsDAL.DAOs;
-using KiteFlightsDAL.DAOs.AdminDao;
-using KiteFlightsDAL.DAOs.AirlineDao;
-using KiteFlightsDAL.DAOs.CountryDao;
-using KiteFlightsDAL.DAOs.CustomerDao;
-using KiteFlightsDAL.DAOs.FlightDao;
-using KiteFlightsDAL.DAOs.TicketDao;
-using KiteFlightsDAL.DAOs.UserDao;
-using KiteFlightsDAL.HelperClasses;
-using KiteFlightsDAL.POCOs;
+﻿using KiteFlightsCommon.POCOs;
 using log4net;
 using log4net.Config;
 using Npgsql;
@@ -18,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using KiteFlightsDAL.DAOs.PocoDaos;
 
 namespace ConsoleApp
 {

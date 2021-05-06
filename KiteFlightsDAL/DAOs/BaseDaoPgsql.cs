@@ -1,5 +1,4 @@
-﻿using KiteFlightsDAL.HelperClasses.ExtensionMethods;
-using KiteFlightsDAL.POCOs.Interfaces;
+﻿using KiteFlightsCommon.POCOs.Interfaces;
 using Npgsql;
 using System;
 using System.Collections.Generic;

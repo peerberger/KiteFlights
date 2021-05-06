@@ -13,4 +13,8 @@
     <Folder Include="HelperClasses\CustomAttributes\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\KiteFlightsCommon\KiteFlightsCommon.csproj" />
+  </ItemGroup>
+
 </Project>

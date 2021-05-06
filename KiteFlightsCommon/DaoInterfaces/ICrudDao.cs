@@ -1,11 +1,11 @@
-﻿using KiteFlightsDAL.POCOs.Interfaces;
+﻿using KiteFlightsCommon.POCOs.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KiteFlightsDAL.DAOs
+namespace KiteFlightsCommon.DaoInterfaces
 {
 	public interface ICrudDao<TEntity> where TEntity : IPoco
 	{

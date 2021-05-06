@@ -1,5 +1,6 @@
-﻿using KiteFlightsDAL.HelperClasses.ExtensionMethods;
-using KiteFlightsDAL.POCOs.Interfaces;
+﻿using KiteFlightsCommon.DaoInterfaces;
+using KiteFlightsCommon.POCOs.Interfaces;
+using KiteFlightsDAL.HelperClasses.ExtensionMethods;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;

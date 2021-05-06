@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace KiteFlightsDAL.POCOs.Interfaces
+namespace KiteFlightsCommon.POCOs.Interfaces
 {
-	public interface IPoco
+	public interface IUser
 	{
 	}
 }

@@ -1,13 +1,13 @@
-﻿using KiteFlightsDAL.POCOs;
+﻿using KiteFlightsCommon.POCOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KiteFlightsDAL.DAOs.AdminDao
+namespace KiteFlightsCommon.DaoInterfaces
 {
-	public interface IAdminDao : ICrudDao<Admin>
+	public interface ICountryDao : ICrudDao<Country>
 	{
 	}
 }

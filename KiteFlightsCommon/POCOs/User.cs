@@ -1,10 +1,10 @@
-﻿using KiteFlightsDAL.POCOs.Interfaces;
+﻿using KiteFlightsCommon.POCOs.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace KiteFlightsDAL.POCOs
+namespace KiteFlightsCommon.POCOs
 {
 	[Table("users")]
 	public class User : IPoco, IEquatable<User>

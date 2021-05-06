@@ -1,9 +1,9 @@
-﻿using KiteFlightsDAL.POCOs.Interfaces;
+﻿using KiteFlightsCommon.POCOs.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace KiteFlightsDAL.POCOs
+namespace KiteFlightsCommon.POCOs
 {
 	[Table("customers")]
 	public class Customer : IPoco, IUser, IEquatable<Customer>

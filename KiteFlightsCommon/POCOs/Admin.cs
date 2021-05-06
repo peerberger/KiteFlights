@@ -1,4 +1,4 @@
-﻿using KiteFlightsDAL.POCOs.Interfaces;
+﻿using KiteFlightsCommon.POCOs.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KiteFlightsDAL.POCOs
+namespace KiteFlightsCommon.POCOs
 {
 	[Table("admins")]
 	public class Admin : IPoco, IUser, IEquatable<Admin>
