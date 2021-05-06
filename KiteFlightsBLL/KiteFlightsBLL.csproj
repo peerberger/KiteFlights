@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\KiteFlightsCommon\KiteFlightsCommon.csproj" />
+    <ProjectReference Include="..\KiteFlightsDAL\KiteFlightsDAL.csproj" />
   </ItemGroup>
 
 </Project>
