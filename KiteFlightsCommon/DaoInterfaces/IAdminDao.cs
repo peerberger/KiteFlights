@@ -9,5 +9,6 @@ namespace KiteFlightsCommon.DaoInterfaces
 {
 	public interface IAdminDao : ICrudDao<Admin>
 	{
+		Admin GetByUsername(string username);
 	}
 }

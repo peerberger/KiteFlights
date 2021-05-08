@@ -93,18 +93,20 @@ namespace ConsoleApp
 			//	var removed = dao.Remove(6);
 			//}
 
-			//using (IAdminDao dao = new AdminDaoPgsql(connectionString))
-			//{
-			//	var admins = dao.GetAll();
+			using (IAdminDao dao = new AdminDaoPgsql(new NpgsqlConnection(connectionString)))
+			{
+				var admins = dao.GetAll();
 
-			//	var admin = dao.GetById(3);
+				var admin = dao.GetById(3);
 
-			//	//var id = dao.Add(new Admin { FirstName = "bill", LastName = "gaits", Level = 1, User = new User { Username = "billy", Password = "gaits1", Email = "bill@ms", UserRole = 3 } });
+				//var id = dao.Add(new Admin { FirstName = "bill", LastName = "gaits", Level = 1, User = new User { Username = "billy", Password = "gaits1", Email = "bill@ms", UserRole = 3 } });
 
-			//	var updated = dao.Update(new Admin { Id = 9, FirstName = "fill", LastName = "gaits", Level = 1, User = new User { Id = 32, Username = "billy", Password = "gaits1", Email = "bill@ms", UserRole = 3 } });
+				var updated = dao.Update(new Admin { Id = 9, FirstName = "fill", LastName = "gaits", Level = 1, User = new User { Id = 32, Username = "billy", Password = "gaits1", Email = "bill@ms", UserRole = 3 } });
 
-			//	var removed = dao.Remove(13);
-			//}
+				var removed = dao.Remove(13);
+
+				var admin2 = dao.GetByUsername("admin1");
+			}
 
 			//using (ICustomerDao dao = new CustomerDaoPgsql(connectionString))
 			//{
