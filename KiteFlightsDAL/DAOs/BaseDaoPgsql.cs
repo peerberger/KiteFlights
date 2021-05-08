@@ -209,6 +209,7 @@ namespace KiteFlightsDAL.DAOs
 
 		// dispose
 		// todo: if you instantiate the connection outside this dao, consider deleting IDisposable and Dispose()
+		// todo: remember to maybe edit this when adding the use of connection pool
 		public void Dispose()
 		{
 			_connection.Dispose();

@@ -30,6 +30,7 @@ namespace KiteFlightsBLL.Facades
 			_ticketDao = new TicketDaoPgsql(_connection);
 		}
 
+		// todo: remember to maybe edit this when adding the use of connection pool
 		public void Dispose()
 		{
 			_connection.Dispose();
