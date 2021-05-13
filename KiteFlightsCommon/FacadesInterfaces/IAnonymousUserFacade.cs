@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KiteFlightsCommon.FacadesInterfaces
 {
-	public interface IAnonymousUserFacade
+	public interface IAnonymousUserFacade : IDisposable
 	{
 		IList<Airline> GetAllAirlines();
 		Flight GetFlightById(int id);
