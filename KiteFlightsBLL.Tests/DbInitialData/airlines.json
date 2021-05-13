@@ -1,0 +1,47 @@
+[
+  {
+    "Id": 1,
+    "Name": "El Al",
+    "Country": {
+      "Id": 1,
+      "Name": "Israel"
+    },
+    "User": {
+      "Id": 7,
+      "Username": "elal",
+      "Password": "airline1",
+      "Email": "elal@gmail.com",
+      "UserRole": 2
+    }
+  },
+  {
+    "Id": 2,
+    "Name": "United",
+    "Country": {
+      "Id": 2,
+      "Name": "USA"
+    },
+    "User": {
+      "Id": 8,
+      "Username": "united",
+      "Password": "airline2",
+      "Email": "united@gmail.com",
+      "UserRole": 2
+    }
+  },
+  {
+    "Id": 3,
+    "Name": "EasyJet",
+    "Country": {
+      "Id": 3,
+      "Name": "UK"
+    },
+    "User": {
+      "Id": 9,
+      "Username": "easyjet",
+      "Password": "airline3",
+      "Email": "easyjet@gmail.com",
+      "UserRole": 2
+    }
+  }
+]

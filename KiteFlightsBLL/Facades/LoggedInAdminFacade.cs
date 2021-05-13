@@ -56,7 +56,9 @@ namespace KiteFlightsBLL.Facades
 
 		public void UpdateAirlineDetails(LoginToken<Admin> token, Airline airline)
 		{
-			throw new NotImplementedException();
+			VerifyAdminLevel1(token);
+
+			_airlineDao.Update(airline);
 		}
 
 

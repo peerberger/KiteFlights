@@ -114,38 +114,39 @@ namespace ConsoleApp
 			//	var admin2 = dao.GetByUsername("admin1");
 			//}
 
-			using (ICustomerDao dao = new CustomerDaoPgsql(new NpgsqlConnection(connectionString)))
-			{
-				var customers = dao.GetAll();
-				GenerateJsonFileForTests(customers, "customers");
-
-				var customer = dao.GetById(2);
-
-				//var id = dao.Add(new Customer { FirstName = "pepper", LastName = "berger", Address = "pepe st.", PhoneNo = "13", CreditCardNo = "1313", User = new User { Username = "pepe", Password = "pepe1", Email = "pe@pe", UserRole = 1 } });
-
-				var updated = dao.Update(new Customer { Id = 5, FirstName = "pwepper", LastName = "berger", Address = "pepe st.", PhoneNo = "13", CreditCardNo = "1313", User = new User { Id = 34, Username = "pepe", Password = "pepe1", Email = "pe@pe", UserRole = 1 } });
-
-				var removed = dao.Remove(7);
-
-				var customer2 = dao.GetByUsername("customer1");
-			}
-
-			//using (IAirlineDao dao = new AirlineDaoPgsql(new NpgsqlConnection(connectionString)))
+			//using (ICustomerDao dao = new CustomerDaoPgsql(new NpgsqlConnection(connectionString)))
 			//{
-			//	var airlines = dao.GetAll();
+			//	var customers = dao.GetAll();
+			//	GenerateJsonFileForTests(customers, "customers");
 
-			//	var airline = dao.GetById(2);
+			//	var customer = dao.GetById(2);
 
-			//	//var id = dao.Add(new Airline { Name = "delta", Country = new Country { Id = 4 }, User = new User { Username = "delta", Password = "delta1", Email = "del@ta", UserRole = 2 } });
+			//	//var id = dao.Add(new Customer { FirstName = "pepper", LastName = "berger", Address = "pepe st.", PhoneNo = "13", CreditCardNo = "1313", User = new User { Username = "pepe", Password = "pepe1", Email = "pe@pe", UserRole = 1 } });
 
-			//	var updated = dao.Update(new Airline { Id = 8, Name = "del ta", Country = new Country { Id = 4 }, User = new User { Id = 36, Username = "delta", Password = "delta1", Email = "del@ta", UserRole = 2 } });
+			//	var updated = dao.Update(new Customer { Id = 5, FirstName = "pwepper", LastName = "berger", Address = "pepe st.", PhoneNo = "13", CreditCardNo = "1313", User = new User { Id = 34, Username = "pepe", Password = "pepe1", Email = "pe@pe", UserRole = 1 } });
 
-			//	var removed = dao.Remove(10);
+			//	var removed = dao.Remove(7);
 
-			//	var airline2 = dao.GetByUsername("united");
-
-			//	var airlines2 = dao.GetByCountry(4);
+			//	var customer2 = dao.GetByUsername("customer1");
 			//}
+
+			using (IAirlineDao dao = new AirlineDaoPgsql(new NpgsqlConnection(connectionString)))
+			{
+				var airlines = dao.GetAll();
+				GenerateJsonFileForTests(airlines, "airlines");
+
+				var airline = dao.GetById(2);
+
+				//var id = dao.Add(new Airline { Name = "delta", Country = new Country { Id = 4 }, User = new User { Username = "delta", Password = "delta1", Email = "del@ta", UserRole = 2 } });
+
+				var updated = dao.Update(new Airline { Id = 8, Name = "del ta", Country = new Country { Id = 4 }, User = new User { Id = 36, Username = "delta", Password = "delta1", Email = "del@ta", UserRole = 2 } });
+
+				var removed = dao.Remove(10);
+
+				var airline2 = dao.GetByUsername("united");
+
+				var airlines2 = dao.GetByCountry(4);
+			}
 
 			//using (IFlightDao dao = new FlightDaoPgsql(new NpgsqlConnection(connectionString)))
 			//{
