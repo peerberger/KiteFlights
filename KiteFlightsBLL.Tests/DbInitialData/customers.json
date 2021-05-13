@@ -1,0 +1,47 @@
+[
+  {
+    "Id": 1,
+    "FirstName": "Karen",
+    "LastName": "McLaren",
+    "Address": "1st st. City-ville",
+    "PhoneNo": "111-111-1111",
+    "CreditCardNo": "1111-1111-1111-1111",
+    "User": {
+      "Id": 4,
+      "Username": "karenmclaren",
+      "Password": "customer1",
+      "Email": "karenmclaren@gmail.com",
+      "UserRole": 1
+    }
+  },
+  {
+    "Id": 2,
+    "FirstName": "Kile",
+    "LastName": "Kilometer",
+    "Address": "2nd st. City-ville",
+    "PhoneNo": "222-222-2222",
+    "CreditCardNo": "2222-2222-2222-2222",
+    "User": {
+      "Id": 5,
+      "Username": "kilekilometer",
+      "Password": "customer2",
+      "Email": "kilekilometer@gmail.com",
+      "UserRole": 1
+    }
+  },
+  {
+    "Id": 3,
+    "FirstName": "Denise",
+    "LastName": "Richards",
+    "Address": "3rd st. City-ville",
+    "PhoneNo": "333-333-3333",
+    "CreditCardNo": "3333-3333-3333-3333",
+    "User": {
+      "Id": 6,
+      "Username": "deniserichards",
+      "Password": "customer3",
+      "Email": "deniserichards@gmail.com",
+      "UserRole": 1
+    }
+  }
+]

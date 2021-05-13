@@ -42,7 +42,9 @@ namespace KiteFlightsBLL.Facades
 		// level 1 admin
 		public IList<Customer> GetAllCustomers(LoginToken<Admin> token)
 		{
-			throw new NotImplementedException();
+			VerifyAdminLevel1(token);
+
+			return _customerDao.GetAll();
 		}
 
 		public void UpdateCustomerDetails(LoginToken<Admin> token, Customer customer)

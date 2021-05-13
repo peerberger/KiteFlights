@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using KiteFlightsDAL.DAOs.PocoDaos;
 using KiteFlightsCommon.DaoInterfaces;
 using KiteFlightsBLL.Facades;
+using KiteFlightsBLL.Auth;
+using Newtonsoft.Json;
 
 namespace ConsoleApp
 {
@@ -62,14 +64,18 @@ namespace ConsoleApp
 			//var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
 			//XmlConfigurator.Configure(logRepository, new FileInfo("Log4Net.config"));
 
-			string connectionString = @"Host=localhost;Username=postgres;Password=admin;Database=kite_flights_db;";
+			// todo: move conenction string to config file
+			//string connectionString = @"Host=localhost;Username=postgres;Password=admin;Database=kite_flights_db;";
+			string connectionString = @"Host=localhost;Username=postgres;Password=admin;Database=kite_flights_tests_db;";
 
 			//logger.Info("lalala");
 
 			#region DAOs tests
-			//using (ICountryDao dao = new CountryDaoPgsql(connectionString))
+			//using (ICountryDao dao = new CountryDaoPgsql(new NpgsqlConnection(connectionString)))
 			//{
 			//	var countries = dao.GetAll();
+			//	var json = JsonConvert.SerializeObject(countries, Formatting.Indented);
+			//	File.WriteAllText(@"C:\Users\User\Source\Repos\‏‏KiteFlights\KiteFlightsBLL.Tests\countries.json", json);
 
 			//	var country = dao.GetById(4);
 
@@ -80,7 +86,7 @@ namespace ConsoleApp
 			//	var removed = dao.Remove(68);
 			//}
 
-			//using (IUserDao dao = new UserDaoPgsql(connectionString))
+			//using (IUserDao dao = new UserDaoPgsql(new NpgsqlConnection(connectionString)))
 			//{
 			//	var users = dao.GetAll();
 
@@ -93,37 +99,38 @@ namespace ConsoleApp
 			//	var removed = dao.Remove(6);
 			//}
 
-			using (IAdminDao dao = new AdminDaoPgsql(new NpgsqlConnection(connectionString)))
-			{
-				var admins = dao.GetAll();
-
-				var admin = dao.GetById(3);
-
-				//var id = dao.Add(new Admin { FirstName = "bill", LastName = "gaits", Level = 1, User = new User { Username = "billy", Password = "gaits1", Email = "bill@ms", UserRole = 3 } });
-
-				var updated = dao.Update(new Admin { Id = 9, FirstName = "fill", LastName = "gaits", Level = 1, User = new User { Id = 32, Username = "billy", Password = "gaits1", Email = "bill@ms", UserRole = 3 } });
-
-				var removed = dao.Remove(13);
-
-				var admin2 = dao.GetByUsername("admin1");
-			}
-
-			//using (ICustomerDao dao = new CustomerDaoPgsql(connectionString))
+			//using (IAdminDao dao = new AdminDaoPgsql(new NpgsqlConnection(connectionString)))
 			//{
-			//	var customers = dao.GetAll();
+			//	var admins = dao.GetAll();
 
-			//	var customer = dao.GetById(2);
+			//	var admin = dao.GetById(3);
 
-			//	//var id = dao.Add(new Customer { FirstName = "pepper", LastName = "berger", Address = "pepe st.", PhoneNo = "13", CreditCardNo = "1313", User = new User { Username = "pepe", Password = "pepe1", Email = "pe@pe", UserRole = 1 } });
+			//	//var id = dao.Add(new Admin { FirstName = "bill", LastName = "gaits", Level = 1, User = new User { Username = "billy", Password = "gaits1", Email = "bill@ms", UserRole = 3 } });
 
-			//	var updated = dao.Update(new Customer { Id = 5, FirstName = "pwepper", LastName = "berger", Address = "pepe st.", PhoneNo = "13", CreditCardNo = "1313", User = new User { Id = 34, Username = "pepe", Password = "pepe1", Email = "pe@pe", UserRole = 1 } });
+			//	var updated = dao.Update(new Admin { Id = 9, FirstName = "fill", LastName = "gaits", Level = 1, User = new User { Id = 32, Username = "billy", Password = "gaits1", Email = "bill@ms", UserRole = 3 } });
 
-			//	var removed = dao.Remove(7);
+			//	var removed = dao.Remove(13);
 
-			//	var customer2 = dao.GetByUsername("customer1");
+			//	var admin2 = dao.GetByUsername("admin1");
 			//}
 
-			//using (IAirlineDao dao = new AirlineDaoPgsql(connectionString))
+			using (ICustomerDao dao = new CustomerDaoPgsql(new NpgsqlConnection(connectionString)))
+			{
+				var customers = dao.GetAll();
+				GenerateJsonFileForTests(customers, "customers");
+
+				var customer = dao.GetById(2);
+
+				//var id = dao.Add(new Customer { FirstName = "pepper", LastName = "berger", Address = "pepe st.", PhoneNo = "13", CreditCardNo = "1313", User = new User { Username = "pepe", Password = "pepe1", Email = "pe@pe", UserRole = 1 } });
+
+				var updated = dao.Update(new Customer { Id = 5, FirstName = "pwepper", LastName = "berger", Address = "pepe st.", PhoneNo = "13", CreditCardNo = "1313", User = new User { Id = 34, Username = "pepe", Password = "pepe1", Email = "pe@pe", UserRole = 1 } });
+
+				var removed = dao.Remove(7);
+
+				var customer2 = dao.GetByUsername("customer1");
+			}
+
+			//using (IAirlineDao dao = new AirlineDaoPgsql(new NpgsqlConnection(connectionString)))
 			//{
 			//	var airlines = dao.GetAll();
 
@@ -140,49 +147,49 @@ namespace ConsoleApp
 			//	var airlines2 = dao.GetByCountry(4);
 			//}
 
-			using (IFlightDao dao = new FlightDaoPgsql(new NpgsqlConnection(connectionString)))
-			{
-				var flights = dao.GetAll();
+			//using (IFlightDao dao = new FlightDaoPgsql(new NpgsqlConnection(connectionString)))
+			//{
+			//	var flights = dao.GetAll();
 
-				var flight = dao.GetById(2);
+			//	var flight = dao.GetById(2);
 
-				//var id = dao.Add(new Flight
-				//{
-				//	Airline = new Airline { Id = 2 },
-				//	OriginCountry = new Country { Id = 1, },
-				//	DestinationCountry = new Country { Id = 4, },
-				//	DepartureTime = new DateTime(2021, 3, 10, 16, 34, 39, 941),
-				//	LandingTime = new DateTime(2021, 3, 10, 16, 34, 39, 941),
-				//	RemainingTicketsNo = 30
-				//});
+			//	//var id = dao.Add(new Flight
+			//	//{
+			//	//	Airline = new Airline { Id = 2 },
+			//	//	OriginCountry = new Country { Id = 1, },
+			//	//	DestinationCountry = new Country { Id = 4, },
+			//	//	DepartureTime = new DateTime(2021, 3, 10, 16, 34, 39, 941),
+			//	//	LandingTime = new DateTime(2021, 3, 10, 16, 34, 39, 941),
+			//	//	RemainingTicketsNo = 30
+			//	//});
 
-				var updated = dao.Update(new Flight
-				{
-					Id = 5,
-					Airline = new Airline { Id = 2 },
-					OriginCountry = new Country { Id = 1, },
-					DestinationCountry = new Country { Id = 13, },
-					DepartureTime = new DateTime(2021, 3, 10, 16, 34, 39, 941),
-					LandingTime = new DateTime(2021, 3, 10, 16, 34, 39, 941),
-					RemainingTicketsNo = 30
-				});
+			//	var updated = dao.Update(new Flight
+			//	{
+			//		Id = 5,
+			//		Airline = new Airline { Id = 2 },
+			//		OriginCountry = new Country { Id = 1, },
+			//		DestinationCountry = new Country { Id = 13, },
+			//		DepartureTime = new DateTime(2021, 3, 10, 16, 34, 39, 941),
+			//		LandingTime = new DateTime(2021, 3, 10, 16, 34, 39, 941),
+			//		RemainingTicketsNo = 30
+			//	});
 
-				var removed = dao.Remove(7);
+			//	var removed = dao.Remove(7);
 
-				var flight2 = dao.GetAllFlightsWithVacancies();
+			//	var flight2 = dao.GetAllFlightsWithVacancies();
 
-				var flights3 = dao.GetFlightsByOriginCountry(4);
+			//	var flights3 = dao.GetFlightsByOriginCountry(4);
 
-				var flights4 = dao.GetFlightsByDestinationCountry(13);
+			//	var flights4 = dao.GetFlightsByDestinationCountry(13);
 
-				var flights5 = dao.GetFlightsByDepatrureTime(new DateTime(2021, 05, 03, 17, 32, 42));
+			//	var flights5 = dao.GetFlightsByDepatrureTime(new DateTime(2021, 05, 03, 17, 32, 42));
 
-				var flights6 = dao.GetFlightsByLandingTime(new DateTime(2021, 05, 03, 18, 32, 42));
+			//	var flights6 = dao.GetFlightsByLandingTime(new DateTime(2021, 05, 03, 18, 32, 42));
 
-				var flights7 = dao.GetFlightsByCustomer(5);
-			}
+			//	var flights7 = dao.GetFlightsByCustomer(5);
+			//}
 
-			//using (ITicketDao dao = new TicketDaoPgsql(connectionString))
+			//using (ITicketDao dao = new TicketDaoPgsql(new NpgsqlConnection(connectionString)))
 			//{
 			//	var tickets = dao.GetAll();
 
@@ -212,6 +219,37 @@ namespace ConsoleApp
 
 				var flights6 = facade.GetFlightsByLandingTime(new DateTime(2021, 05, 03, 18, 32, 42));
 			}
+
+			using (LoggedInAdminFacade facade = new LoggedInAdminFacade(new NpgsqlConnection(connectionString)))
+			{
+				LoginToken<Admin> token = new LoginToken<Admin>(new Admin { Level = 1 });
+
+				// level 1 admin
+				facade.GetAllCustomers(token);
+
+				//void UpdateCustomerDetails(LoginToken<Admin> token, Customer customer);
+				//void UpdateAirlineDetails(LoginToken<Admin> token, Airline airline);
+
+				//// level 2 admin
+				//void RemoveCustomer(LoginToken<Admin> token, Customer customer);
+				//void RemoveAirline(LoginToken<Admin> token, Airline airline);
+
+				//// level 3 admin
+				//void UpdateCountryDetails(LoginToken<Admin> token, Country country);
+				//void RemoveCountry(LoginToken<Admin> token, Country country);
+				//void UpdateAdminDetails(LoginToken<Admin> token, Admin admin);
+				//void RemoveAdmin(LoginToken<Admin> token, Admin admin);
+				//void CreateAdmin(LoginToken<Admin> token, Admin admin);
+				//void CreateCustomer(LoginToken<Admin> token, Customer customer);
+				//void CreateAirline(LoginToken<Admin> token, Airline airline);
+			}
+		}
+
+		private static void GenerateJsonFileForTests(object? value, string tableName)
+		{
+			var json = JsonConvert.SerializeObject(value, Formatting.Indented);
+
+			File.WriteAllText($@"..\..\..\..\KiteFlightsBLL.Tests\DbInitialData\{tableName}.json", json);
 		}
 	}
 }
