@@ -1,4 +1,5 @@
 ﻿using KiteFlightsBLL.Auth;
+using KiteFlightsBLL.CustomExceptions;
 using KiteFlightsCommon.FacadesInterfaces;
 using KiteFlightsCommon.POCOs;
 using Npgsql;
@@ -20,7 +21,7 @@ namespace KiteFlightsBLL.Facades
 		{
 			if (!(token.User.Level >= level))
 			{
-				throw new Exception($"Admins below level {level} are unauthorized to perform this action");
+				throw new UnauthorizedAdminException(level);
 			}
 		}
 
