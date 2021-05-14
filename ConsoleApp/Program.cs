@@ -130,23 +130,23 @@ namespace ConsoleApp
 			//	var customer2 = dao.GetByUsername("customer1");
 			//}
 
-			using (IAirlineDao dao = new AirlineDaoPgsql(new NpgsqlConnection(connectionString)))
-			{
-				var airlines = dao.GetAll();
-				GenerateJsonFileForTests(airlines, "airlines");
+			//using (IAirlineDao dao = new AirlineDaoPgsql(new NpgsqlConnection(connectionString)))
+			//{
+			//	var airlines = dao.GetAll();
+			//	GenerateJsonFileForTests(airlines, "airlines");
 
-				var airline = dao.GetById(2);
+			//	var airline = dao.GetById(2);
 
-				//var id = dao.Add(new Airline { Name = "delta", Country = new Country { Id = 4 }, User = new User { Username = "delta", Password = "delta1", Email = "del@ta", UserRole = 2 } });
+			//	//var id = dao.Add(new Airline { Name = "delta", Country = new Country { Id = 4 }, User = new User { Username = "delta", Password = "delta1", Email = "del@ta", UserRole = 2 } });
 
-				var updated = dao.Update(new Airline { Id = 8, Name = "del ta", Country = new Country { Id = 4 }, User = new User { Id = 36, Username = "delta", Password = "delta1", Email = "del@ta", UserRole = 2 } });
+			//	var updated = dao.Update(new Airline { Id = 8, Name = "del ta", Country = new Country { Id = 4 }, User = new User { Id = 36, Username = "delta", Password = "delta1", Email = "del@ta", UserRole = 2 } });
 
-				var removed = dao.Remove(10);
+			//	var removed = dao.Remove(10);
 
-				var airline2 = dao.GetByUsername("united");
+			//	var airline2 = dao.GetByUsername("united");
 
-				var airlines2 = dao.GetByCountry(4);
-			}
+			//	var airlines2 = dao.GetByCountry(4);
+			//}
 
 			//using (IFlightDao dao = new FlightDaoPgsql(new NpgsqlConnection(connectionString)))
 			//{
@@ -190,18 +190,20 @@ namespace ConsoleApp
 			//	var flights7 = dao.GetFlightsByCustomer(5);
 			//}
 
-			//using (ITicketDao dao = new TicketDaoPgsql(new NpgsqlConnection(connectionString)))
-			//{
-			//	var tickets = dao.GetAll();
+			using (ITicketDao dao = new TicketDaoPgsql(new NpgsqlConnection(connectionString)))
+			{
+				var tickets = dao.GetAll();
 
-			//	var ticket = dao.GetById(2);
+				var ticket = dao.GetById(2);
 
-			//	//var id = dao.Add(new Ticket { Flight = new Flight { Id = 4 }, Customer = new Customer { Id = 5 } });
+				//var id = dao.Add(new Ticket { Flight = new Flight { Id = 4 }, Customer = new Customer { Id = 5 } });
 
-			//	var updated = dao.Update(new Ticket { Id = 3, Flight = new Flight { Id = 6 }, Customer = new Customer { Id = 5 } });
+				var updated = dao.Update(new Ticket { Id = 3, Flight = new Flight { Id = 6 }, Customer = new Customer { Id = 5 } });
 
-			//	var removed = dao.Remove(4);
-			//}
+				var removed = dao.Remove(4);
+
+				var removed1 = dao.RemoveByCustomerId(1);
+			}
 			#endregion
 
 			using (AnonymousUserFacade facade = new AnonymousUserFacade(new NpgsqlConnection(connectionString)))

@@ -9,5 +9,6 @@ namespace KiteFlightsCommon.DaoInterfaces
 {
 	public interface ITicketDao : ICrudDao<Ticket>
 	{
+		int RemoveByCustomerId(long customerId);
 	}
 }

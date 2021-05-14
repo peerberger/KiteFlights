@@ -14,5 +14,12 @@ namespace KiteFlightsDAL.DAOs.PocoDaos
 		public TicketDaoPgsql(NpgsqlConnection connection) : base(connection)
 		{
 		}
+
+		public int RemoveByCustomerId(long customerId)
+		{
+			var parameters = new List<object> { customerId };
+
+			return (int)SpExecuteScalar($"sp_{TableName}_remove_by_customer_id", parameters);
+		}
 	}
 }
