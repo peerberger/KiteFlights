@@ -155,7 +155,7 @@ namespace KiteFlightsDAL.DAOs
 		{
 			var spResult = SpExecuteReader(spName, parameters);
 
-			return spResult != null ? spResult.First() : default(TEntity);
+			return spResult != null && spResult.Count > 0 ? spResult.First() : default(TEntity);
 		}
 
 		protected static object SpExecuteScalar(string spName, List<object> parameters = null)
