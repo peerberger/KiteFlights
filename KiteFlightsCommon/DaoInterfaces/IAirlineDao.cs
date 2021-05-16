@@ -11,5 +11,6 @@ namespace KiteFlightsCommon.DaoInterfaces
 	{
 		Airline GetByUsername(string username);
 		IList<Airline> GetByCountry(int countryId);
+		int RemoveByCountryId(int countryId);
 	}
 }

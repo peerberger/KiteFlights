@@ -11,5 +11,6 @@ namespace KiteFlightsCommon.DaoInterfaces
 	{
 		int RemoveByCustomerId(long customerId);
 		int RemoveByAirlineId(long airlineId);
+		int RemoveByCountryId(int countryId);
 	}
 }
