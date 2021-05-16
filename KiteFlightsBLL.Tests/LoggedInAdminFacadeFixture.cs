@@ -21,6 +21,8 @@ namespace KiteFlightsBLL.Tests
 
 		public NpgsqlConnection Connection { get; private set; }
 		public ILoggedInAdminFacade Facade { get; private set; }
+		public ICountryDao CountryDao { get; private set; }
+		public IAdminDao AdminDao { get; private set; }
 		public ICustomerDao CustomerDao { get; private set; }
 		public IAirlineDao AirlineDao { get; private set; }
 
@@ -30,6 +32,8 @@ namespace KiteFlightsBLL.Tests
 			Connection = new NpgsqlConnection(connectionString);
 
 			Facade = new LoggedInAdminFacade(Connection);
+			CountryDao = new CountryDaoPgsql(Connection);
+			AdminDao = new AdminDaoPgsql(Connection);
 			CustomerDao = new CustomerDaoPgsql(Connection);
 			AirlineDao = new AirlineDaoPgsql(Connection);
 		}

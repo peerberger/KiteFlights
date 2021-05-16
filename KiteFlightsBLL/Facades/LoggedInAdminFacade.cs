@@ -66,49 +66,93 @@ namespace KiteFlightsBLL.Facades
 		// level 2 admin
 		public void RemoveCustomer(LoginToken<Admin> token, Customer customer)
 		{
-			throw new NotImplementedException();
+			VerifyAdminLevel2(token);
+
+			_ticketDao.RemoveByCustomerId(customer.Id);
+
+			_customerDao.Remove((int)customer.Id);
 		}
 
 		public void RemoveAirline(LoginToken<Admin> token, Airline airline)
 		{
-			throw new NotImplementedException();
+			VerifyAdminLevel2(token);
+
+			_ticketDao.RemoveByAirlineId(airline.Id);
+			
+			_flightDao.RemoveByAirlineId(airline.Id);
+
+			_airlineDao.Remove((int)airline.Id);
 		}
 
 
 		// level 3 admin
 		public void UpdateCountryDetails(LoginToken<Admin> token, Country country)
 		{
-			throw new NotImplementedException();
+			VerifyAdminLevel3(token);
+
+			_countryDao.Update(country);
 		}
 
 		public void RemoveCountry(LoginToken<Admin> token, Country country)
 		{
-			throw new NotImplementedException();
+			VerifyAdminLevel3(token);
+
+			_ticketDao.RemoveByCountryId(country.Id);
+
+			_flightDao.RemoveByCountryId(country.Id);
+
+			_airlineDao.RemoveByCountryId(country.Id);
+
+			_countryDao.Remove(country.Id);
 		}
 
 		public void UpdateAdminDetails(LoginToken<Admin> token, Admin admin)
 		{
-			throw new NotImplementedException();
+			VerifyAdminLevel3(token);
+
+			if (admin.Level < token.User.Level)
+			{
+				_adminDao.Update(admin);
+			}
+			else
+			{
+				throw new Exception($"Level {token.User.Level} admins can only alter admins of a lower level");
+			}
 		}
 
 		public void RemoveAdmin(LoginToken<Admin> token, Admin admin)
 		{
-			throw new NotImplementedException();
+			VerifyAdminLevel3(token);
+
+			if (admin.Level < token.User.Level)
+			{
+				_adminDao.Remove(admin.Id);
+			}
+			else
+			{
+				throw new Exception($"Level {token.User.Level} admins can only alter admins of a lower level");
+			}
 		}
 
-		public void CreateAdmin(LoginToken<Admin> token, Admin admin)
+		public int CreateAdmin(LoginToken<Admin> token, Admin admin)
 		{
-			throw new NotImplementedException();
+			VerifyAdminLevel3(token);
+
+			return _adminDao.Add(admin);
 		}
 
-		public void CreateCustomer(LoginToken<Admin> token, Customer customer)
+		public int CreateCustomer(LoginToken<Admin> token, Customer customer)
 		{
-			throw new NotImplementedException();
+			VerifyAdminLevel3(token);
+
+			return _customerDao.Add(customer);
 		}
 
-		public void CreateAirline(LoginToken<Admin> token, Airline airline)
+		public int CreateAirline(LoginToken<Admin> token, Airline airline)
 		{
-			throw new NotImplementedException();
+			VerifyAdminLevel3(token);
+
+			return _airlineDao.Add(airline);
 		}
 	}
 }

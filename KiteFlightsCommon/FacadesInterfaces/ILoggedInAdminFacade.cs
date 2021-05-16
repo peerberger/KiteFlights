@@ -24,8 +24,8 @@ namespace KiteFlightsCommon.FacadesInterfaces
 		void RemoveCountry(LoginToken<Admin> token, Country country);
 		void UpdateAdminDetails(LoginToken<Admin> token, Admin admin);
 		void RemoveAdmin(LoginToken<Admin> token, Admin admin);
-		void CreateAdmin(LoginToken<Admin> token, Admin admin);
-		void CreateCustomer(LoginToken<Admin> token, Customer customer);
-		void CreateAirline(LoginToken<Admin> token, Airline airline);
+		int CreateAdmin(LoginToken<Admin> token, Admin admin);
+		int CreateCustomer(LoginToken<Admin> token, Customer customer);
+		int CreateAirline(LoginToken<Admin> token, Airline airline);
 	}
 }

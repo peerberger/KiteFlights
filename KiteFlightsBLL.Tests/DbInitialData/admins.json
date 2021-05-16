@@ -1,0 +1,41 @@
+[
+  {
+    "Id": 1,
+    "FirstName": "Doja",
+    "LastName": "Cat",
+    "Level": 1,
+    "User": {
+      "Id": 1,
+      "Username": "dojacat",
+      "Password": "admin1",
+      "Email": "dojacat@gmail.com",
+      "UserRole": 3
+    }
+  },
+  {
+    "Id": 2,
+    "FirstName": "Mikes",
+    "LastName": "Mic",
+    "Level": 2,
+    "User": {
+      "Id": 2,
+      "Username": "mikesmic",
+      "Password": "admin2",
+      "Email": "mikesmic@gmail.com",
+      "UserRole": 3
+    }
+  },
+  {
+    "Id": 3,
+    "FirstName": "Michel",
+    "LastName": "Obama",
+    "Level": 3,
+    "User": {
+      "Id": 3,
+      "Username": "michelobama",
+      "Password": "admin3",
+      "Email": "michelobama@gmail.com",
+      "UserRole": 3
+    }
+  }
+]
