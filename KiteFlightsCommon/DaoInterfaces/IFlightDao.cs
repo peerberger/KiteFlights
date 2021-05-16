@@ -15,5 +15,6 @@ namespace KiteFlightsCommon.DaoInterfaces
 		IList<Flight> GetFlightsByDepatrureTime(DateTime departureTime);
 		IList<Flight> GetFlightsByLandingTime(DateTime landingTime);
 		IList<Flight> GetFlightsByCustomer(long customerId);
+		int RemoveByAirlineId(long airlineId);
 	}
 }
