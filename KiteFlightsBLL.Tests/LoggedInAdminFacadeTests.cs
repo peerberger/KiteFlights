@@ -15,40 +15,30 @@ using Xunit.Extensions;
 
 namespace KiteFlightsBLL.Tests
 {
+	[Collection("DalFixtureCollection")]
 	public class LoggedInAdminFacadeTests : IClassFixture<LoggedInAdminFacadeFixture>
 	{
-		private LoggedInAdminFacadeFixture _fixture;
+		private DalFixture _dalFixture;
+		private LoggedInAdminFacadeFixture _facadeFixture;
 
-		private NpgsqlConnection Connection { get => _fixture.Connection; }
-		private ILoggedInAdminFacade Facade { get => _fixture.Facade; }
-		private ICountryDao CountryDao { get => _fixture.CountryDao; }
-		private ICustomerDao CustomerDao { get => _fixture.CustomerDao; }
-		private IAdminDao AdminDao { get => _fixture.AdminDao; }
-		private IAirlineDao AirlineDao { get => _fixture.AirlineDao; }
+		private ICountryDao CountryDao { get => _dalFixture.CountryDao; }
+		private ICustomerDao CustomerDao { get => _dalFixture.CustomerDao; }
+		private IAdminDao AdminDao { get => _dalFixture.AdminDao; }
+		private IAirlineDao AirlineDao { get => _dalFixture.AirlineDao; }
 
+		private ILoggedInAdminFacade Facade { get => _facadeFixture.Facade; }
 
-		public LoggedInAdminFacadeTests(LoggedInAdminFacadeFixture fixture)
+		public LoggedInAdminFacadeTests(
+			DalFixture dalFixture,
+			LoggedInAdminFacadeFixture facadeFixture)
 		{
-			_fixture = fixture;
-			ClearAndRepopulateDb();
+			_dalFixture = dalFixture;
+			_facadeFixture = facadeFixture;
+			
+			_dalFixture.ClearAndRepopulateDb();
 		}
 
 		#region helper methods
-		// init
-		private void ClearAndRepopulateDb()
-		{
-			string sp = @"CALL sp_clear_and_repopulate_db()";
-
-			Connection.Open();
-
-			using (var cmd = new NpgsqlCommand(sp, Connection))
-			{
-				cmd.ExecuteNonQuery();
-			}
-
-			Connection.Close();
-		}
-
 		#region GetTableInitialData() and its encapsulations
 		private T GetTableInitialData<T>(string tableName)
 		{

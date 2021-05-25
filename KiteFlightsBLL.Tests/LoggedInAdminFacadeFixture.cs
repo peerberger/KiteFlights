@@ -17,30 +17,22 @@ namespace KiteFlightsBLL.Tests
 	public class LoggedInAdminFacadeFixture : IDisposable
 	{
 		// todo: move conenction string to config file
-		string connectionString = @"Host=localhost;Username=postgres;Password=admin;Database=kite_flights_tests_db;";
+		private string connectionString = @"Host=localhost;Username=postgres;Password=admin;Database=kite_flights_tests_db;";
+		private NpgsqlConnection connection;
 
-		public NpgsqlConnection Connection { get; private set; }
 		public ILoggedInAdminFacade Facade { get; private set; }
-		public ICountryDao CountryDao { get; private set; }
-		public IAdminDao AdminDao { get; private set; }
-		public ICustomerDao CustomerDao { get; private set; }
-		public IAirlineDao AirlineDao { get; private set; }
 
 
 		public LoggedInAdminFacadeFixture()
 		{
-			Connection = new NpgsqlConnection(connectionString);
+			connection = new NpgsqlConnection(connectionString);
 
-			Facade = new LoggedInAdminFacade(Connection);
-			CountryDao = new CountryDaoPgsql(Connection);
-			AdminDao = new AdminDaoPgsql(Connection);
-			CustomerDao = new CustomerDaoPgsql(Connection);
-			AirlineDao = new AirlineDaoPgsql(Connection);
+			Facade = new LoggedInAdminFacade(connection);
 		}
 
 		public void Dispose()
 		{
-			Connection.Dispose();
+			connection.Dispose();
 		}
 	}
 }

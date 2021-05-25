@@ -17,6 +17,7 @@ namespace KiteFlightsBLL.Facades
 		{
 		}
 
+		#region helper methods
 		private void CheckAdminLevel(LoginToken<Admin> token, int level)
 		{
 			if (!(token.User.Level >= level))
@@ -39,6 +40,7 @@ namespace KiteFlightsBLL.Facades
 		{
 			CheckAdminLevel(token, 3);
 		}
+		#endregion
 
 		// level 1 admin
 		public IList<Customer> GetAllCustomers(LoginToken<Admin> token)
