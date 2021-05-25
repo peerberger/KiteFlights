@@ -39,35 +39,6 @@ namespace KiteFlightsBLL.Tests
 		}
 
 		#region helper methods
-		#region GetTableInitialData() and its encapsulations
-		private T GetTableInitialData<T>(string tableName)
-		{
-			var json = File.ReadAllText($@"DbInitialData\{tableName}.json");
-
-			return JsonConvert.DeserializeObject<T>(json);
-		}
-
-		private IList<Country> GetCountriesInitialData()
-		{
-			return GetTableInitialData<IList<Country>>("countries");
-		}
-
-		private IList<Admin> GetAdminsInitialData()
-		{
-			return GetTableInitialData<IList<Admin>>("admins");
-		}
-
-		private IList<Customer> GetCustomersInitialData()
-		{
-			return GetTableInitialData<IList<Customer>>("customers");
-		}
-
-		private IList<Airline> GetAirlinesInitialData()
-		{
-			return GetTableInitialData<IList<Airline>>("airlines");
-		}
-		#endregion
-
 		#region GetTokensOfLevels() and its encapsulations 
 		public static IEnumerable<object[]> GetTokensOfLevels(params int[] levels)
 		{
@@ -110,7 +81,7 @@ namespace KiteFlightsBLL.Tests
 		public void GetAllCustomers_AllAdminLevels_Success(LoginToken<Admin> token)
 		{
 			// arrange
-			var expected = GetCustomersInitialData();
+			var expected = _dalFixture.GetCustomersInitialData();
 
 			// act
 			var actual = Facade.GetAllCustomers(token);
@@ -124,7 +95,7 @@ namespace KiteFlightsBLL.Tests
 		public void UpdateCustomerDetails_AllAdminLevels_Success(LoginToken<Admin> token)
 		{
 			// arrange
-			var customer = GetCustomersInitialData().First();
+			var customer = _dalFixture.GetCustomersInitialData().First();
 
 			customer.FirstName = "Bob";
 
@@ -143,7 +114,7 @@ namespace KiteFlightsBLL.Tests
 		public void UpdateAirlineDetails_AllAdminLevels_Success(LoginToken<Admin> token)
 		{
 			// arrange
-			var airline = GetAirlinesInitialData().First();
+			var airline = _dalFixture.GetAirlinesInitialData().First();
 
 			airline.Name = "Bob";
 
@@ -164,7 +135,7 @@ namespace KiteFlightsBLL.Tests
 		public void RemoveCustomer_AdminLevels_1_Failure(LoginToken<Admin> token)
 		{
 			// arrange
-			var customer = GetCustomersInitialData().First();
+			var customer = _dalFixture.GetCustomersInitialData().First();
 
 			// assert
 			Assert.Throws<UnauthorizedAdminException>(() => Facade.RemoveCustomer(token, customer));
@@ -175,7 +146,7 @@ namespace KiteFlightsBLL.Tests
 		public void RemoveCustomer_AdminLevels_2_3_Success(LoginToken<Admin> token)
 		{
 			// arrange
-			var customer = GetCustomersInitialData().First();
+			var customer = _dalFixture.GetCustomersInitialData().First();
 
 			// act
 			Facade.RemoveCustomer(token, customer);
@@ -192,7 +163,7 @@ namespace KiteFlightsBLL.Tests
 		public void RemoveAirline_AdminLevels_1_Failure(LoginToken<Admin> token)
 		{
 			// arrange
-			var airline = GetAirlinesInitialData().First();
+			var airline = _dalFixture.GetAirlinesInitialData().First();
 
 			// assert
 			Assert.Throws<UnauthorizedAdminException>(() => Facade.RemoveAirline(token, airline));
@@ -203,7 +174,7 @@ namespace KiteFlightsBLL.Tests
 		public void RemoveAirline_AdminLevels_2_3_Success(LoginToken<Admin> token)
 		{
 			// arrange
-			var airline = GetAirlinesInitialData().First();
+			var airline = _dalFixture.GetAirlinesInitialData().First();
 
 			// act
 			Facade.RemoveAirline(token, airline);
@@ -222,7 +193,7 @@ namespace KiteFlightsBLL.Tests
 		public void UpdateCountryDetails_AdminLevels_1_2_Failure(LoginToken<Admin> token)
 		{
 			// arrange
-			var country = GetCountriesInitialData().First();
+			var country = _dalFixture.GetCountriesInitialData().First();
 
 			country.Name = "Narnia";
 
@@ -235,7 +206,7 @@ namespace KiteFlightsBLL.Tests
 		public void UpdateCountryDetails_AdminLevels_3_Success(LoginToken<Admin> token)
 		{
 			// arrange
-			var country = GetCountriesInitialData().First();
+			var country = _dalFixture.GetCountriesInitialData().First();
 
 			country.Name = "Narnia";
 
@@ -254,7 +225,7 @@ namespace KiteFlightsBLL.Tests
 		public void RemoveCountry_AdminLevels_1_2_Failure(LoginToken<Admin> token)
 		{
 			// arrange
-			var country = GetCountriesInitialData().First();
+			var country = _dalFixture.GetCountriesInitialData().First();
 
 			// assert
 			Assert.Throws<UnauthorizedAdminException>(() => Facade.RemoveCountry(token, country));
@@ -265,7 +236,7 @@ namespace KiteFlightsBLL.Tests
 		public void RemoveCountry_AdminLevels_3_Success(LoginToken<Admin> token)
 		{
 			// arrange
-			var country = GetCountriesInitialData().First();
+			var country = _dalFixture.GetCountriesInitialData().First();
 
 			// act
 			Facade.RemoveCountry(token, country);
@@ -282,7 +253,7 @@ namespace KiteFlightsBLL.Tests
 		public void UpdateAdminDetails_AdminLevels_1_2_Failure(LoginToken<Admin> token)
 		{
 			// arrange
-			var admin = GetAdminsInitialData().First();
+			var admin = _dalFixture.GetAdminsInitialData().First();
 
 			admin.FirstName = "Bob";
 
@@ -295,7 +266,7 @@ namespace KiteFlightsBLL.Tests
 		public void UpdateAdminDetails_AdminLevels_3_ParamAdminLevel3_Failure(LoginToken<Admin> token)
 		{
 			// arrange
-			var admin = GetAdminsInitialData().Last();
+			var admin = _dalFixture.GetAdminsInitialData().Last();
 
 			admin.FirstName = "Bob";
 
@@ -308,7 +279,7 @@ namespace KiteFlightsBLL.Tests
 		public void UpdateAdminDetails_AdminLevels_3_Success(LoginToken<Admin> token)
 		{
 			// arrange
-			var admin = GetAdminsInitialData().First();
+			var admin = _dalFixture.GetAdminsInitialData().First();
 
 			admin.FirstName = "Bob";
 
@@ -327,7 +298,7 @@ namespace KiteFlightsBLL.Tests
 		public void RemoveAdmin_AdminLevels_1_2_Failure(LoginToken<Admin> token)
 		{
 			// arrange
-			var admin = GetAdminsInitialData().First();
+			var admin = _dalFixture.GetAdminsInitialData().First();
 
 			// assert
 			Assert.Throws<UnauthorizedAdminException>(() => Facade.RemoveAdmin(token, admin));
@@ -338,7 +309,7 @@ namespace KiteFlightsBLL.Tests
 		public void RemoveAdmin_AdminLevels_3_ParamAdminLevel3_Failure(LoginToken<Admin> token)
 		{
 			// arrange
-			var admin = GetAdminsInitialData().Last();
+			var admin = _dalFixture.GetAdminsInitialData().Last();
 
 			// act
 			Assert.Throws<Exception>(() => Facade.RemoveAdmin(token, admin));
@@ -349,7 +320,7 @@ namespace KiteFlightsBLL.Tests
 		public void RemoveAdmin_AdminLevels_3_Success(LoginToken<Admin> token)
 		{
 			// arrange
-			var admin = GetAdminsInitialData().First();
+			var admin = _dalFixture.GetAdminsInitialData().First();
 
 			// act
 			Facade.RemoveAdmin(token, admin);

@@ -1,8 +1,11 @@
 ﻿using KiteFlightsCommon.DaoInterfaces;
+using KiteFlightsCommon.POCOs;
 using KiteFlightsDAL.DAOs.PocoDaos;
+using Newtonsoft.Json;
 using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +34,7 @@ namespace KiteFlightsBLL.Tests
 			AirlineDao = new AirlineDaoPgsql(connection);
 		}
 
+		#region helper methods
 		public void ClearAndRepopulateDb()
 		{
 			string sp = @"CALL sp_clear_and_repopulate_db()";
@@ -44,6 +48,36 @@ namespace KiteFlightsBLL.Tests
 
 			connection.Close();
 		}
+
+		#region GetTableInitialData() and its encapsulations
+		public T GetTableInitialData<T>(string tableName)
+		{
+			var json = File.ReadAllText($@"DbInitialData\{tableName}.json");
+
+			return JsonConvert.DeserializeObject<T>(json);
+		}
+
+		public IList<Country> GetCountriesInitialData()
+		{
+			return GetTableInitialData<IList<Country>>("countries");
+		}
+
+		public IList<Admin> GetAdminsInitialData()
+		{
+			return GetTableInitialData<IList<Admin>>("admins");
+		}
+
+		public IList<Customer> GetCustomersInitialData()
+		{
+			return GetTableInitialData<IList<Customer>>("customers");
+		}
+
+		public IList<Airline> GetAirlinesInitialData()
+		{
+			return GetTableInitialData<IList<Airline>>("airlines");
+		}
+		#endregion
+		#endregion
 
 		public void Dispose()
 		{
