@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace KiteFlightsBLL.Tests
+namespace KiteFlightsBLL.Tests.CommonFixtures
 {
 	[CollectionDefinition("DalFixtureCollection")]
 	public class DalFixtureCollection : ICollectionFixture<DalFixture>

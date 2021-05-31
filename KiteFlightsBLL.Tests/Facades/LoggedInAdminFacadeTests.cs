@@ -1,6 +1,7 @@
 using KiteFlightsBLL.Auth;
 using KiteFlightsBLL.CustomExceptions;
-using KiteFlightsBLL.Facades;
+using KiteFlightsBLL.Tests.CommonFixtures;
+using KiteFlightsBLL.Tests.Facades.FacadesFixtures;
 using KiteFlightsBLL.Tests.Utilities;
 using KiteFlightsCommon.DaoInterfaces;
 using KiteFlightsCommon.FacadesInterfaces;
@@ -14,7 +15,7 @@ using System.Linq;
 using Xunit;
 using Xunit.Extensions;
 
-namespace KiteFlightsBLL.Tests
+namespace KiteFlightsBLL.Tests.Facades
 {
 	[Collection("DalFixtureCollection")]
 	public class LoggedInAdminFacadeTests : IClassFixture<LoggedInAdminFacadeFixture>

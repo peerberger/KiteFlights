@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KiteFlightsBLL.Tests
+namespace KiteFlightsBLL.Tests.CommonFixtures
 {
 	public class DalFixture : IDisposable
 	{

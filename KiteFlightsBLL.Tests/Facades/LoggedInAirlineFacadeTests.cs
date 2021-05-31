@@ -1,5 +1,7 @@
 ﻿using KiteFlightsBLL.Auth;
 using KiteFlightsBLL.CustomExceptions;
+using KiteFlightsBLL.Tests.CommonFixtures;
+using KiteFlightsBLL.Tests.Facades.FacadesFixtures;
 using KiteFlightsBLL.Tests.Utilities;
 using KiteFlightsCommon.DaoInterfaces;
 using KiteFlightsCommon.FacadesInterfaces;
@@ -11,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace KiteFlightsBLL.Tests
+namespace KiteFlightsBLL.Tests.Facades
 {
 	[Collection("DalFixtureCollection")]
 	public class LoggedInAirlineFacadeTests : IClassFixture<LoggedInAirlineFacadeFixture>
