@@ -1,6 +1,7 @@
 using KiteFlightsBLL.Auth;
 using KiteFlightsBLL.CustomExceptions;
 using KiteFlightsBLL.Facades;
+using KiteFlightsBLL.Tests.Utilities;
 using KiteFlightsCommon.DaoInterfaces;
 using KiteFlightsCommon.FacadesInterfaces;
 using KiteFlightsCommon.POCOs;
@@ -81,7 +82,7 @@ namespace KiteFlightsBLL.Tests
 		public void GetAllCustomers_AllAdminLevels_Success(LoginToken<Admin> token)
 		{
 			// arrange
-			var expected = _dalFixture.GetCustomersInitialData();
+			var expected = InitialData.Customers();
 
 			// act
 			var actual = Facade.GetAllCustomers(token);
@@ -95,7 +96,7 @@ namespace KiteFlightsBLL.Tests
 		public void UpdateCustomerDetails_AllAdminLevels_Success(LoginToken<Admin> token)
 		{
 			// arrange
-			var customer = _dalFixture.GetCustomersInitialData().First();
+			var customer = InitialData.Customers().First();
 
 			customer.FirstName = "Bob";
 
@@ -114,7 +115,7 @@ namespace KiteFlightsBLL.Tests
 		public void UpdateAirlineDetails_AllAdminLevels_Success(LoginToken<Admin> token)
 		{
 			// arrange
-			var airline = _dalFixture.GetAirlinesInitialData().First();
+			var airline = InitialData.Airlines().First();
 
 			airline.Name = "Bob";
 
@@ -135,7 +136,7 @@ namespace KiteFlightsBLL.Tests
 		public void RemoveCustomer_AdminLevels_1_Failure(LoginToken<Admin> token)
 		{
 			// arrange
-			var customer = _dalFixture.GetCustomersInitialData().First();
+			var customer = InitialData.Customers().First();
 
 			// assert
 			Assert.Throws<UnauthorizedAdminException>(() => Facade.RemoveCustomer(token, customer));
@@ -146,7 +147,7 @@ namespace KiteFlightsBLL.Tests
 		public void RemoveCustomer_AdminLevels_2_3_Success(LoginToken<Admin> token)
 		{
 			// arrange
-			var customer = _dalFixture.GetCustomersInitialData().First();
+			var customer = InitialData.Customers().First();
 
 			// act
 			Facade.RemoveCustomer(token, customer);
@@ -163,7 +164,7 @@ namespace KiteFlightsBLL.Tests
 		public void RemoveAirline_AdminLevels_1_Failure(LoginToken<Admin> token)
 		{
 			// arrange
-			var airline = _dalFixture.GetAirlinesInitialData().First();
+			var airline = InitialData.Airlines().First();
 
 			// assert
 			Assert.Throws<UnauthorizedAdminException>(() => Facade.RemoveAirline(token, airline));
@@ -174,7 +175,7 @@ namespace KiteFlightsBLL.Tests
 		public void RemoveAirline_AdminLevels_2_3_Success(LoginToken<Admin> token)
 		{
 			// arrange
-			var airline = _dalFixture.GetAirlinesInitialData().First();
+			var airline = InitialData.Airlines().First();
 
 			// act
 			Facade.RemoveAirline(token, airline);
@@ -193,7 +194,7 @@ namespace KiteFlightsBLL.Tests
 		public void UpdateCountryDetails_AdminLevels_1_2_Failure(LoginToken<Admin> token)
 		{
 			// arrange
-			var country = _dalFixture.GetCountriesInitialData().First();
+			var country = InitialData.Countries().First();
 
 			country.Name = "Narnia";
 
@@ -206,7 +207,7 @@ namespace KiteFlightsBLL.Tests
 		public void UpdateCountryDetails_AdminLevels_3_Success(LoginToken<Admin> token)
 		{
 			// arrange
-			var country = _dalFixture.GetCountriesInitialData().First();
+			var country = InitialData.Countries().First();
 
 			country.Name = "Narnia";
 
@@ -225,7 +226,7 @@ namespace KiteFlightsBLL.Tests
 		public void RemoveCountry_AdminLevels_1_2_Failure(LoginToken<Admin> token)
 		{
 			// arrange
-			var country = _dalFixture.GetCountriesInitialData().First();
+			var country = InitialData.Countries().First();
 
 			// assert
 			Assert.Throws<UnauthorizedAdminException>(() => Facade.RemoveCountry(token, country));
@@ -236,7 +237,7 @@ namespace KiteFlightsBLL.Tests
 		public void RemoveCountry_AdminLevels_3_Success(LoginToken<Admin> token)
 		{
 			// arrange
-			var country = _dalFixture.GetCountriesInitialData().First();
+			var country = InitialData.Countries().First();
 
 			// act
 			Facade.RemoveCountry(token, country);
@@ -253,7 +254,7 @@ namespace KiteFlightsBLL.Tests
 		public void UpdateAdminDetails_AdminLevels_1_2_Failure(LoginToken<Admin> token)
 		{
 			// arrange
-			var admin = _dalFixture.GetAdminsInitialData().First();
+			var admin = InitialData.Admins().First();
 
 			admin.FirstName = "Bob";
 
@@ -266,7 +267,7 @@ namespace KiteFlightsBLL.Tests
 		public void UpdateAdminDetails_AdminLevels_3_ParamAdminLevel3_Failure(LoginToken<Admin> token)
 		{
 			// arrange
-			var admin = _dalFixture.GetAdminsInitialData().Last();
+			var admin = InitialData.Admins().Last();
 
 			admin.FirstName = "Bob";
 
@@ -279,7 +280,7 @@ namespace KiteFlightsBLL.Tests
 		public void UpdateAdminDetails_AdminLevels_3_Success(LoginToken<Admin> token)
 		{
 			// arrange
-			var admin = _dalFixture.GetAdminsInitialData().First();
+			var admin = InitialData.Admins().First();
 
 			admin.FirstName = "Bob";
 
@@ -298,7 +299,7 @@ namespace KiteFlightsBLL.Tests
 		public void RemoveAdmin_AdminLevels_1_2_Failure(LoginToken<Admin> token)
 		{
 			// arrange
-			var admin = _dalFixture.GetAdminsInitialData().First();
+			var admin = InitialData.Admins().First();
 
 			// assert
 			Assert.Throws<UnauthorizedAdminException>(() => Facade.RemoveAdmin(token, admin));
@@ -309,7 +310,7 @@ namespace KiteFlightsBLL.Tests
 		public void RemoveAdmin_AdminLevels_3_ParamAdminLevel3_Failure(LoginToken<Admin> token)
 		{
 			// arrange
-			var admin = _dalFixture.GetAdminsInitialData().Last();
+			var admin = InitialData.Admins().Last();
 
 			// act
 			Assert.Throws<Exception>(() => Facade.RemoveAdmin(token, admin));
@@ -320,7 +321,7 @@ namespace KiteFlightsBLL.Tests
 		public void RemoveAdmin_AdminLevels_3_Success(LoginToken<Admin> token)
 		{
 			// arrange
-			var admin = _dalFixture.GetAdminsInitialData().First();
+			var admin = InitialData.Admins().First();
 
 			// act
 			Facade.RemoveAdmin(token, admin);
@@ -337,19 +338,7 @@ namespace KiteFlightsBLL.Tests
 		public void CreateAdmin_AdminLevels_1_2_Failure(LoginToken<Admin> token)
 		{
 			// arrange
-			var admin = new Admin
-			{
-				FirstName = "Bill",
-				LastName = "Gaits",
-				Level = 1,
-				User = new User
-				{
-					Username = "billgaits",
-					Password = "admin4",
-					Email = "billgaits@gmail.com",
-					UserRole = 3
-				}
-			};
+			var admin = NewPocoGenerator.Admin();
 
 			// assert
 			Assert.Throws<UnauthorizedAdminException>(() => Facade.CreateAdmin(token, admin));
@@ -360,19 +349,7 @@ namespace KiteFlightsBLL.Tests
 		public void CreateAdmin_AdminLevels_3_Success(LoginToken<Admin> token)
 		{
 			// arrange
-			var admin = new Admin
-			{
-				FirstName = "Bill",
-				LastName = "Gaits",
-				Level = 1,
-				User = new User
-				{
-					Username = "billgaits",
-					Password = "admin4",
-					Email = "billgaits@gmail.com",
-					UserRole = 3
-				}
-			};
+			var admin = NewPocoGenerator.Admin();
 
 			// act
 			var id = Facade.CreateAdmin(token, admin);
@@ -391,21 +368,7 @@ namespace KiteFlightsBLL.Tests
 		public void CreateCustomer_AdminLevels_1_2_Failure(LoginToken<Admin> token)
 		{
 			// arrange
-			var customer = new Customer
-			{
-				FirstName = "Bob",
-				LastName = "Bobson",
-				Address = "4th st. City-ville",
-				PhoneNo = "444-444-4444",
-				CreditCardNo = "4444-4444-4444-4444",
-				User = new User
-				{
-					Username = "bobbobson",
-					Password = "customer4",
-					Email = "bobbobson@gmail.com",
-					UserRole = 1
-				}
-			};
+			var customer = NewPocoGenerator.Customer();
 
 			// assert
 			Assert.Throws<UnauthorizedAdminException>(() => Facade.CreateCustomer(token, customer));
@@ -416,21 +379,7 @@ namespace KiteFlightsBLL.Tests
 		public void CreateCustomer_AdminLevels_3_Success(LoginToken<Admin> token)
 		{
 			// arrange
-			var customer = new Customer
-			{
-				FirstName = "Bob",
-				LastName = "Bobson",
-				Address = "4th st. City-ville",
-				PhoneNo = "444-444-4444",
-				CreditCardNo = "4444-4444-4444-4444",
-				User = new User
-				{
-					Username = "bobbobson",
-					Password = "customer4",
-					Email = "bobbobson@gmail.com",
-					UserRole = 1
-				}
-			};
+			var customer = NewPocoGenerator.Customer();
 
 			// act
 			var id = Facade.CreateCustomer(token, customer);
@@ -449,22 +398,7 @@ namespace KiteFlightsBLL.Tests
 		public void CreateAirline_AdminLevels_1_2_Failure(LoginToken<Admin> token)
 		{
 			// arrange
-			var airline = new Airline
-			{
-				Name = "Wizz Air",
-				Country = new Country
-				{
-					Id = 3,
-					Name = "UK"
-				},
-				User = new User
-				{
-					Username = "wizzair",
-					Password = "airline4",
-					Email = "wizzair@gmail.com",
-					UserRole = 2
-				}
-			};
+			var airline = NewPocoGenerator.Airline();
 
 			// assert
 			Assert.Throws<UnauthorizedAdminException>(() => Facade.CreateAirline(token, airline));
@@ -475,22 +409,7 @@ namespace KiteFlightsBLL.Tests
 		public void CreateAirline_AdminLevels_3_Success(LoginToken<Admin> token)
 		{
 			// arrange
-			var airline = new Airline
-			{
-				Name = "Wizz Air",
-				Country = new Country
-				{
-					Id = 3,
-					Name = "UK"
-				},
-				User = new User
-				{
-					Username = "wizzair",
-					Password = "airline4",
-					Email = "wizzair@gmail.com",
-					UserRole = 2
-				}
-			};
+			var airline = NewPocoGenerator.Airline();
 
 			// act
 			var id = Facade.CreateAirline(token, airline);

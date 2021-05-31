@@ -1,0 +1,143 @@
+[
+  {
+    "Id": 1,
+    "Flight": {
+      "Id": 1,
+      "Airline": {
+        "Id": 1,
+        "Name": "El Al",
+        "Country": {
+          "Id": 1,
+          "Name": "Israel"
+        },
+        "User": {
+          "Id": 7,
+          "Username": "elal",
+          "Password": "airline1",
+          "Email": "elal@gmail.com",
+          "UserRole": 2
+        }
+      },
+      "OriginCountry": {
+        "Id": 1,
+        "Name": "Israel"
+      },
+      "DestinationCountry": {
+        "Id": 2,
+        "Name": "USA"
+      },
+      "DepartureTime": "2021-01-01T00:00:00",
+      "LandingTime": "2021-01-01T01:00:00",
+      "RemainingTicketsNo": 10
+    },
+    "Customer": {
+      "Id": 1,
+      "FirstName": "Karen",
+      "LastName": "McLaren",
+      "Address": "1st st. City-ville",
+      "PhoneNo": "111-111-1111",
+      "CreditCardNo": "1111-1111-1111-1111",
+      "User": {
+        "Id": 4,
+        "Username": "karenmclaren",
+        "Password": "customer1",
+        "Email": "karenmclaren@gmail.com",
+        "UserRole": 1
+      }
+    }
+  },
+  {
+    "Id": 2,
+    "Flight": {
+      "Id": 2,
+      "Airline": {
+        "Id": 2,
+        "Name": "United",
+        "Country": {
+          "Id": 2,
+          "Name": "USA"
+        },
+        "User": {
+          "Id": 8,
+          "Username": "united",
+          "Password": "airline2",
+          "Email": "united@gmail.com",
+          "UserRole": 2
+        }
+      },
+      "OriginCountry": {
+        "Id": 2,
+        "Name": "USA"
+      },
+      "DestinationCountry": {
+        "Id": 3,
+        "Name": "UK"
+      },
+      "DepartureTime": "2021-01-01T01:00:00",
+      "LandingTime": "2021-01-01T02:00:00",
+      "RemainingTicketsNo": 20
+    },
+    "Customer": {
+      "Id": 2,
+      "FirstName": "Kile",
+      "LastName": "Kilometer",
+      "Address": "2nd st. City-ville",
+      "PhoneNo": "222-222-2222",
+      "CreditCardNo": "2222-2222-2222-2222",
+      "User": {
+        "Id": 5,
+        "Username": "kilekilometer",
+        "Password": "customer2",
+        "Email": "kilekilometer@gmail.com",
+        "UserRole": 1
+      }
+    }
+  },
+  {
+    "Id": 3,
+    "Flight": {
+      "Id": 3,
+      "Airline": {
+        "Id": 3,
+        "Name": "EasyJet",
+        "Country": {
+          "Id": 3,
+          "Name": "UK"
+        },
+        "User": {
+          "Id": 9,
+          "Username": "easyjet",
+          "Password": "airline3",
+          "Email": "easyjet@gmail.com",
+          "UserRole": 2
+        }
+      },
+      "OriginCountry": {
+        "Id": 3,
+        "Name": "UK"
+      },
+      "DestinationCountry": {
+        "Id": 1,
+        "Name": "Israel"
+      },
+      "DepartureTime": "2021-01-01T02:00:00",
+      "LandingTime": "2021-01-01T03:00:00",
+      "RemainingTicketsNo": 30
+    },
+    "Customer": {
+      "Id": 3,
+      "FirstName": "Denise",
+      "LastName": "Richards",
+      "Address": "3rd st. City-ville",
+      "PhoneNo": "333-333-3333",
+      "CreditCardNo": "3333-3333-3333-3333",
+      "User": {
+        "Id": 6,
+        "Username": "deniserichards",
+        "Password": "customer3",
+        "Email": "deniserichards@gmail.com",
+        "UserRole": 1
+      }
+    }
+  }
+]

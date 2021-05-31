@@ -22,6 +22,7 @@ namespace KiteFlightsBLL.Tests
 		public IAdminDao AdminDao { get; private set; }
 		public ICustomerDao CustomerDao { get; private set; }
 		public IAirlineDao AirlineDao { get; private set; }
+		public IFlightDao FlightDao { get; private set; }
 
 
 		public DalFixture()
@@ -32,9 +33,9 @@ namespace KiteFlightsBLL.Tests
 			AdminDao = new AdminDaoPgsql(connection);
 			CustomerDao = new CustomerDaoPgsql(connection);
 			AirlineDao = new AirlineDaoPgsql(connection);
+			FlightDao = new FlightDaoPgsql(connection);
 		}
 
-		#region helper methods
 		public void ClearAndRepopulateDb()
 		{
 			string sp = @"CALL sp_clear_and_repopulate_db()";
@@ -48,36 +49,6 @@ namespace KiteFlightsBLL.Tests
 
 			connection.Close();
 		}
-
-		#region GetTableInitialData() and its encapsulations
-		public T GetTableInitialData<T>(string tableName)
-		{
-			var json = File.ReadAllText($@"DbInitialData\{tableName}.json");
-
-			return JsonConvert.DeserializeObject<T>(json);
-		}
-
-		public IList<Country> GetCountriesInitialData()
-		{
-			return GetTableInitialData<IList<Country>>("countries");
-		}
-
-		public IList<Admin> GetAdminsInitialData()
-		{
-			return GetTableInitialData<IList<Admin>>("admins");
-		}
-
-		public IList<Customer> GetCustomersInitialData()
-		{
-			return GetTableInitialData<IList<Customer>>("customers");
-		}
-
-		public IList<Airline> GetAirlinesInitialData()
-		{
-			return GetTableInitialData<IList<Airline>>("airlines");
-		}
-		#endregion
-		#endregion
 
 		public void Dispose()
 		{
