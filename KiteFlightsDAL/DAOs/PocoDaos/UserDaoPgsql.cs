@@ -14,5 +14,12 @@ namespace KiteFlightsDAL.DAOs.PocoDaos
 		public UserDaoPgsql(NpgsqlConnection connection) : base(connection)
 		{
 		}
+
+		public bool ChangePassword(long userId, string oldPassword, string newPassword)
+		{
+			var parameters = new List<object> { userId, oldPassword, newPassword };
+
+			return (bool)SpExecuteScalar($"sp_{TableName}_change_password", parameters);
+		}
 	}
 }
