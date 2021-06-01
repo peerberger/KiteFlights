@@ -14,5 +14,6 @@ namespace KiteFlightsCommon.DaoInterfaces
 		int RemoveByCountryId(int countryId);
 		IList<Ticket> GetByAirlineId(long airlineId);
 		int RemoveByFlightId(long flightId);
+		Ticket Add(long flightId, long customerId);
 	}
 }

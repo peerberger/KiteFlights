@@ -49,5 +49,12 @@ namespace KiteFlightsDAL.DAOs.PocoDaos
 
 			return (int)SpExecuteScalar($"sp_{TableName}_remove_by_flight_id", parameters);
 		}
+
+		public Ticket Add(long flightId, long customerId)
+		{
+			var parameters = new List<object> { flightId, customerId };
+
+			return SpExecuteReaderReturningSingleRecord($"sp_{TableName}_add", parameters);
+		}
 	}
 }
