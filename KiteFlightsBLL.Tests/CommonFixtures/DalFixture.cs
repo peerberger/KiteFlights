@@ -23,6 +23,7 @@ namespace KiteFlightsBLL.Tests.CommonFixtures
 		public ICustomerDao CustomerDao { get; private set; }
 		public IAirlineDao AirlineDao { get; private set; }
 		public IFlightDao FlightDao { get; private set; }
+		public ITicketDao TicketDao { get; private set; }
 
 
 		public DalFixture()
@@ -34,6 +35,7 @@ namespace KiteFlightsBLL.Tests.CommonFixtures
 			CustomerDao = new CustomerDaoPgsql(connection);
 			AirlineDao = new AirlineDaoPgsql(connection);
 			FlightDao = new FlightDaoPgsql(connection);
+			TicketDao = new TicketDaoPgsql(connection);
 		}
 
 		public void ClearAndRepopulateDb()

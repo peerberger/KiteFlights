@@ -21,9 +21,6 @@ namespace KiteFlightsBLL.Tests.Facades
 		private DalFixture _dalFixture;
 		private LoggedInAirlineFacadeFixture _facadeFixture;
 
-		//private ICountryDao CountryDao { get => _dalFixture.CountryDao; }
-		//private ICustomerDao CustomerDao { get => _dalFixture.CustomerDao; }
-		//private IAdminDao AdminDao { get => _dalFixture.AdminDao; }
 		private IAirlineDao AirlineDao { get => _dalFixture.AirlineDao; }
 		private IFlightDao FlightDao { get => _dalFixture.FlightDao; }
 
@@ -42,11 +39,6 @@ namespace KiteFlightsBLL.Tests.Facades
 		#region helper methods
 		public static IEnumerable<object[]> GetInitialDataAirlinesTokens(int skipNum, int takeNum)
 		{
-			//for (int i = 1; i <= num; i++)
-			//{
-			//	yield return new object[] { new LoginToken<Airline>(new Airline { Id = i }) };
-			//}
-
 			var result = InitialData.Airlines()
 				.Skip(skipNum)
 				.Take(takeNum)

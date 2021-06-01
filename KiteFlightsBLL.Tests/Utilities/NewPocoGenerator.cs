@@ -102,5 +102,64 @@ namespace KiteFlightsBLL.Tests.Utilities
 				RemainingTicketsNo = 40
 			};
 		}
+
+		public static Ticket Ticket()
+		{
+			return new Ticket
+			{
+				Flight = new Flight
+				{
+					Id = 1,
+					Airline = new Airline
+					{
+						Id = 1,
+						Name = "El Al",
+						Country = new Country
+						{
+							Id = 1,
+							Name = "Israel"
+						},
+						User = new User
+						{
+							Id = 7,
+							Username = "elal",
+							Password = "airline1",
+							Email = "elal@gmail.com",
+							UserRole = 2
+						}
+					},
+					OriginCountry = new Country
+					{
+						Id = 1,
+						Name = "Israel"
+					},
+					DestinationCountry = new Country
+					{
+						Id = 2,
+						Name = "USA"
+					},
+					DepartureTime = new DateTime(2021, 1, 1),
+					LandingTime = new DateTime(2021, 1, 1, 1, 0, 0),
+					RemainingTicketsNo = 10
+				},
+				Customer = new Customer
+				{
+					Id = 2,
+					FirstName = "Kile",
+					LastName = "Kilometer",
+					Address = "2nd st. City-ville",
+					PhoneNo = "222-222-2222",
+					CreditCardNo = "2222-2222-2222-2222",
+					User = new User
+					{
+						Id = 5,
+						Username = "kilekilometer",
+						Password = "customer2",
+						Email = "kilekilometer@gmail.com",
+						UserRole = 1
+					}
+				}
+			};
+		}
 	}
 }
