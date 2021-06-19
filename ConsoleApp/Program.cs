@@ -14,6 +14,7 @@ using KiteFlightsCommon.DaoInterfaces;
 using KiteFlightsBLL.Facades;
 using KiteFlightsBLL.Auth;
 using Newtonsoft.Json;
+using KiteFlightsCommon.FacadesInterfaces;
 
 namespace ConsoleApp
 {
@@ -74,8 +75,7 @@ namespace ConsoleApp
 			//using (ICountryDao dao = new CountryDaoPgsql(new NpgsqlConnection(connectionString)))
 			//{
 			//	var countries = dao.GetAll();
-			//	var json = JsonConvert.SerializeObject(countries, Formatting.Indented);
-			//	File.WriteAllText(@"C:\Users\User\Source\Repos\‏‏KiteFlights\KiteFlightsBLL.Tests\countries.json", json);
+			//	GenerateJsonFileForTests(countries, "countries");
 
 			//	var country = dao.GetById(4);
 
@@ -97,11 +97,14 @@ namespace ConsoleApp
 			//	var updated = dao.Update(new User { Id = 31, Username = "gaga", Password = "gaga1", Email = "ga@ga", UserRole = 1 });
 
 			//	var removed = dao.Remove(6);
+
+			//	var userRole = dao.GetUserRole("dojaat", "admin1");
 			//}
 
 			//using (IAdminDao dao = new AdminDaoPgsql(new NpgsqlConnection(connectionString)))
 			//{
 			//	var admins = dao.GetAll();
+			//	GenerateJsonFileForTests(admins, "admins");
 
 			//	var admin = dao.GetById(3);
 
@@ -151,6 +154,7 @@ namespace ConsoleApp
 			//using (IFlightDao dao = new FlightDaoPgsql(new NpgsqlConnection(connectionString)))
 			//{
 			//	var flights = dao.GetAll();
+			//	GenerateJsonFileForTests(flights, "flights");
 
 			//	var flight = dao.GetById(2);
 
@@ -190,61 +194,52 @@ namespace ConsoleApp
 			//	var flights7 = dao.GetFlightsByCustomer(5);
 			//}
 
-			using (ITicketDao dao = new TicketDaoPgsql(new NpgsqlConnection(connectionString)))
-			{
-				var tickets = dao.GetAll();
+			//using (ITicketDao dao = new TicketDaoPgsql(new NpgsqlConnection(connectionString)))
+			//{
+			//	var tickets = dao.GetAll();
+			//	GenerateJsonFileForTests(tickets, "tickets");
 
-				var ticket = dao.GetById(2);
+			//	var ticket = dao.GetById(2);
 
-				//var id = dao.Add(new Ticket { Flight = new Flight { Id = 4 }, Customer = new Customer { Id = 5 } });
+			//	//var id = dao.Add(new Ticket { Flight = new Flight { Id = 4 }, Customer = new Customer { Id = 5 } });
 
-				var updated = dao.Update(new Ticket { Id = 3, Flight = new Flight { Id = 6 }, Customer = new Customer { Id = 5 } });
+			//	var updated = dao.Update(new Ticket { Id = 3, Flight = new Flight { Id = 6 }, Customer = new Customer { Id = 5 } });
 
-				var removed = dao.Remove(4);
+			//	var removed = dao.Remove(4);
 
-				var removed1 = dao.RemoveByCustomerId(1);
-			}
+			//	var removed1 = dao.RemoveByCustomerId(1);
+			//}
 			#endregion
 
-			using (AnonymousUserFacade facade = new AnonymousUserFacade(new NpgsqlConnection(connectionString)))
+			//using (AnonymousUserFacade facade = new AnonymousUserFacade(new NpgsqlConnection(connectionString)))
+			//{
+			//	var airlines = facade.GetAllAirlines();
+
+			//	var flight = facade.GetFlightById(2);
+
+			//	var flight2 = facade.GetAllFlightsWithVacancies();
+
+			//	var flights3 = facade.GetFlightsByOriginCountry(4);
+
+			//	var flights4 = facade.GetFlightsByDestinationCountry(13);
+
+			//	var flights5 = facade.GetFlightsByDepatrureTime(new DateTime(2021, 05, 03, 17, 32, 42));
+
+			//	var flights6 = facade.GetFlightsByLandingTime(new DateTime(2021, 05, 03, 18, 32, 42));
+			//}
+
+			using (ILoginService loginService = new LoginService(new NpgsqlConnection(connectionString)))
 			{
-				var airlines = facade.GetAllAirlines();
+				ILoginToken token;
+				FacadeBase facade;
 
-				var flight = facade.GetFlightById(2);
 
-				var flight2 = facade.GetAllFlightsWithVacancies();
+				//var aaa = loginService.TryLogin("karenmclaren", "customer1", out token, out facade);
+				//var aaa = loginService.TryLogin("elal", "airline1", out token, out facade);
+				var aaa = loginService.TryLogin("dojcat", "admin1", out token, out facade);
 
-				var flights3 = facade.GetFlightsByOriginCountry(4);
-
-				var flights4 = facade.GetFlightsByDestinationCountry(13);
-
-				var flights5 = facade.GetFlightsByDepatrureTime(new DateTime(2021, 05, 03, 17, 32, 42));
-
-				var flights6 = facade.GetFlightsByLandingTime(new DateTime(2021, 05, 03, 18, 32, 42));
-			}
-
-			using (LoggedInAdminFacade facade = new LoggedInAdminFacade(new NpgsqlConnection(connectionString)))
-			{
-				LoginToken<Admin> token = new LoginToken<Admin>(new Admin { Level = 1 });
-
-				// level 1 admin
-				facade.GetAllCustomers(token);
-
-				//void UpdateCustomerDetails(LoginToken<Admin> token, Customer customer);
-				//void UpdateAirlineDetails(LoginToken<Admin> token, Airline airline);
-
-				//// level 2 admin
-				//void RemoveCustomer(LoginToken<Admin> token, Customer customer);
-				//void RemoveAirline(LoginToken<Admin> token, Airline airline);
-
-				//// level 3 admin
-				//void UpdateCountryDetails(LoginToken<Admin> token, Country country);
-				//void RemoveCountry(LoginToken<Admin> token, Country country);
-				//void UpdateAdminDetails(LoginToken<Admin> token, Admin admin);
-				//void RemoveAdmin(LoginToken<Admin> token, Admin admin);
-				//void CreateAdmin(LoginToken<Admin> token, Admin admin);
-				//void CreateCustomer(LoginToken<Admin> token, Customer customer);
-				//void CreateAirline(LoginToken<Admin> token, Airline airline);
+				LoginToken<Customer> token1 = token as LoginToken<Customer>;
+				ILoggedInCustomerFacade facade1 = facade as ILoggedInCustomerFacade;
 			}
 		}
 
