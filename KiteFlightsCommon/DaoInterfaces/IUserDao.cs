@@ -10,5 +10,6 @@ namespace KiteFlightsCommon.DaoInterfaces
 	public interface IUserDao : ICrudDao<User>
 	{
 		bool ChangePassword(long userId, string oldPassword, string newPassword);
+		int GetUserRole(string username, string password);
 	}
 }

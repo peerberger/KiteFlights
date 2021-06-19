@@ -254,7 +254,7 @@ namespace KiteFlightsDAL.DAOs
 			return parameters;
 		}
 
-		private static T CheckIfSpResultNullAndReturnValue<T>(object spResult, T alternativeValue)
+		protected static T CheckIfSpResultNullAndReturnValue<T>(object spResult, T alternativeValue)
 		{
 			if (spResult is long)
 			{

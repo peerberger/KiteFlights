@@ -33,7 +33,11 @@ namespace KiteFlightsDAL.DAOs.PocoDaos
 		{
 			var parameters = new List<object> { countryId };
 
-			return (int)SpExecuteScalar($"sp_{TableName}_remove_by_country_id", parameters);
+			var spResult = SpExecuteScalar($"sp_{TableName}_remove_by_country_id", parameters);
+
+			var removedCountriesCount = CheckIfSpResultNullAndReturnValue(spResult, 0);
+
+			return removedCountriesCount;
 		}
 	}
 }
