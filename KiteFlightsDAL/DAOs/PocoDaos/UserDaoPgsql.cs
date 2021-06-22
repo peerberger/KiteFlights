@@ -19,9 +19,7 @@ namespace KiteFlightsDAL.DAOs.PocoDaos
 		{
 			var parameters = new List<object> { userId, oldPassword, newPassword };
 
-			var spResult = SpExecuteScalar($"sp_{TableName}_change_password", parameters);
-
-			var changedSuccessfully = CheckIfSpResultNullAndReturnValue(spResult, false);
+			var changedSuccessfully = SpExecuteScalarWithDefaultReturnValue($"sp_{TableName}_change_password", false, parameters);
 
 			return changedSuccessfully;
 		}
@@ -30,9 +28,7 @@ namespace KiteFlightsDAL.DAOs.PocoDaos
 		{
 			var parameters = new List<object> { username, password };
 
-			var spResult = SpExecuteScalar($"sp_{TableName}_get_user_role", parameters);
-
-			var userRole = CheckIfSpResultNullAndReturnValue(spResult, -1);
+			var userRole = SpExecuteScalarWithDefaultReturnValue($"sp_{TableName}_get_user_role", -1, parameters);
 
 			return userRole;
 		}

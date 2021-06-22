@@ -15,13 +15,17 @@ using KiteFlightsBLL.Facades;
 using KiteFlightsBLL.Auth;
 using Newtonsoft.Json;
 using KiteFlightsCommon.FacadesInterfaces;
+using KiteFlightsDAL;
+using KiteFlightsDAL.HelperClasses.CustomExceptions;
 
 namespace ConsoleApp
 {
 	class Program
 	{
 		private static readonly ILog logger = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-		private static ManualResetEvent gate = new ManualResetEvent(false);
+
+
+		//private static ManualResetEvent gate = new ManualResetEvent(false);
 
 		//public static void Foo(NpgsqlConnectionPool pool)
 		//{
@@ -62,8 +66,8 @@ namespace ConsoleApp
 			////Console.WriteLine("***********************");
 			#endregion
 
-			//var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
-			//XmlConfigurator.Configure(logRepository, new FileInfo("Log4Net.config"));
+			var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+			XmlConfigurator.Configure(logRepository, new FileInfo("Log4Net.config"));
 
 			// todo: move conenction string to config file
 			//string connectionString = @"Host=localhost;Username=postgres;Password=admin;Database=kite_flights_db;";
@@ -75,7 +79,7 @@ namespace ConsoleApp
 			//using (ICountryDao dao = new CountryDaoPgsql(new NpgsqlConnection(connectionString)))
 			//{
 			//	var countries = dao.GetAll();
-			//	GenerateJsonFileForTests(countries, "countries");
+			//	//GenerateJsonFileForTests(countries, "countries");
 
 			//	var country = dao.GetById(4);
 
@@ -85,6 +89,41 @@ namespace ConsoleApp
 
 			//	var removed = dao.Remove(68);
 			//}
+
+			try
+			{
+				var pool = NpgsqlConnectionPool.Instance;
+				var connection = pool.GetConnection();
+
+				ICountryDao dao = new CountryDaoPgsql(connection);
+
+				var countries = dao.GetAll();
+				//GenerateJsonFileForTests(countries, "countries");
+
+				var country = dao.GetById(4);
+
+				//var id = dao.Add(new Country { Name = "lala" });
+
+				var updated = dao.Update(new Country { Id = 6, Name = "haha" });
+
+				var removed = dao.Remove(7);
+
+				IAdminDao dao1 = new AdminDaoPgsql(connection);
+				var admin = dao1.GetByUsername("dojacat");
+
+				pool.ReturnConnection(connection);
+				//pool.Dispose();
+			}
+			catch (DbConnectionTestFailedException ex)
+			{
+				//logger.Fatal(ex.Message);
+			}
+			catch (Exception ex)
+			{
+
+				throw;
+			}
+
 
 			//using (IUserDao dao = new UserDaoPgsql(new NpgsqlConnection(connectionString)))
 			//{

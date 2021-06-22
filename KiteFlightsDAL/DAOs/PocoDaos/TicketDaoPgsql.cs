@@ -19,9 +19,7 @@ namespace KiteFlightsDAL.DAOs.PocoDaos
 		{
 			var parameters = new List<object> { customerId };
 
-			var spResult = SpExecuteScalar($"sp_{TableName}_remove_by_customer_id", parameters);
-
-			var removedTicketsCount = CheckIfSpResultNullAndReturnValue(spResult, 0);
+			var removedTicketsCount = SpExecuteScalarWithDefaultReturnValue($"sp_{TableName}_remove_by_customer_id", 0, parameters);
 
 			return removedTicketsCount;
 		}
@@ -30,9 +28,7 @@ namespace KiteFlightsDAL.DAOs.PocoDaos
 		{
 			var parameters = new List<object> { airlineId };
 
-			var spResult = SpExecuteScalar($"sp_{TableName}_remove_by_airline_id", parameters);
-
-			var removedTicketsCount = CheckIfSpResultNullAndReturnValue(spResult, 0);
+			var removedTicketsCount = SpExecuteScalarWithDefaultReturnValue($"sp_{TableName}_remove_by_airline_id", 0, parameters);
 
 			return removedTicketsCount;
 		}
@@ -41,9 +37,7 @@ namespace KiteFlightsDAL.DAOs.PocoDaos
 		{
 			var parameters = new List<object> { countryId };
 
-			var spResult = SpExecuteScalar($"sp_{TableName}_remove_by_country_id", parameters);
-
-			var removedTicketsCount = CheckIfSpResultNullAndReturnValue(spResult, 0);
+			var removedTicketsCount = SpExecuteScalarWithDefaultReturnValue($"sp_{TableName}_remove_by_country_id", 0, parameters);
 
 			return removedTicketsCount;
 		}
@@ -59,9 +53,7 @@ namespace KiteFlightsDAL.DAOs.PocoDaos
 		{
 			var parameters = new List<object> { flightId };
 
-			var spResult = SpExecuteScalar($"sp_{TableName}_remove_by_flight_id", parameters);
-
-			var removedTicketsCount = CheckIfSpResultNullAndReturnValue(spResult, 0);
+			var removedTicketsCount = SpExecuteScalarWithDefaultReturnValue($"sp_{TableName}_remove_by_flight_id", 0, parameters);
 
 			return removedTicketsCount;
 		}
