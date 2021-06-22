@@ -11,8 +11,7 @@ using System.Threading.Tasks;
 
 namespace KiteFlightsDAL.DAOs
 {
-	// when writing the xml doc comments, copy and paste in oneNote
-	public class BaseDaoPgsql<TEntity> : IDisposable where TEntity : IPoco, new()
+	public class BaseDaoPgsql<TEntity> where TEntity : IPoco, new()
 	{
 		// all inheriting DAOs must be of the same connection (the same db).
 		// if you want a DAO that connects to a different db but still inherit from this class,
@@ -24,16 +23,6 @@ namespace KiteFlightsDAL.DAOs
 		// todo: maybe make the ctor static somehow?? its just that static ctors must be parameterless
 		public BaseDaoPgsql(NpgsqlConnection connection)
 		{
-			////todo: maybe reorganize the testing better? with exception? idk if there is actually something to improve
-			//if (TestConnection(connectionString))
-			//{
-			//	_connection = new NpgsqlConnection(connectionString);
-			//}
-			//else
-			//{
-			//	throw new Exception("Connection to DB failed.");
-			//}
-
 			_connection = connection;
 		}
 
@@ -43,29 +32,16 @@ namespace KiteFlightsDAL.DAOs
 		{
 			object result = null;
 
-			try
+			using (var cmd = new NpgsqlCommand(spName, _connection))
 			{
-				_connection.Open();
+				cmd.CommandType = CommandType.StoredProcedure;
 
-				using (var cmd = new NpgsqlCommand(spName, _connection))
+				if (parameters != null)
 				{
-					cmd.CommandType = CommandType.StoredProcedure;
-
-					if (parameters != null)
-					{
-						cmd.Parameters.AddRange(GetNpgsqlParameters(parameters));
-					}
-
-					result = ExecuteCommand(cmd);
+					cmd.Parameters.AddRange(GetNpgsqlParameters(parameters));
 				}
-			}
-			catch (Exception ex)
-			{
-				// todo: add logging
-			}
-			finally
-			{
-				_connection.Close();
+
+				result = ExecuteCommand(cmd);
 			}
 
 			return result;
@@ -132,30 +108,16 @@ namespace KiteFlightsDAL.DAOs
 		// encapsulations for sp()
 		protected static List<TEntity> SpExecuteReader(string spName, List<object> parameters = null)
 		{
-			List<TEntity> spResult = default;
-
-			try
-			{
-				spResult = Sp(ExecuteReader, spName, parameters) as List<TEntity>;
-
-				// check if any records were found
-				if (spResult.Count < 1)
-				{
-					throw new Exception("No records were returned.");
-				}
-			}
-			catch (Exception ex)
-			{
-				// todo: add logging
-			}
-
+			var spResult = Sp(ExecuteReader, spName, parameters) as List<TEntity>;
+			
 			return spResult;
 		}
+
 		protected static TEntity SpExecuteReaderReturningSingleRecord(string spName, List<object> parameters = null)
 		{
 			var spResult = SpExecuteReader(spName, parameters);
 
-			return spResult != null && spResult.Count > 0 ? spResult.First() : default(TEntity);
+			return spResult.FirstOrDefault();
 		}
 
 		protected static object SpExecuteScalar(string spName, List<object> parameters = null)
@@ -187,32 +149,6 @@ namespace KiteFlightsDAL.DAOs
 
 			return entity;
 		}
-
-		// test methods
-		private static bool TestConnection(string connectionString)
-		{
-			try
-			{
-				using (var connection = new NpgsqlConnection(connectionString))
-				{
-					connection.Open();
-					return true;
-				}
-			}
-			catch (Exception ex)
-			{
-				// todo: add logging
-				return false;
-			}
-		}
 		#endregion
-
-		// dispose
-		// todo: if you instantiate the connection outside this dao, consider deleting IDisposable and Dispose()
-		// todo: remember to maybe edit this when adding the use of connection pool
-		public void Dispose()
-		{
-			_connection.Dispose();
-		}
 	}
 }
