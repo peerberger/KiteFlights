@@ -18,16 +18,9 @@ namespace KiteFlightsDAL.DAOs
 
 		public GenericDaoPgsql(NpgsqlConnection connection) : base(connection)
 		{
-			try
-			{
-				TableName = GetTableName();
-			}
-			catch (Exception ex)
-			{
-				// todo: add logging
-			}
+			TableName = GetTableName();
 		}
-	
+
 		#region crud methods
 		// getting
 		public TEntity GetById(int id)
@@ -45,13 +38,9 @@ namespace KiteFlightsDAL.DAOs
 		// adding
 		public int Add(TEntity entity)
 		{
-			var newId = -1;
-
 			var parameters = GetSpParameters(entity);
 
-			var spResult = SpExecuteScalar($"sp_{TableName}_add", parameters);
-
-			newId = CheckIfSpResultNullAndReturnValue(spResult, -1);
+			var newId = SpExecuteScalarWithDefaultReturnValue($"sp_{TableName}_add", -1, parameters);
 
 			return newId;
 		}
@@ -59,25 +48,9 @@ namespace KiteFlightsDAL.DAOs
 		// updating
 		public bool Update(TEntity entity)
 		{
-			bool updated = false;
+			var parameters = GetSpParameters(entity);
 
-			try
-			{
-				var parameters = GetSpParameters(entity);
-
-				var spResult = SpExecuteScalar($"sp_{TableName}_update", parameters);
-
-				updated = CheckIfSpResultNullAndReturnValue(spResult, false);
-
-				if (!updated)
-				{
-					throw new ArgumentException("No record that matched the entity's Id was found.");
-				}
-			}
-			catch (Exception ex)
-			{
-				// todo: add logging
-			}
+			bool updated = SpExecuteScalarWithDefaultReturnValue($"sp_{TableName}_update", false, parameters);
 
 			return updated;
 		}
@@ -85,25 +58,9 @@ namespace KiteFlightsDAL.DAOs
 		// removing
 		public bool Remove(int id)
 		{
-			bool removed = false;
+			var parameters = new List<object> { id };
 
-			try
-			{
-				var parameters = new List<object> { id };
-
-				var spResult = SpExecuteScalar($"sp_{TableName}_remove", parameters);
-
-				removed = CheckIfSpResultNullAndReturnValue(spResult, false);
-
-				if (!removed)
-				{
-					throw new ArgumentException("No record that matched the entity's Id was found.");
-				}
-			}
-			catch (Exception ex)
-			{
-				// todo: add logging
-			}
+			var removed = SpExecuteScalarWithDefaultReturnValue($"sp_{TableName}_remove", false, parameters);
 
 			return removed;
 		}
@@ -118,7 +75,7 @@ namespace KiteFlightsDAL.DAOs
 			}
 			else
 			{
-				throw new Exception("No TableAttribute was found.");
+				throw new Exception("No TableAttribute was found on the POCO passed into TEntity.");
 			}
 		}
 
@@ -254,7 +211,16 @@ namespace KiteFlightsDAL.DAOs
 			return parameters;
 		}
 
-		protected static T CheckIfSpResultNullAndReturnValue<T>(object spResult, T alternativeValue)
+		protected static T SpExecuteScalarWithDefaultReturnValue<T>(string spName, T defaultReturnValue, List<object> parameters = null)
+		{
+			var spResult = SpExecuteScalar(spName, parameters);
+
+			var result = CheckIfSpResultIsNullAndReturnFinalValue(spResult, defaultReturnValue);
+
+			return result;
+		}
+
+		protected static T CheckIfSpResultIsNullAndReturnFinalValue<T>(object spResult, T alternativeValue)
 		{
 			if (spResult is long)
 			{
