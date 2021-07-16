@@ -11,7 +11,7 @@ namespace KiteFlightsBLL.Facades
 {
 	public class AnonymousUserFacade : FacadeBase, IAnonymousUserFacade
 	{
-		public AnonymousUserFacade(NpgsqlConnection connection) : base(connection)
+		public AnonymousUserFacade()
 		{
 		}
 

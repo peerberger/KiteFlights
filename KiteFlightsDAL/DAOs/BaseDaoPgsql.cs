@@ -13,17 +13,12 @@ namespace KiteFlightsDAL.DAOs
 {
 	public class BaseDaoPgsql<TEntity> where TEntity : IPoco, new()
 	{
-		// all inheriting DAOs must be of the same connection (the same db).
-		// if you want a DAO that connects to a different db but still inherit from this class,
-		// just drop the static from: _connection, Sp(), SpExecuteReader(), and SpExecuteScalar()
-		protected static NpgsqlConnection _connection;
+		private static NpgsqlConnectionPool _connectionPool = NpgsqlConnectionPool.Instance;
 		private static readonly object key = new object();
 		private static int i = 0;
 
-		// todo: maybe make the ctor static somehow?? its just that static ctors must be parameterless
-		public BaseDaoPgsql(NpgsqlConnection connection)
+		static BaseDaoPgsql()
 		{
-			_connection = connection;
 		}
 
 		#region main logic
@@ -32,7 +27,9 @@ namespace KiteFlightsDAL.DAOs
 		{
 			object result = null;
 
-			using (var cmd = new NpgsqlCommand(spName, _connection))
+			var connection = _connectionPool.GetConnection();
+
+			using (var cmd = new NpgsqlCommand(spName, connection))
 			{
 				cmd.CommandType = CommandType.StoredProcedure;
 
@@ -43,6 +40,8 @@ namespace KiteFlightsDAL.DAOs
 
 				result = ExecuteCommand(cmd);
 			}
+
+			_connectionPool.ReturnConnection(connection);
 
 			return result;
 		}
@@ -109,7 +108,7 @@ namespace KiteFlightsDAL.DAOs
 		protected static List<TEntity> SpExecuteReader(string spName, List<object> parameters = null)
 		{
 			var spResult = Sp(ExecuteReader, spName, parameters) as List<TEntity>;
-			
+
 			return spResult;
 		}
 

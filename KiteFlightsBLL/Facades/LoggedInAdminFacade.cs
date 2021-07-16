@@ -13,7 +13,7 @@ namespace KiteFlightsBLL.Facades
 {
 	public class LoggedInAdminFacade : AnonymousUserFacade, ILoggedInAdminFacade
 	{
-		public LoggedInAdminFacade(NpgsqlConnection connection) : base(connection)
+		public LoggedInAdminFacade()
 		{
 		}
 
@@ -80,7 +80,7 @@ namespace KiteFlightsBLL.Facades
 			VerifyAdminLevel2(token);
 
 			_ticketDao.RemoveByAirlineId(airline.Id);
-			
+
 			_flightDao.RemoveByAirlineId(airline.Id);
 
 			_airlineDao.Remove((int)airline.Id);

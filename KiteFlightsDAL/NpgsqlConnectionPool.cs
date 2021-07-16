@@ -35,9 +35,9 @@ namespace KiteFlightsDAL
 		#endregion
 
 		public const int MAX_CONNENCTIONS = 100;
-		// should be in config file or passed as parameter(?? is it possible in a singleton??) !!
+		// todo: should be in config file or passed as parameter(?? is it possible in a singleton??) !!
 		//private const string connectionString = @"Host=localhost;Username=postgres;Password=admin;Database=kite_flights_db;";
-		string connectionString = @"Host=localhost;Username=postgres;Password=admin;Database=kite_flights_tests_d;";
+		private const string connectionString = @"Host=localhost;Username=postgres;Password=admin;Database=kite_flights_tests_db;";
 
 		public BlockingCollection<NpgsqlConnection> Connections { get; set; }
 
@@ -90,7 +90,7 @@ namespace KiteFlightsDAL
 			}
 			catch (Exception ex)
 			{
-				throw new DbConnectionTestFailedException($"Database connection test failed.\r\n\t\t\tConnection string: {connectionString}", ex);
+				throw new DbConnectionTestFailedException($"Database connection test failed.\r\n\tConnection string: {connectionString}", ex);
 			}
 		}
 
@@ -99,5 +99,4 @@ namespace KiteFlightsDAL
 			Connections.Dispose();
 		}
 	}
-
 }

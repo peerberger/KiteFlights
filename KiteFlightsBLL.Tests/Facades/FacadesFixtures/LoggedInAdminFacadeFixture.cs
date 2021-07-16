@@ -14,25 +14,14 @@ using System.Threading.Tasks;
 
 namespace KiteFlightsBLL.Tests.Facades.FacadesFixtures
 {
-	public class LoggedInAdminFacadeFixture : IDisposable
+	public class LoggedInAdminFacadeFixture
 	{
-		// todo: move conenction string to config file
-		private string connectionString = @"Host=localhost;Username=postgres;Password=admin;Database=kite_flights_tests_db;";
-		private NpgsqlConnection connection;
-
 		public ILoggedInAdminFacade Facade { get; private set; }
 
 
 		public LoggedInAdminFacadeFixture()
 		{
-			connection = new NpgsqlConnection(connectionString);
-
-			Facade = new LoggedInAdminFacade(connection);
-		}
-
-		public void Dispose()
-		{
-			connection.Dispose();
+			Facade = new LoggedInAdminFacade();
 		}
 	}
 }

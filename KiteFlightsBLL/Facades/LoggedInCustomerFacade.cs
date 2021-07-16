@@ -12,7 +12,7 @@ namespace KiteFlightsBLL.Facades
 {
 	public class LoggedInCustomerFacade : AnonymousUserFacade, ILoggedInCustomerFacade
 	{
-		public LoggedInCustomerFacade(NpgsqlConnection connection) : base(connection)
+		public LoggedInCustomerFacade()
 		{
 		}
 

@@ -13,26 +13,19 @@ using System.Threading.Tasks;
 
 namespace KiteFlightsBLL.Auth
 {
-	public class LoginService : ILoginService, IDisposable
+	public class LoginService : ILoginService
 	{
-		// todo: remember to maybe edit this when adding the use of connection pool (keeping this might overload the connection pool)
-		private string connectionString = @"Host=localhost;Username=postgres;Password=admin;Database=kite_flights_tests_db;";
-
-		private readonly NpgsqlConnection _connection;
-
 		private IUserDao _userDao;
 		private ICustomerDao _customerDao;
 		private IAirlineDao _airlineDao;
 		private IAdminDao _adminDao;
 
-		public LoginService(NpgsqlConnection connection)
+		public LoginService()
 		{
-			_connection = connection;
-
-			_userDao = new UserDaoPgsql(_connection);
-			_customerDao = new CustomerDaoPgsql(_connection);
-			_airlineDao = new AirlineDaoPgsql(_connection);
-			_adminDao = new AdminDaoPgsql(_connection);
+			_userDao = new UserDaoPgsql();
+			_customerDao = new CustomerDaoPgsql();
+			_airlineDao = new AirlineDaoPgsql();
+			_adminDao = new AdminDaoPgsql();
 		}
 
 		/// <summary>
@@ -69,7 +62,7 @@ namespace KiteFlightsBLL.Auth
 			Admin admin = new Admin { Level = 4 };
 
 			token = new LoginToken<Admin>(admin);
-			facade = new LoggedInAdminFacade(new NpgsqlConnection(connectionString));
+			facade = new LoggedInAdminFacade();
 
 			return true;
 		}
@@ -88,7 +81,7 @@ namespace KiteFlightsBLL.Auth
 					user = _customerDao.GetByUsername(username);
 
 					token = new LoginToken<Customer>(user as Customer);
-					facade = new LoggedInCustomerFacade(new NpgsqlConnection(connectionString));
+					facade = new LoggedInCustomerFacade();
 
 					result = true;
 					break;
@@ -97,7 +90,7 @@ namespace KiteFlightsBLL.Auth
 					user = _airlineDao.GetByUsername(username);
 
 					token = new LoginToken<Airline>(user as Airline);
-					facade = new LoggedInAirlineFacade(new NpgsqlConnection(connectionString));
+					facade = new LoggedInAirlineFacade();
 
 					result = true;
 					break;
@@ -106,7 +99,7 @@ namespace KiteFlightsBLL.Auth
 					user = _adminDao.GetByUsername(username);
 
 					token = new LoginToken<Admin>(user as Admin);
-					facade = new LoggedInAdminFacade(new NpgsqlConnection(connectionString));
+					facade = new LoggedInAdminFacade();
 
 					result = true;
 					break;
@@ -117,12 +110,6 @@ namespace KiteFlightsBLL.Auth
 			}
 
 			return result;
-		}
-
-		// todo: remember to maybe edit this when adding the use of connection pool
-		public void Dispose()
-		{
-			_connection.Dispose();
 		}
 	}
 }

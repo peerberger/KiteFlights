@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KiteFlightsBLL.Auth
 {
-	public interface ILoginService : IDisposable
+	public interface ILoginService
 	{
 		bool TryLogin(string username, string password, out ILoginToken token, out FacadeBase facade);
 	}

@@ -13,7 +13,7 @@ namespace KiteFlightsBLL.Facades
 {
 	public class LoggedInAirlineFacade : AnonymousUserFacade, ILoggedInAirlineFacade
 	{
-		public LoggedInAirlineFacade(NpgsqlConnection connection) : base(connection)
+		public LoggedInAirlineFacade()
 		{
 		}
 
@@ -81,6 +81,5 @@ namespace KiteFlightsBLL.Facades
 
 			_airlineDao.Update(airline);
 		}
-
 	}
 }

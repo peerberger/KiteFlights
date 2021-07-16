@@ -11,7 +11,7 @@ namespace KiteFlightsDAL.DAOs.PocoDaos
 {
 	public class FlightDaoPgsql : GenericDaoPgsql<Flight>, IFlightDao
 	{
-		public FlightDaoPgsql(NpgsqlConnection connection) : base(connection)
+		public FlightDaoPgsql()
 		{
 		}
 

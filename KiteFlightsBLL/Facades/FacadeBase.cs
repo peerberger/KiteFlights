@@ -5,10 +5,8 @@ using System;
 
 namespace KiteFlightsBLL.Facades
 {
-	public abstract class FacadeBase : IDisposable
+	public abstract class FacadeBase
 	{
-		private readonly NpgsqlConnection _connection;
-
 		protected ICountryDao _countryDao;
 		protected IUserDao _userDao;
 		protected IAdminDao _adminDao;
@@ -17,23 +15,15 @@ namespace KiteFlightsBLL.Facades
 		protected IFlightDao _flightDao;
 		protected ITicketDao _ticketDao;
 
-		public FacadeBase(NpgsqlConnection connection)
+		public FacadeBase()
 		{
-			_connection = connection;
-
-			_countryDao = new CountryDaoPgsql(_connection);
-			_userDao = new UserDaoPgsql(_connection);
-			_adminDao = new AdminDaoPgsql(_connection);
-			_customerDao = new CustomerDaoPgsql(_connection);
-			_airlineDao = new AirlineDaoPgsql(_connection);
-			_flightDao = new FlightDaoPgsql(_connection);
-			_ticketDao = new TicketDaoPgsql(_connection);
-		}
-
-		// todo: remember to maybe edit this when adding the use of connection pool
-		public void Dispose()
-		{
-			_connection.Dispose();
+			_countryDao = new CountryDaoPgsql();
+			_userDao = new UserDaoPgsql();
+			_adminDao = new AdminDaoPgsql();
+			_customerDao = new CustomerDaoPgsql();
+			_airlineDao = new AirlineDaoPgsql();
+			_flightDao = new FlightDaoPgsql();
+			_ticketDao = new TicketDaoPgsql();
 		}
 	}
 }

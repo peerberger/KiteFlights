@@ -11,7 +11,7 @@ namespace KiteFlightsDAL.DAOs.PocoDaos
 {
 	public class UserDaoPgsql : GenericDaoPgsql<User>, IUserDao
 	{
-		public UserDaoPgsql(NpgsqlConnection connection) : base(connection)
+		public UserDaoPgsql()
 		{
 		}
 

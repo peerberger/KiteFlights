@@ -92,10 +92,11 @@ namespace ConsoleApp
 
 			try
 			{
-				var pool = NpgsqlConnectionPool.Instance;
-				var connection = pool.GetConnection();
+				//var pool = NpgsqlConnectionPool.Instance;
+				//var connection = pool.GetConnection();
 
-				ICountryDao dao = new CountryDaoPgsql(connection);
+				//ICountryDao dao = new CountryDaoPgsql(connection);
+				ICountryDao dao = new CountryDaoPgsql();
 
 				var countries = dao.GetAll();
 				//GenerateJsonFileForTests(countries, "countries");
@@ -108,10 +109,11 @@ namespace ConsoleApp
 
 				var removed = dao.Remove(7);
 
-				IAdminDao dao1 = new AdminDaoPgsql(connection);
+				//IAdminDao dao1 = new AdminDaoPgsql(connection);
+				IAdminDao dao1 = new AdminDaoPgsql();
 				var admin = dao1.GetByUsername("dojacat");
 
-				pool.ReturnConnection(connection);
+				//pool.ReturnConnection(connection);
 				//pool.Dispose();
 			}
 			catch (DbConnectionTestFailedException ex)
@@ -267,19 +269,19 @@ namespace ConsoleApp
 			//	var flights6 = facade.GetFlightsByLandingTime(new DateTime(2021, 05, 03, 18, 32, 42));
 			//}
 
-			using (ILoginService loginService = new LoginService(new NpgsqlConnection(connectionString)))
-			{
-				ILoginToken token;
-				FacadeBase facade;
+			//using (ILoginService loginService = new LoginService(new NpgsqlConnection(connectionString)))
+			//{
+			//	ILoginToken token;
+			//	FacadeBase facade;
 
 
-				//var aaa = loginService.TryLogin("karenmclaren", "customer1", out token, out facade);
-				//var aaa = loginService.TryLogin("elal", "airline1", out token, out facade);
-				var aaa = loginService.TryLogin("dojcat", "admin1", out token, out facade);
+			//	//var aaa = loginService.TryLogin("karenmclaren", "customer1", out token, out facade);
+			//	//var aaa = loginService.TryLogin("elal", "airline1", out token, out facade);
+			//	var aaa = loginService.TryLogin("dojcat", "admin1", out token, out facade);
 
-				LoginToken<Customer> token1 = token as LoginToken<Customer>;
-				ILoggedInCustomerFacade facade1 = facade as ILoggedInCustomerFacade;
-			}
+			//	LoginToken<Customer> token1 = token as LoginToken<Customer>;
+			//	ILoggedInCustomerFacade facade1 = facade as ILoggedInCustomerFacade;
+			//}
 		}
 
 		private static void GenerateJsonFileForTests(object? value, string tableName)

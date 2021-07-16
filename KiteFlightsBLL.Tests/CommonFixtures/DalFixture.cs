@@ -1,5 +1,6 @@
 ﻿using KiteFlightsCommon.DaoInterfaces;
 using KiteFlightsCommon.POCOs;
+using KiteFlightsDAL;
 using KiteFlightsDAL.DAOs.PocoDaos;
 using Newtonsoft.Json;
 using Npgsql;
@@ -12,11 +13,9 @@ using System.Threading.Tasks;
 
 namespace KiteFlightsBLL.Tests.CommonFixtures
 {
-	public class DalFixture : IDisposable
+	public class DalFixture
 	{
-		// todo: move conenction string to config file
-		protected string connectionString = @"Host=localhost;Username=postgres;Password=admin;Database=kite_flights_tests_db;";
-		private NpgsqlConnection connection;
+		protected static NpgsqlConnectionPool _connectionPool = NpgsqlConnectionPool.Instance;
 
 		public ICountryDao CountryDao { get; private set; }
 		public IAdminDao AdminDao { get; private set; }
@@ -28,33 +27,26 @@ namespace KiteFlightsBLL.Tests.CommonFixtures
 
 		public DalFixture()
 		{
-			connection = new NpgsqlConnection(connectionString);
-
-			CountryDao = new CountryDaoPgsql(connection);
-			AdminDao = new AdminDaoPgsql(connection);
-			CustomerDao = new CustomerDaoPgsql(connection);
-			AirlineDao = new AirlineDaoPgsql(connection);
-			FlightDao = new FlightDaoPgsql(connection);
-			TicketDao = new TicketDaoPgsql(connection);
+			CountryDao = new CountryDaoPgsql();
+			AdminDao = new AdminDaoPgsql();
+			CustomerDao = new CustomerDaoPgsql();
+			AirlineDao = new AirlineDaoPgsql();
+			FlightDao = new FlightDaoPgsql();
+			TicketDao = new TicketDaoPgsql();
 		}
 
 		public void ClearAndRepopulateDb()
 		{
 			string sp = @"CALL sp_clear_and_repopulate_db()";
 
-			connection.Open();
+			var connection = _connectionPool.GetConnection();
 
 			using (var cmd = new NpgsqlCommand(sp, connection))
 			{
 				cmd.ExecuteNonQuery();
 			}
 
-			connection.Close();
-		}
-
-		public void Dispose()
-		{
-			connection.Dispose();
+			_connectionPool.ReturnConnection(connection);
 		}
 	}
 }

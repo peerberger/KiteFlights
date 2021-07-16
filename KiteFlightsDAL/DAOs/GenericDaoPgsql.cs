@@ -16,7 +16,7 @@ namespace KiteFlightsDAL.DAOs
 	{
 		protected string TableName { get; set; }
 
-		public GenericDaoPgsql(NpgsqlConnection connection) : base(connection)
+		public GenericDaoPgsql()
 		{
 			TableName = GetTableName();
 		}
