@@ -5,12 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="log4net" Version="2.0.12" />
-    <PackageReference Include="Npgsql" Version="5.0.3" />
+    <Compile Remove="Utilities\CustomAttributes\**" />
+    <EmbeddedResource Remove="Utilities\CustomAttributes\**" />
+    <None Remove="Utilities\CustomAttributes\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="HelperClasses\CustomAttributes\" />
+    <PackageReference Include="log4net" Version="2.0.12" />
+    <PackageReference Include="Npgsql" Version="5.0.3" />
   </ItemGroup>
 
   <ItemGroup>
