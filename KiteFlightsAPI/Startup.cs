@@ -33,6 +33,8 @@ namespace KiteFlightsAPI
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "KiteFlightsAPI", Version = "v1" });
 			});
+
+			services.AddSingleton<IAnonymousUserFacade, AnonymousUserFacade>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
