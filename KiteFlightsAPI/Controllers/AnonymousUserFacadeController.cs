@@ -23,12 +23,12 @@ namespace KiteFlightsAPI.Controllers
 
 		// GET: api/<AnonymousUserFacadeController>
 		[HttpGet]
-		//public async Task<ActionResult<IList<Airline>>> GetAllAirlinesAsync()
-		public ActionResult<IList<Airline>> GetAllAirlines()
+		public async Task<ActionResult<IList<Airline>>> GetAllAirlinesAsync()
+		//public ActionResult<IList<Airline>> GetAllAirlines()
 		{
-			//return await _facade.GetAllAirlines();
+			return await Task.Run(() => _facade.GetAllAirlines().ToList());
 
-			return _facade.GetAllAirlines().ToList();
+			//return _facade.GetAllAirlines().ToList();
 		}
 
 		//// GET api/<AnonymousUserFacadeController>/5

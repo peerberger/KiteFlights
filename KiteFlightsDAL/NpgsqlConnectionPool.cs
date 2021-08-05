@@ -5,11 +5,13 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 
 namespace KiteFlightsDAL
 {
-	public class NpgsqlConnectionPool : IDisposable
+	//public class NpgsqlConnectionPool : IDisposable
+	public class NpgsqlConnectionPool
 	{
 		#region Singleton stuff
 		private static readonly object singletonKey = new object();
@@ -39,21 +41,37 @@ namespace KiteFlightsDAL
 		//private const string connectionString = @"Host=localhost;Username=postgres;Password=admin;Database=kite_flights_db;";
 		private const string connectionString = @"Host=localhost;Username=postgres;Password=admin;Database=kite_flights_tests_db;";
 
-		public BlockingCollection<NpgsqlConnection> Connections { get; set; }
+		public BlockingCollection<NpgsqlConnection> Connections { get; }
+		public Channel<NpgsqlConnection> ConnectionsAsync { get; }
 
 		private NpgsqlConnectionPool()
 		{
 			TestConnection();
 
-			Connections = new BlockingCollection<NpgsqlConnection>(MAX_CONNENCTIONS);
+			Connections = new BlockingCollection<NpgsqlConnection>(MAX_CONNENCTIONS/2);
+			ConnectionsAsync = Channel.CreateBounded<NpgsqlConnection>(MAX_CONNENCTIONS/2);
 			Init();
+			InitAsync();
 		}
 
 		private void Init()
 		{
+			Connections.Add(new NpgsqlConnection(connectionString));
+		}
+		private async Task InitAsync()
+		{
 			for (int i = 0; i < MAX_CONNENCTIONS; i++)
 			{
-				Connections.Add(new NpgsqlConnection(connectionString));
+				//Connections.Add(new NpgsqlConnection(connectionString));
+
+				var connection = new NpgsqlConnection(connectionString);
+
+				if (ConnectionsAsync.Writer.TryWrite(connection))
+				{
+					continue;
+				}
+
+				await ConnectionsAsync.Writer.WriteAsync(connection);
 			}
 		}
 
@@ -65,12 +83,28 @@ namespace KiteFlightsDAL
 
 			return connection;
 		}
+		public async Task<NpgsqlConnection> GetConnectionAsync()
+		{
+			//var connection = Connections.Take();
+			var connection = await ConnectionsAsync.Reader.ReadAsync();
+
+			connection.Open();
+
+			return connection;
+		}
 
 		public void ReturnConnection(NpgsqlConnection connection)
 		{
 			connection.Close();
 
 			Connections.Add(connection);
+		}
+		public async Task ReturnConnectionAsync(NpgsqlConnection connection)
+		{
+			connection.Close();
+
+			//Connections.Add(connection);
+			ConnectionsAsync.Writer.WriteAsync(connection);
 		}
 
 		/// <summary>
@@ -94,9 +128,31 @@ namespace KiteFlightsDAL
 			}
 		}
 
-		public void Dispose()
-		{
-			Connections.Dispose();
-		}
+		//public void Dispose()
+		////public async Task DisposeAsync()
+		//{
+		//	//Connections.Dispose();
+
+		//	Connections.Writer.Complete();
+
+		//	try
+		//	{
+		//		while (true)
+		//		{
+		//			var connection = await Connections.Reader.ReadAsync();
+
+		//			connection.DisposeAsync();
+		//		}
+		//	}
+		//	catch (ChannelClosedException) { }
+
+		//	while (await Connections.Reader.WaitToReadAsync())
+		//	{
+		//		if (c.TryRead(out int item))
+		//		{
+		//			// process item...
+		//		}
+		//	}
+		//}
 	}
 }

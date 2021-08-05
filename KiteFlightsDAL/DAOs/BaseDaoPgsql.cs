@@ -27,7 +27,7 @@ namespace KiteFlightsDAL.DAOs
 		{
 			object result = null;
 
-			var connection = _connectionPool.GetConnection();
+			var connection = _connectionPool.GetConnectionAsync();
 
 			using (var cmd = new NpgsqlCommand(spName, connection))
 			{
@@ -42,6 +42,29 @@ namespace KiteFlightsDAL.DAOs
 			}
 
 			_connectionPool.ReturnConnection(connection);
+
+			return result;
+		}
+		private static async Task<object> SpAsync(Func<NpgsqlCommand, object> ExecuteCommand, string spName, List<object> parameters = null)
+		{
+			object result = null;
+
+			//var connection = _connectionPool.GetConnectionAsync();
+			var connection = await _connectionPool.GetConnectionAsync();
+
+			using (var cmd = new NpgsqlCommand(spName, connection))
+			{
+				cmd.CommandType = CommandType.StoredProcedure;
+
+				if (parameters != null)
+				{
+					cmd.Parameters.AddRange(GetNpgsqlParameters(parameters));
+				}
+
+				result = ExecuteCommand(cmd);
+			}
+
+			_connectionPool.ReturnConnectionAsync(connection);
 
 			return result;
 		}
@@ -96,10 +119,33 @@ namespace KiteFlightsDAL.DAOs
 
 			return result;
 		}
+		private static async Task<object> ExecuteReaderAsync(NpgsqlCommand cmd)
+		{
+			List<TEntity> result = new List<TEntity>();
+
+			//using (var reader = cmd.ExecuteReader())
+			using (var reader = await cmd.ExecuteReaderAsync())
+			{
+				//while (reader.Read())
+				while (await reader.ReadAsync())
+				{
+					TEntity entity = GenerateEntitySafely(reader);
+
+					result.Add(entity);
+				}
+			}
+
+			return result;
+		}
 
 		private static object ExecuteScalar(NpgsqlCommand cmd)
 		{
 			return cmd.ExecuteScalar();
+		}
+		private static async Task<object> ExecuteScalarAsync(NpgsqlCommand cmd)
+		{
+			//return cmd.ExecuteScalar();
+			return await cmd.ExecuteScalarAsync();
 		}
 		#endregion
 
@@ -107,7 +153,14 @@ namespace KiteFlightsDAL.DAOs
 		// encapsulations for sp()
 		protected static List<TEntity> SpExecuteReader(string spName, List<object> parameters = null)
 		{
-			var spResult = Sp(ExecuteReader, spName, parameters) as List<TEntity>;
+			var spResult = SpAsync(ExecuteReader, spName, parameters) as List<TEntity>;
+
+			return spResult;
+		}
+		protected static async Task<List<TEntity>> SpExecuteReaderAsync(string spName, List<object> parameters = null)
+		{
+			//var spResult = Sp(ExecuteReader, spName, parameters) as List<TEntity>;
+			var spResult = await SpAsync(ExecuteReaderAsync, spName, parameters) as List<TEntity>;
 
 			return spResult;
 		}
@@ -118,10 +171,19 @@ namespace KiteFlightsDAL.DAOs
 
 			return spResult.FirstOrDefault();
 		}
-
-		protected static object SpExecuteScalar(string spName, List<object> parameters = null)
+		protected static async Task<TEntity> SpExecuteReaderReturningSingleRecordAsync(string spName, List<object> parameters = null)
 		{
-			return Sp(ExecuteScalar, spName, parameters);
+			//var spResult = SpExecuteReader(spName, parameters);
+			var spResult = await SpExecuteReaderAsync(spName, parameters);
+
+			return spResult.FirstOrDefault();
+		}
+
+		//protected static object SpExecuteScalar(string spName, List<object> parameters = null)
+		protected static async Task<object> SpExecuteScalarAsync(string spName, List<object> parameters = null)
+		{
+			//return Sp(ExecuteScalar, spName, parameters);
+			return await SpAsync(ExecuteScalarAsync, spName, parameters);
 		}
 
 		// encapsulations for GenerateEntity<PocoEntity>()
