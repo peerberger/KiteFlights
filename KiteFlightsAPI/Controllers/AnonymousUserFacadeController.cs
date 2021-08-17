@@ -1,9 +1,14 @@
-﻿using KiteFlightsCommon.FacadesInterfaces;
+﻿using KiteFlightsBLL.Utilities;
+using KiteFlightsCommon.DTOs.AnonymousUserFacadeControllerDTOs;
+using KiteFlightsCommon.DTOs.CommonDTOs;
+using KiteFlightsCommon.FacadesInterfaces;
 using KiteFlightsCommon.POCOs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -23,13 +28,65 @@ namespace KiteFlightsAPI.Controllers
 
 		// GET: api/<AnonymousUserFacadeController>
 		[HttpGet]
-		//public async Task<ActionResult<IList<Airline>>> GetAllAirlinesAsync()
-		public ActionResult<IList<Airline>> GetAllAirlines()
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public ActionResult<IList<AirlineDTO>> GetAllAirlines()
 		{
-			//return await _facade.GetAllAirlines();
+			try
+			{
+				var airlines = _facade.GetAllAirlines().ToList();
 
-			return _facade.GetAllAirlines().ToList();
+				var airlineDTOs = airlines
+					.Select(a => PocoDtoConverter.AirlinePocoToDto(a));
+
+				return Ok(airlineDTOs);
+			}
+			catch (Exception ex)
+			{
+				// todo: add logging
+
+				return NotFound();
+			}
 		}
+
+		// GET api/<AnonymousUserFacadeController>/5
+		[HttpGet("{id}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public ActionResult<FlightDTO> GetFlightById(int id)
+		{
+			try
+			{
+				var flight = _facade.GetFlightById(id);
+
+				var flightDTO = new FlightDTO
+				{
+					Id = flight.Id,
+					Airline = PocoDtoConverter.AirlinePocoToDto(flight.Airline),
+					OriginCountry = PocoDtoConverter.CountryPocoToDto(flight.OriginCountry),
+					DestinationCountry = PocoDtoConverter.CountryPocoToDto(flight.DestinationCountry),
+					DepartureTime = flight.DepartureTime,
+					LandingTime = flight.LandingTime,
+					RemainingTicketsNo = flight.RemainingTicketsNo
+				};
+
+				return Ok(flightDTO);
+			}
+			catch (Exception ex)
+			{
+				// todo: add logging
+
+				return NotFound();
+			}
+		}
+
+
+
+
+
+
+
+
 
 		//// GET api/<AnonymousUserFacadeController>/5
 		//[HttpGet("{id}")]
