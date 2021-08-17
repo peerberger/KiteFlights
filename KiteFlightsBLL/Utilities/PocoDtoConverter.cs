@@ -30,6 +30,11 @@ namespace KiteFlightsBLL.Utilities
 			};
 		}
 
+		public static IEnumerable<AirlineDTO> AirlineCollectionPocoToDto(IEnumerable<Airline> airlines)
+		{
+			return airlines.Select(a => AirlinePocoToDto(a));
+		}
+
 		public static FlightDTO FlightPocoToDto(Flight flight)
 		{
 			return new FlightDTO
@@ -42,6 +47,11 @@ namespace KiteFlightsBLL.Utilities
 				LandingTime = flight.LandingTime,
 				RemainingTicketsNo = flight.RemainingTicketsNo
 			};
+		}
+
+		public static IEnumerable<FlightDTO> FlightCollectionPocoToDto(IEnumerable<Flight> flights)
+		{
+			return flights.Select(f => FlightPocoToDto(f));
 		}
 	}
 }

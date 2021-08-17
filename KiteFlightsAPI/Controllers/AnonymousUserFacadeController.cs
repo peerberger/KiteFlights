@@ -36,8 +36,7 @@ namespace KiteFlightsAPI.Controllers
 			{
 				var airlines = _facade.GetAllAirlines();
 
-				var airlineDTOs = airlines
-					.Select(a => PocoDtoConverter.AirlinePocoToDto(a));
+				var airlineDTOs = PocoDtoConverter.AirlineCollectionPocoToDto(airlines);
 
 				return Ok(airlineDTOs);
 			}
@@ -81,8 +80,7 @@ namespace KiteFlightsAPI.Controllers
 			{
 				var flights = _facade.GetAllFlights();
 
-				var flightDTOs = flights
-					.Select(f => PocoDtoConverter.FlightPocoToDto(f));
+				var flightDTOs = PocoDtoConverter.FlightCollectionPocoToDto(flights);
 
 				return Ok(flightDTOs);
 			}
@@ -107,8 +105,7 @@ namespace KiteFlightsAPI.Controllers
 			{
 				var flights = _facade.GetFlightsByOriginCountry(countryId);
 
-				var flightDTOs = flights
-					.Select(f => PocoDtoConverter.FlightPocoToDto(f));
+				var flightDTOs = PocoDtoConverter.FlightCollectionPocoToDto(flights);
 
 				return Ok(flightDTOs);
 			}
@@ -130,8 +127,7 @@ namespace KiteFlightsAPI.Controllers
 			{
 				var flights = _facade.GetFlightsByDestinationCountry(countryId);
 
-				var flightDTOs = flights
-					.Select(f => PocoDtoConverter.FlightPocoToDto(f));
+				var flightDTOs = PocoDtoConverter.FlightCollectionPocoToDto(flights);
 
 				return Ok(flightDTOs);
 			}
@@ -153,8 +149,7 @@ namespace KiteFlightsAPI.Controllers
 			{
 				var flights = _facade.GetFlightsByDepatrureTime(departureTime);
 
-				var flightDTOs = flights
-					.Select(f => PocoDtoConverter.FlightPocoToDto(f));
+				var flightDTOs = PocoDtoConverter.FlightCollectionPocoToDto(flights);
 
 				return Ok(flightDTOs);
 			}
@@ -176,8 +171,7 @@ namespace KiteFlightsAPI.Controllers
 			{
 				var flights = _facade.GetFlightsByLandingTime(landingTime);
 
-				var flightDTOs = flights
-					.Select(f => PocoDtoConverter.FlightPocoToDto(f));
+				var flightDTOs = PocoDtoConverter.FlightCollectionPocoToDto(flights);
 
 				return Ok(flightDTOs);
 			}
