@@ -26,15 +26,15 @@ namespace KiteFlightsAPI.Controllers
 			_facade = facade;
 		}
 
-		// GET: api/<AnonymousUserFacadeController>
+		// GET: api/<AnonymousUserFacadeController>/airlines/getall
 		[HttpGet("airlines/getall")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public ActionResult<IList<AirlineDTO>> GetAllAirlines()
+		public ActionResult<IEnumerable<AirlineDTO>> GetAllAirlines()
 		{
 			try
 			{
-				var airlines = _facade.GetAllAirlines().ToList();
+				var airlines = _facade.GetAllAirlines();
 
 				var airlineDTOs = airlines
 					.Select(a => PocoDtoConverter.AirlinePocoToDto(a));
@@ -49,7 +49,7 @@ namespace KiteFlightsAPI.Controllers
 			}
 		}
 
-		// GET api/<AnonymousUserFacadeController>/5
+		// GET api/<AnonymousUserFacadeController>/flights/getbyid/5
 		[HttpGet("flights/getbyid/{id}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -71,15 +71,15 @@ namespace KiteFlightsAPI.Controllers
 			}
 		}
 
-		// GET: api/<AnonymousUserFacadeController>
+		// GET: api/<AnonymousUserFacadeController>/flights/getall
 		[HttpGet("flights/getall")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public ActionResult<IList<FlightDTO>> GetAllFlights()
+		public ActionResult<IEnumerable<FlightDTO>> GetAllFlights()
 		{
 			try
 			{
-				var flights = _facade.GetAllFlights().ToList();
+				var flights = _facade.GetAllFlights();
 
 				var flightDTOs = flights
 					.Select(f => PocoDtoConverter.FlightPocoToDto(f));
@@ -94,34 +94,99 @@ namespace KiteFlightsAPI.Controllers
 			}
 		}
 
+		// todo: haven't implemented a method that uses AnonymousUserFacade.GetAllFlightsWithVacancies(),
+		// because i don't udnerstand why it's necessary if Flight already contains the number of vacancies
 
+		// GET: api/<AnonymousUserFacadeController>/flights/getbyorigincountry/2
+		[HttpGet("flights/getbyorigincountry/{countryId}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public ActionResult<IEnumerable<FlightDTO>> GetFlightsByOriginCountry(int countryId)
+		{
+			try
+			{
+				var flights = _facade.GetFlightsByOriginCountry(countryId);
 
+				var flightDTOs = flights
+					.Select(f => PocoDtoConverter.FlightPocoToDto(f));
 
+				return Ok(flightDTOs);
+			}
+			catch (Exception ex)
+			{
+				// todo: add logging
 
+				return NotFound();
+			}
+		}
 
-		//// GET api/<AnonymousUserFacadeController>/5
-		//[HttpGet("{id}")]
-		//public string Get(int id)
-		//{
-		//	return "value";
-		//}
+		// GET: api/<AnonymousUserFacadeController>/flights/getbydestinationcountry/2
+		[HttpGet("flights/getbydestinationcountry/{countryId}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public ActionResult<IEnumerable<FlightDTO>> GetFlightsByDestinationCountry(int countryId)
+		{
+			try
+			{
+				var flights = _facade.GetFlightsByDestinationCountry(countryId);
 
-		//// POST api/<AnonymousUserFacadeController>
-		//[HttpPost]
-		//public void Post([FromBody] string value)
-		//{
-		//}
+				var flightDTOs = flights
+					.Select(f => PocoDtoConverter.FlightPocoToDto(f));
 
-		//// PUT api/<AnonymousUserFacadeController>/5
-		//[HttpPut("{id}")]
-		//public void Put(int id, [FromBody] string value)
-		//{
-		//}
+				return Ok(flightDTOs);
+			}
+			catch (Exception ex)
+			{
+				// todo: add logging
 
-		//// DELETE api/<AnonymousUserFacadeController>/5
-		//[HttpDelete("{id}")]
-		//public void Delete(int id)
-		//{
-		//}
+				return NotFound();
+			}
+		}
+
+		// GET: api/<AnonymousUserFacadeController>/flights/getbydepatruretime/2021-01-01T01:00:00
+		[HttpGet("flights/getbydepatruretime/{departureTime}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public ActionResult<IEnumerable<FlightDTO>> GetFlightsByDepatrureTime(DateTime departureTime)
+		{
+			try
+			{
+				var flights = _facade.GetFlightsByDepatrureTime(departureTime);
+
+				var flightDTOs = flights
+					.Select(f => PocoDtoConverter.FlightPocoToDto(f));
+
+				return Ok(flightDTOs);
+			}
+			catch (Exception ex)
+			{
+				// todo: add logging
+
+				return NotFound();
+			}
+		}
+
+		// GET: api/<AnonymousUserFacadeController>/flights/getbylandingtime/2021-01-01T01:00:00
+		[HttpGet("flights/getbylandingtime/{landingTime}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public ActionResult<IEnumerable<FlightDTO>> GetFlightsByLandingTime(DateTime landingTime)
+		{
+			try
+			{
+				var flights = _facade.GetFlightsByLandingTime(landingTime);
+
+				var flightDTOs = flights
+					.Select(f => PocoDtoConverter.FlightPocoToDto(f));
+
+				return Ok(flightDTOs);
+			}
+			catch (Exception ex)
+			{
+				// todo: add logging
+
+				return NotFound();
+			}
+		}
 	}
 }
