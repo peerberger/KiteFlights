@@ -29,5 +29,19 @@ namespace KiteFlightsBLL.Utilities
 				Country = CountryPocoToDto(airline.Country)
 			};
 		}
+
+		public static FlightDTO FlightPocoToDto(Flight flight)
+		{
+			return new FlightDTO
+			{
+				Id = flight.Id,
+				Airline = AirlinePocoToDto(flight.Airline),
+				OriginCountry = CountryPocoToDto(flight.OriginCountry),
+				DestinationCountry = CountryPocoToDto(flight.DestinationCountry),
+				DepartureTime = flight.DepartureTime,
+				LandingTime = flight.LandingTime,
+				RemainingTicketsNo = flight.RemainingTicketsNo
+			};
+		}
 	}
 }

@@ -27,7 +27,7 @@ namespace KiteFlightsAPI.Controllers
 		}
 
 		// GET: api/<AnonymousUserFacadeController>
-		[HttpGet]
+		[HttpGet("airlines/getall")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult<IList<AirlineDTO>> GetAllAirlines()
@@ -50,7 +50,7 @@ namespace KiteFlightsAPI.Controllers
 		}
 
 		// GET api/<AnonymousUserFacadeController>/5
-		[HttpGet("{id}")]
+		[HttpGet("flights/getbyid/{id}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult<FlightDTO> GetFlightById(int id)
@@ -59,16 +59,7 @@ namespace KiteFlightsAPI.Controllers
 			{
 				var flight = _facade.GetFlightById(id);
 
-				var flightDTO = new FlightDTO
-				{
-					Id = flight.Id,
-					Airline = PocoDtoConverter.AirlinePocoToDto(flight.Airline),
-					OriginCountry = PocoDtoConverter.CountryPocoToDto(flight.OriginCountry),
-					DestinationCountry = PocoDtoConverter.CountryPocoToDto(flight.DestinationCountry),
-					DepartureTime = flight.DepartureTime,
-					LandingTime = flight.LandingTime,
-					RemainingTicketsNo = flight.RemainingTicketsNo
-				};
+				var flightDTO = PocoDtoConverter.FlightPocoToDto(flight);
 
 				return Ok(flightDTO);
 			}
@@ -80,8 +71,28 @@ namespace KiteFlightsAPI.Controllers
 			}
 		}
 
+		// GET: api/<AnonymousUserFacadeController>
+		[HttpGet("flights/getall")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public ActionResult<IList<FlightDTO>> GetAllFlights()
+		{
+			try
+			{
+				var flights = _facade.GetAllFlights().ToList();
 
+				var flightDTOs = flights
+					.Select(f => PocoDtoConverter.FlightPocoToDto(f));
 
+				return Ok(flightDTOs);
+			}
+			catch (Exception ex)
+			{
+				// todo: add logging
+
+				return NotFound();
+			}
+		}
 
 
 
